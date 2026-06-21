@@ -26,6 +26,13 @@ dependencies {
 
 TBD
 
+## Demo Server
+
+This project includes a Minestom server that you can use to test out the block behaviors. To use it, run:
+```sh
+./gradlew :demo:run
+```
+
 ## Why another placement library?
 
 In their current form, block handlers are a finicky system. They require cooperation from an instance's chunk loader, and they need to be manually applied when a player places a block. This library uses events instead, which makes block behavior easier to reason about, with the additional benefit of allowing behaviors to be scoped using Minestom's powerful event system.

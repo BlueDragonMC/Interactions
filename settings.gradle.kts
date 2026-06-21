@@ -5,3 +5,4 @@ plugins {
 
 rootProject.name = "Interactions"
 include("lib")
+include("demo")
