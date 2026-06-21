@@ -1,0 +1,11 @@
+[versions]
+kotlin = "2.3.0"
+minestom = "2026.06.20-26.1.2"
+dokka = "2.2.0"
+
+[libraries]
+minestom = { group = "net.minestom", name = "minestom", version.ref = "minestom" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka-javadoc", version.ref = "dokka" }
