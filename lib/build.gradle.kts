@@ -15,6 +15,7 @@ repositories {
 
 dependencies {
     api(libs.minestom)
+    api(libs.adventure.api)
 }
 
 testing {

@@ -1,10 +1,12 @@
 [versions]
+adventure = "5.1.1"
 kotlin = "2.3.0"
 minestom = "2026.06.20-26.1.2"
 dokka = "2.2.0"
 
 [libraries]
 minestom = { group = "net.minestom", name = "minestom", version.ref = "minestom" }
+adventure-api = { group = "net.kyori", name = "adventure-api", version.ref = "adventure" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
