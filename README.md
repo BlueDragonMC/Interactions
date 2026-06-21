@@ -1,6 +1,8 @@
 # Interactions
 
-![Minestom version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2FBlueDragonMC%2FInteractions%2Fmain%2Fgradle%2Flibs.versions.toml&query=%24.versions.minestom&label=Minestom)
+![GitHub License](https://img.shields.io/github/license/BlueDragonMC/Interactions)
+![GitHub last commit](https://img.shields.io/github/last-commit/BlueDragonMC/Interactions)
+![Minestom version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2FBlueDragonMC%2FInteractions%2Fmain%2Fgradle%2Flibs.versions.toml&query=%24.versions.minestom&label=Minestom%20Version)
 
 
 A Minestom library for block placement and interactions.
@@ -27,3 +29,9 @@ TBD
 ## Why another placement library?
 
 In their current form, block handlers are a finicky system. They require cooperation from an instance's chunk loader, and they need to be manually applied when a player places a block. This library uses events instead, which makes block behavior easier to reason about, with the additional benefit of allowing behaviors to be scoped using Minestom's powerful event system.
+
+## Alternatives/Inspiration
+
+- [vibenilla/placement](https://github.com/vibenilla/placement) (Apache 2.0)
+- [everbuild-org/blocks-and-stuff](https://github.com/everbuild-org/blocks-and-stuff) (MIT)
+- [hollow-cube/mapmaker](https://github.com/hollow-cube/mapmaker/tree/main/modules/map-core/src/main/java/net/hollowcube/mapmaker/map/block/placement) (MIT)
