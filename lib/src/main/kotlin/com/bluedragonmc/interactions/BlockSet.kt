@@ -7,6 +7,8 @@ import net.minestom.server.instance.block.Block
 interface BlockSet {
     fun getBlocks(): Collection<Block>
 
+    operator fun contains(block: Block) = getBlocks().contains(block)
+
     companion object {
         fun fromTag(@KeyPattern tag: String) = TagBlockSet(tag)
         fun from(vararg blocks: Block) = EnumeratedBlockSet(blocks.asList())

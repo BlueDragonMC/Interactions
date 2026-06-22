@@ -33,11 +33,13 @@ class DemoServer {
             event.player.gameMode = GameMode.CREATIVE
         }
 
-        for (handler in Interactions.getBlockHandlers()) {
+        val lib = Interactions()
+
+        for (handler in lib.blockHandlers()) {
             MinecraftServer.getBlockManager().registerHandler(handler.key) { handler }
         }
 
-        MinecraftServer.getGlobalEventHandler().addChild(Interactions.events())
+        MinecraftServer.getGlobalEventHandler().addChild(lib.events())
 
         server.start(HOSTNAME, PORT)
         println("Minecraft ${MinecraftServer.VERSION_NAME} server started on $HOSTNAME:$PORT!")

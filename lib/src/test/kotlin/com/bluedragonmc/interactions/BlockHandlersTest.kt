@@ -8,7 +8,7 @@ class BlockHandlersTest {
     @Test
     fun `all block handlers can be registered`() {
         MinecraftServer.init()
-        for (handler in Interactions.getBlockHandlers()) {
+        for (handler in Interactions().blockHandlers()) {
             assertDoesNotThrow {
                 MinecraftServer.getBlockManager().registerHandler(handler.key) { handler }
             }
