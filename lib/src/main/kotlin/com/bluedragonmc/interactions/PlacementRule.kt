@@ -29,10 +29,9 @@ abstract class PlacementRule(val blocks: BlockSet) {
     val keys: Set<Key> = blocks.keys
 
     /**
-     * The event node for this rule. Attach it (or, more commonly, the owning registry's node) to an
-     * instance's event node or the global event handler to activate the rule.
+     * The rule's own event node, owned by its [PlacementRuleRegistry].
      */
-    val eventNode: EventNode<BlockEvent> = EventNode.event(
+    internal val eventNode: EventNode<BlockEvent> = EventNode.event(
         "interactions:rule:${this::class.simpleName}#${COUNTER.incrementAndGet()}",
         EventFilter.BLOCK,
     ) { event -> event.block.key() in keys }
