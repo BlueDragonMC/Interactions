@@ -1,5 +1,6 @@
 package com.bluedragonmc.interactions.event
 
+import com.bluedragonmc.interactions.PlacementContext
 import net.minestom.server.coordinate.BlockVec
 import net.minestom.server.coordinate.Point
 import net.minestom.server.entity.Player
@@ -34,6 +35,7 @@ class BlockPlacementEvent(
     position: BlockVec,
     block: Block,
     consumeBlock: Boolean,
+    val context: PlacementContext,
 ) : BlockEvent, CancellableEvent {
 
     private val instanceValue: Instance = instance

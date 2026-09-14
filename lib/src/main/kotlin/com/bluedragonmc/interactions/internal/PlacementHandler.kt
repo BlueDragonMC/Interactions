@@ -65,6 +65,7 @@ internal class PlacementHandler(
             position = intendedPosition,
             block = event.block,
             consumeBlock = event.doesConsumeBlock(),
+            context = context,
         )
 
         rule.eventNode.call(placementEvent)
@@ -150,25 +151,25 @@ internal class PlacementHandler(
         while (queue.isNotEmpty() && budget-- > 0) {
             val (position, distance) = queue.removeFirst()
             for (face in BlockFace.entries) {
-                val neighbour = position.relative(face)
-                if (!instance.isChunkLoaded(neighbour)) continue
-                val neighbourBlock = instance.getBlock(neighbour) ?: continue
-                if (neighbourBlock.isAir) continue
+                val neighbor = position.relative(face)
+                if (!instance.isChunkLoaded(neighbor)) continue
+                val neighborBlock = instance.getBlock(neighbor) ?: continue
+                if (neighborBlock.isAir) continue
 
-                val rule = lookup(neighbourBlock) ?: continue
+                val rule = lookup(neighborBlock) ?: continue
                 if (distance >= rule.maxUpdateDistance()) continue
 
                 val updateEvent = BlockUpdateEvent(
                     instance = instance,
-                    position = neighbour.toBlockVec(),
-                    block = neighbourBlock,
+                    position = neighbor.toBlockVec(),
+                    block = neighborBlock,
                     fromFace = face.oppositeFace,
                 )
                 rule.eventNode.call(updateEvent)
 
-                if (updateEvent.resultBlock != neighbourBlock) {
-                    instance.setBlock(neighbour, updateEvent.resultBlock)
-                    queue.addLast(neighbour.toBlockVec() to distance + 1)
+                if (updateEvent.resultBlock != neighborBlock) {
+                    instance.setBlock(neighbor, updateEvent.resultBlock)
+                    queue.addLast(neighbor.toBlockVec() to distance + 1)
                 }
             }
         }
