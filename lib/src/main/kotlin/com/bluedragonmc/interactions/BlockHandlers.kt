@@ -222,5 +222,5 @@ object BlockHandlers {
         }
     }
 
-    internal fun getAll() = minestomHandlers
+    fun getAll() = minestomHandlers
 }

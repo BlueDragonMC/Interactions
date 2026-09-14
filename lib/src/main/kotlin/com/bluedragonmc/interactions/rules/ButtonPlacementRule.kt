@@ -1,7 +1,7 @@
 package com.bluedragonmc.interactions.rules
 
-import com.bluedragonmc.interactions.BlockBehavior
 import com.bluedragonmc.interactions.BlockSet
+import com.bluedragonmc.interactions.PlacementRule
 import com.bluedragonmc.interactions.util.blockFace
 import com.bluedragonmc.interactions.util.closestDirections
 import com.bluedragonmc.interactions.util.closestHorizontalFace
@@ -9,7 +9,7 @@ import net.minestom.server.coordinate.Point
 import net.minestom.server.instance.block.BlockFace
 import net.minestom.server.utils.Direction
 
-class ButtonPlacementRule : BlockBehavior(BlockSet.fromTag("minecraft:buttons")) {
+class ButtonPlacementRule : PlacementRule(BlockSet.fromTag("minecraft:buttons")) {
     init {
         onPlace {
             isCancelled = true

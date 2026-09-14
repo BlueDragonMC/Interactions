@@ -7,6 +7,9 @@ import net.minestom.server.instance.block.Block
 interface BlockSet {
     fun getBlocks(): Collection<Block>
 
+    /** Registry keys of every block in this set, independent of block state. */
+    val keys: Set<Key> get() = getBlocks().mapTo(mutableSetOf()) { it.key() }
+
     operator fun contains(block: Block) = getBlocks().contains(block)
 
     companion object {

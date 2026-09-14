@@ -6,6 +6,7 @@ dokka = "2.2.0"
 
 [libraries]
 minestom = { group = "net.minestom", name = "minestom", version.ref = "minestom" }
+minestom-testing = { group = "net.minestom", name = "testing", version.ref = "minestom" }
 adventure-api = { group = "net.kyori", name = "adventure-api", version.ref = "adventure" }
 
 [plugins]

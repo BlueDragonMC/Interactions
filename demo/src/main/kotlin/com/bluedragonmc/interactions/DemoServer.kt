@@ -1,5 +1,6 @@
 package com.bluedragonmc.interactions
 
+import com.bluedragonmc.interactions.rules.ButtonPlacementRule
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Point
 import net.minestom.server.entity.GameMode
@@ -33,13 +34,14 @@ class DemoServer {
             event.player.gameMode = GameMode.CREATIVE
         }
 
-        val lib = Interactions()
+        val registry = PlacementRuleRegistry()
+        registry.register(ButtonPlacementRule())
 
-        for (handler in lib.blockHandlers()) {
+        for (handler in BlockHandlers.getAll()) {
             MinecraftServer.getBlockManager().registerHandler(handler.key) { handler }
         }
 
-        MinecraftServer.getGlobalEventHandler().addChild(lib.events())
+        MinecraftServer.getGlobalEventHandler().addChild(registry.eventNode())
 
         server.start(HOSTNAME, PORT)
         println("Minecraft ${MinecraftServer.VERSION_NAME} server started on $HOSTNAME:$PORT!")

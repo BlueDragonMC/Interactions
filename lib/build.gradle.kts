@@ -16,6 +16,8 @@ repositories {
 dependencies {
     api(libs.minestom)
     api(libs.adventure.api)
+
+    testImplementation(libs.minestom.testing)
 }
 
 testing {
@@ -32,6 +34,10 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
     }
+}
+
+tasks.test {
+    systemProperty("minestom.inside-test", "true")
 }
 
 fun isInCI() = System.getenv("CI") != null
