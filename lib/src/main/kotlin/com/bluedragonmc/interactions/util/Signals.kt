@@ -18,6 +18,6 @@ object Signals {
     fun signal(instance: Instance, neighbor: Point): Int {
         val block = instance.getBlockOrAir(neighbor)
         if (block.getProperty(States.POWERED) == "true") return MAX_POWER
-        return block.getProperty("power")?.toIntOrNull() ?: 0
+        return block.getProperty(States.POWER)?.toIntOrNull() ?: 0
     }
 }

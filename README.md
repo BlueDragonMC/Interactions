@@ -5,7 +5,7 @@
 ![Minestom version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2FBlueDragonMC%2FInteractions%2Fmain%2Fgradle%2Flibs.versions.toml&query=%24.versions.minestom&label=Minestom%20Version)
 
 <!-- coverage -->
-![Block placement coverage](https://img.shields.io/badge/block_placement-2%25-red?style=flat-square)
+![Block placement coverage](https://img.shields.io/badge/block_placement-97%25-brightgreen?style=flat-square)
 <!-- /coverage -->
 
 

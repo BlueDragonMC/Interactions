@@ -1,6 +1,6 @@
 package com.bluedragonmc.interactions
 
-import com.bluedragonmc.interactions.rules.ButtonPlacementRule
+import com.bluedragonmc.interactions.rules.RuleCatalog
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Point
 import net.minestom.server.entity.GameMode
@@ -35,7 +35,7 @@ class DemoServer {
         }
 
         val registry = PlacementRuleRegistry()
-        registry.register(ButtonPlacementRule())
+        RuleCatalog.registerAll(registry)
 
         for (handler in BlockHandlers.getAll()) {
             MinecraftServer.getBlockManager().registerHandler(handler.key) { handler }

@@ -15,6 +15,9 @@ interface BlockSet {
     companion object {
         fun fromTag(@KeyPattern tag: String) = TagBlockSet(tag)
         fun from(vararg blocks: Block) = EnumeratedBlockSet(blocks.asList())
+
+        /** Every block whose registry key matches [predicate], useful when no tag separates a family. */
+        fun matching(predicate: (String) -> Boolean) = EnumeratedBlockSet(Block.values().filter { predicate(it.key().asString()) })
     }
 }
 

@@ -3,13 +3,7 @@ package com.bluedragonmc.interactions.rules.base
 import com.bluedragonmc.interactions.BlockSet
 import com.bluedragonmc.interactions.PlacementRule
 import com.bluedragonmc.interactions.event.BlockPlacementEvent
-import com.bluedragonmc.interactions.util.States
-import com.bluedragonmc.interactions.util.Support
-import com.bluedragonmc.interactions.util.Waterlogged
-import com.bluedragonmc.interactions.util.blockFace
-import com.bluedragonmc.interactions.util.directionOf
-import com.bluedragonmc.interactions.util.horizontalDirection
-import com.bluedragonmc.interactions.util.orderedDirections
+import com.bluedragonmc.interactions.util.*
 import net.minestom.server.coordinate.BlockVec
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
@@ -100,7 +94,8 @@ abstract class WallTorchPlacementRule(blocks: BlockSet) : WallMountedPlacementRu
 
     override fun canSurvive(state: Block, instance: Instance, position: BlockVec): Boolean {
         val facing = directionOf(state.getProperty(States.FACING)!!)
-        return Support.isFaceSturdy(instance, position.relative(facing.blockFace), facing.opposite().blockFace)
+        val support = position.relative(facing.opposite().blockFace)
+        return Support.isFaceSturdy(instance, support, facing.blockFace)
     }
 }
 

@@ -97,3 +97,25 @@ val BlockFace.axisName: String
 
 /** Parses a lowercase `Direction` property value (e.g. `"north"`). */
 fun directionOf(value: String): Direction = Direction.valueOf(value.uppercase())
+
+/** The 16-way rotation segment (0-15) for [degrees]. */
+fun rotationSegment(degrees: Float): Int = Math.round(degrees * (16f / 360f)) and 15
+
+/** The rotation segment for a horizontal [direction] (north 0, east 4, south 8, west 12). */
+fun rotationSegment(direction: Direction): Int = when (direction) {
+    Direction.NORTH -> 0
+    Direction.EAST -> 4
+    Direction.SOUTH -> 8
+    Direction.WEST -> 12
+    else -> 0
+}
+
+/** The horizontal direction for a rotation [segment], or null when it points along an axis. */
+fun rotationDirection(segment: Int): Direction? = when (segment) {
+    0 -> Direction.NORTH
+    4 -> Direction.EAST
+    8 -> Direction.SOUTH
+    12 -> Direction.WEST
+    else -> null
+}
+

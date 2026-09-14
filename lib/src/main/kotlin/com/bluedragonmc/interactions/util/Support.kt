@@ -21,10 +21,14 @@ object Support {
     fun isFaceSturdy(instance: Instance, position: Point, face: BlockFace): Boolean =
         isFaceFull(instance, position, face)
 
+    /** Whether the block at [position] is a full/solid block. */
+    fun isSolid(instance: Instance, position: Point): Boolean =
+        instance.getBlockOrAir(position).isSolid
+
     /** Whether the block can support a center-mounted block on [face]. */
     fun canSupportCenter(instance: Instance, position: Point, face: BlockFace): Boolean {
         val block = instance.getBlockOrAir(position)
-        if (face == BlockFace.BOTTOM && block.key() in unstableBottomCenter) return false
+        if (face == BlockFace.BOTTOM && block.key() in Tags.UNSTABLE_BOTTOM_CENTER) return false
         return isFaceFull(block, face)
     }
 
@@ -34,9 +38,7 @@ object Support {
 
     /** Shapes that are full blocks but never connect to fences, walls, bars or panes. */
     fun isExceptionForConnection(block: Block): Boolean =
-        block.key() in connectionExceptions || block.key() in shulkerBoxes || block.key() in leaves
-
-    private val unstableBottomCenter: Set<Key> by lazy { tag("minecraft:unstable_bottom_center") }
+        block.key() in connectionExceptions || block.key() in Tags.SHULKER_BOXES || block.key() in Tags.LEAVES
 
     private val connectionExceptions: Set<Key> = buildSet {
         add(Key.key("minecraft:barrier"))
@@ -45,13 +47,4 @@ object Support {
         add(Key.key("minecraft:melon"))
         add(Key.key("minecraft:pumpkin"))
     }
-
-    private val shulkerBoxes: Set<Key> by lazy { tag("minecraft:shulker_boxes") }
-
-    private val leaves: Set<Key> by lazy { tag("minecraft:leaves") }
-
-    private fun tag(key: String): Set<Key> =
-        Block.staticRegistry().getTag(Key.key(key))
-            ?.mapTo(mutableSetOf()) { it.key() }
-            ?: emptySet()
 }
