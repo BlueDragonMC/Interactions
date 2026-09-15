@@ -51,6 +51,16 @@ private fun makeDirectionArray(
     axis3: Direction,
 ): List<Direction> = listOf(axis1, axis2, axis3, axis3.opposite(), axis2.opposite(), axis1.opposite())
 
+/** Returns directions ordered by yaw/pitch difference, but with [priority] first. */
+fun Pos.orderedDirections(priority: Direction): List<Direction> {
+    val ordered = orderedDirections()
+    if (ordered.first() == priority) return ordered
+    return buildList {
+        add(priority)
+        addAll(ordered.filter { it != priority })
+    }
+}
+
 /** The horizontal direction the player is facing. */
 fun Pos.horizontalDirection(): BlockFace {
     val index = floor(yaw / 90.0 + 0.5).toInt() and 3

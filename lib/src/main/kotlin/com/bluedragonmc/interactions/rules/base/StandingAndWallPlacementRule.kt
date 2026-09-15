@@ -47,7 +47,7 @@ abstract class StandingAndWallPlacementRule(
             isCancelled = true
             val standing = block
             val wall = wallByStanding[standing.key()]
-            for (direction in player.position.orderedDirections()) {
+            for (direction in player.position.orderedDirections(blockFace.oppositeFace.toDirection())) {
                 if (direction == standingDirection.opposite()) continue
                 val candidate: Block
                 val survives: Boolean

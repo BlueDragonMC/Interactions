@@ -48,6 +48,22 @@ class WallMountedPlacementRuleTest {
     }
 
     @Test
+    fun `clicked face wins over the nearest look direction`(env: Env) {
+        val instance = setupInstance(env, ButtonRule())
+        instance.setBlock(0, 40, 0, Block.STONE)
+        // Player is north of and above the block, looking steeply down at its north face.
+        val player = env.createPlayer(instance, Pos(0.0, 41.0, -1.0, 0f, 60f))
+
+        val event = firePlace(instance, player, Block.OAK_BUTTON, BlockFace.NORTH, BlockVec(0, 40, -1))
+
+        assertFalse(event.isCancelled)
+        assertEquals(
+            Block.OAK_BUTTON.withProperty("face", "wall").withProperty("facing", "north"),
+            event.block,
+        )
+    }
+
+    @Test
     fun `block is destroyed when its support is removed`(env: Env) {
         val instance = setupInstance(env, ButtonRule())
         instance.setBlock(0, 40, 1, Block.STONE)

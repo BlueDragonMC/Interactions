@@ -209,7 +209,7 @@ class CocoaRule : PlacementRule(BlockSet.from(Block.COCOA)) {
     init {
         onPlace {
             isCancelled = true
-            for (direction in player.position.orderedDirections()) {
+            for (direction in player.position.orderedDirections(blockFace.oppositeFace.toDirection())) {
                 if (!direction.horizontal()) continue
                 if (!isJungleLog(instance.getBlockOrAir(blockPosition.relative(direction.blockFace)))) continue
                 block = block.withProperty(States.FACING, direction.name.lowercase())

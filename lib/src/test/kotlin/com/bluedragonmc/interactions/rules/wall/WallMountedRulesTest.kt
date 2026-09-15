@@ -31,6 +31,22 @@ class WallMountedRulesTest {
     }
 
     @Test
+    fun `torch clicked on a side face while looking down mounts on that wall`(env: Env) {
+        val instance = setupInstance(env, TorchRule())
+        instance.setBlock(0, 40, 0, Block.STONE)
+
+        val event = firePlace(
+            instance,
+            player(env, instance, pitch = 60f),
+            Block.TORCH,
+            BlockFace.NORTH,
+            BlockVec(0, 40, -1),
+        )
+
+        assertEquals(Block.WALL_TORCH.withProperty("facing", "north"), event.block)
+    }
+
+    @Test
     fun `torch item on top of a block stays a standing torch`(env: Env) {
         val instance = setupInstance(env, TorchRule())
         instance.setBlock(0, 39, 0, Block.STONE)

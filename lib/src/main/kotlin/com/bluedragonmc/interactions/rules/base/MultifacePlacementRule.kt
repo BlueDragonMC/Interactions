@@ -29,7 +29,7 @@ abstract class MultifacePlacementRule(
     init {
         onPlace {
             isCancelled = true
-            for (direction in player.position.orderedDirections()) {
+            for (direction in player.position.orderedDirections(blockFace.oppositeFace.toDirection())) {
                 if (direction !in faces) continue
                 if (!canAttach(instance, blockPosition, direction)) continue
                 var state = block.withProperty(property(direction), "true")

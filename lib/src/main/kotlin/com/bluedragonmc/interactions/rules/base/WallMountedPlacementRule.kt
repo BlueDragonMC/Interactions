@@ -39,9 +39,9 @@ abstract class WallMountedPlacementRule(blocks: BlockSet) : PlacementRule(blocks
         }
     }
 
-    /** Candidate directions in priority order. Defaults to the player's nearest-looking order. */
+    /** Candidate directions in priority order. */
     protected open fun directions(event: BlockPlacementEvent): List<Direction> =
-        event.player.position.orderedDirections()
+        event.player.position.orderedDirections(event.blockFace.oppositeFace.toDirection())
 
     /** The state to place when mounted in [direction], or null if this direction is not applicable. */
     protected abstract fun stateForDirection(direction: Direction, event: BlockPlacementEvent): Block?
