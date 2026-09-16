@@ -29,7 +29,7 @@ abstract class MultiBlockPlacementRule(blocks: BlockSet) : PlacementRule(blocks)
 
     /** Whether the secondary position is free. */
     protected open fun canPlaceSecondary(instance: Instance, position: BlockVec): Boolean =
-        instance.getBlockOrAir(position).isAir
+        instance.getBlockOrAir(position).air()
 
     init {
         onPlace {

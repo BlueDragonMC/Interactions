@@ -7,11 +7,11 @@
 
 | Metric | Count |
 | --- | ---: |
-| Blocks with state | 777 |
+| Blocks with state | 797 |
 | Ignored (no custom logic needed) | 87 |
-| Covered by a rule | 671 |
-| Not yet covered | 19 |
-| **Coverage** | **97%** (671 / 690) |
+| Covered by a rule | 689 |
+| Not yet covered | 21 |
+| **Coverage** | **97%** (689 / 710) |
 
 ## Unsupported blocks
 
@@ -30,8 +30,10 @@
 - [ ] minecraft:mycelium
 - [ ] minecraft:pale_hanging_moss
 - [ ] minecraft:pale_moss_carpet
+- [ ] minecraft:potent_sulfur
 - [ ] minecraft:red_mushroom_block
 - [ ] minecraft:redstone_wire
+- [ ] minecraft:sulfur_spike
 - [ ] minecraft:tripwire
 - [ ] minecraft:tripwire_hook
 
@@ -159,6 +161,12 @@
 - [x] minecraft:chest
 - [x] minecraft:chipped_anvil
 - [x] minecraft:chiseled_bookshelf
+- [x] minecraft:cinnabar_brick_slab
+- [x] minecraft:cinnabar_brick_stairs
+- [x] minecraft:cinnabar_brick_wall
+- [x] minecraft:cinnabar_slab
+- [x] minecraft:cinnabar_stairs
+- [x] minecraft:cinnabar_wall
 - [x] minecraft:cobbled_deepslate_slab
 - [x] minecraft:cobbled_deepslate_stairs
 - [x] minecraft:cobbled_deepslate_wall
@@ -474,6 +482,9 @@
 - [x] minecraft:polished_blackstone_slab
 - [x] minecraft:polished_blackstone_stairs
 - [x] minecraft:polished_blackstone_wall
+- [x] minecraft:polished_cinnabar_slab
+- [x] minecraft:polished_cinnabar_stairs
+- [x] minecraft:polished_cinnabar_wall
 - [x] minecraft:polished_deepslate_slab
 - [x] minecraft:polished_deepslate_stairs
 - [x] minecraft:polished_deepslate_wall
@@ -481,6 +492,9 @@
 - [x] minecraft:polished_diorite_stairs
 - [x] minecraft:polished_granite_slab
 - [x] minecraft:polished_granite_stairs
+- [x] minecraft:polished_sulfur_slab
+- [x] minecraft:polished_sulfur_stairs
+- [x] minecraft:polished_sulfur_wall
 - [x] minecraft:polished_tuff_slab
 - [x] minecraft:polished_tuff_stairs
 - [x] minecraft:polished_tuff_wall
@@ -598,6 +612,12 @@
 - [x] minecraft:stripped_warped_hyphae
 - [x] minecraft:stripped_warped_stem
 - [x] minecraft:sugar_cane
+- [x] minecraft:sulfur_brick_slab
+- [x] minecraft:sulfur_brick_stairs
+- [x] minecraft:sulfur_brick_wall
+- [x] minecraft:sulfur_slab
+- [x] minecraft:sulfur_stairs
+- [x] minecraft:sulfur_wall
 - [x] minecraft:sunflower
 - [x] minecraft:sweet_berry_bush
 - [x] minecraft:tall_grass

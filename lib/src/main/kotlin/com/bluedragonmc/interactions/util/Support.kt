@@ -15,7 +15,7 @@ object Support {
         isFaceFull(instance.getBlockOrAir(position), face)
 
     fun isFaceFull(block: Block, face: BlockFace): Boolean =
-        block.registry()?.collisionShape()?.isFaceFull(face) ?: false
+        block.collisionShape().isFaceFull(face)
 
     /** Whether the block's face toward [face] is a full shape. */
     fun isFaceSturdy(instance: Instance, position: Point, face: BlockFace): Boolean =
@@ -23,7 +23,7 @@ object Support {
 
     /** Whether the block at [position] is a full/solid block. */
     fun isSolid(instance: Instance, position: Point): Boolean =
-        instance.getBlockOrAir(position).isSolid
+        instance.getBlockOrAir(position).solid()
 
     /** Whether the block can support a center-mounted block on [face]. */
     fun canSupportCenter(instance: Instance, position: Point, face: BlockFace): Boolean {

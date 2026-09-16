@@ -154,7 +154,7 @@ internal class PlacementHandler(
                 val neighbor = position.relative(face)
                 if (!instance.isChunkLoaded(neighbor)) continue
                 val neighborBlock = instance.getBlock(neighbor) ?: continue
-                if (neighborBlock.isAir) continue
+                if (neighborBlock.air()) continue
 
                 val rule = lookup(neighborBlock) ?: continue
                 if (distance >= rule.maxUpdateDistance()) continue

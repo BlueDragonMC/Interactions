@@ -124,7 +124,7 @@ class SkullRule : StandingAndWallPlacementRule(
         standing.withProperty(States.ROTATION, rotationSegment(event.player.position.yaw).toString())
 
     override fun canSurviveWall(state: Block, supportDirection: Direction, instance: Instance, position: BlockVec): Boolean =
-        !instance.getBlockOrAir(position.relative(supportDirection.blockFace)).isAir()
+        !instance.getBlockOrAir(position.relative(supportDirection.blockFace)).air()
 }
 
 // --- Torches -----------------------------------------------------------------------------------
