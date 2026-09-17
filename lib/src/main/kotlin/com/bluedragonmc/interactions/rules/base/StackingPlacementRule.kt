@@ -37,9 +37,17 @@ abstract class StackingPlacementRule(blocks: BlockSet) : PlacementRule(blocks) {
 
     init {
         onPlace {
-            val clicked = clickedBlock
-            val merged = clicked.key() == block.key() && canMerge(clicked, context)
-            val result = if (merged) merge(clicked, this) else fresh(this)
+            val target = instance.getBlockOrAir(blockPosition)
+            val existing = when {
+                target.key() == block.key() -> target
+                clickedBlock.key() == block.key() -> clickedBlock
+                else -> null
+            }
+            if (existing != null && !canMerge(existing, context)) {
+                isCancelled = true
+                return@onPlace
+            }
+            val result = if (existing != null) merge(existing, this) else fresh(this)
             if (!canSurvive(result, instance, blockPosition)) {
                 isCancelled = true
                 return@onPlace
@@ -53,8 +61,10 @@ abstract class StackingPlacementRule(blocks: BlockSet) : PlacementRule(blocks) {
     }
 
     final override fun getPlacementPosition(context: PlacementContext): Point {
-        if (context.clickedBlock.key() != context.block.key()) return context.placementPosition
-        return if (canMerge(context.clickedBlock, context)) context.clickedPosition else context.placementPosition
+        if (context.clickedBlock.key() == context.block.key() && canMerge(context.clickedBlock, context)) {
+            return context.clickedPosition
+        }
+        return context.placementPosition
     }
 }
 
