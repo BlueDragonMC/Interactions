@@ -13,8 +13,7 @@ import net.minestom.server.instance.block.Block
 import net.minestom.server.utils.Direction
 
 /**
- * Base for growing plants: kelp, sugar cane, cactus, bamboo, chorus, pointed dripstone, cave vines
- * and twisting/weeping vines.
+ * Base for growing plants: kelp, sugar cane, cactus, bamboo, chorus, cave vines, and twisting/weeping vines.
  *
  * The plant grows in
  * [growthDirection]; the segment adjacent to an existing head or body becomes a body block, while a
@@ -61,11 +60,13 @@ abstract class GrowingPlantPlacementRule(
         }
 
         onUpdate {
+            if (!canSurvive(block, instance, blockPosition)) {
+                destroy()
+                return@onUpdate
+            }
             val ahead = instance.getBlockOrAir(blockPosition.relative(growthDirection.blockFace))
             if (isPlant(ahead)) {
                 resultBlock = bodyBlock()
-            } else if (!canSurvive(block, instance, blockPosition)) {
-                destroy()
             }
         }
     }
