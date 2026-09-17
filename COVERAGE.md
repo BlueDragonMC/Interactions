@@ -9,9 +9,9 @@
 | --- | ---: |
 | Blocks with state | 797 |
 | Ignored (no custom logic needed) | 87 |
-| Covered by a rule | 689 |
-| Not yet covered | 21 |
-| **Coverage** | **97%** (689 / 710) |
+| Covered by a rule | 690 |
+| Not yet covered | 20 |
+| **Coverage** | **97%** (690 / 710) |
 
 ## Unsupported blocks
 
@@ -33,7 +33,6 @@
 - [ ] minecraft:potent_sulfur
 - [ ] minecraft:red_mushroom_block
 - [ ] minecraft:redstone_wire
-- [ ] minecraft:sulfur_spike
 - [ ] minecraft:tripwire
 - [ ] minecraft:tripwire_hook
 
@@ -616,6 +615,7 @@
 - [x] minecraft:sulfur_brick_stairs
 - [x] minecraft:sulfur_brick_wall
 - [x] minecraft:sulfur_slab
+- [x] minecraft:sulfur_spike
 - [x] minecraft:sulfur_stairs
 - [x] minecraft:sulfur_wall
 - [x] minecraft:sunflower

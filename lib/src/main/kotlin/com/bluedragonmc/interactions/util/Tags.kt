@@ -46,4 +46,7 @@ object Tags {
 
     /** The `minecraft:speleothems` tag (pointed dripstone, sulfur spikes). */
     val SPELEOTHEMS: Set<Key> by lazy { blockTag("minecraft:speleothems") }
+
+    /** The `minecraft:wall_post_override` tag (torches, signs, banners, pressure plates, ...). */
+    val WALL_POST_OVERRIDE: Set<Key> by lazy { blockTag("minecraft:wall_post_override") }
 }
