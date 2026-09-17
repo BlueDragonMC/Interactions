@@ -75,7 +75,7 @@ abstract class GrowingPlantPlacementRule(
     protected open fun canSurvive(state: Block, instance: Instance, position: BlockVec): Boolean {
         val attachedPosition = position.relative(growthDirection.opposite().blockFace)
         val attached = instance.getBlockOrAir(attachedPosition)
-        return canAttachTo(attached) &&
-            (isPlant(attached) || Support.isFaceSturdy(instance, attachedPosition, growthDirection.blockFace))
+        return isPlant(attached) ||
+            (canAttachTo(attached) && Support.isFaceSturdy(instance, attachedPosition, growthDirection.blockFace))
     }
 }
