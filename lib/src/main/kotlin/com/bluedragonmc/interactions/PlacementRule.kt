@@ -18,38 +18,31 @@ import java.util.concurrent.atomic.AtomicInteger
  * Behavior for a set of blocks, expressed entirely as event listeners.
  *
  * Rules never touch Minestom's block placement-rule or block-handler registries. Instead, they expose
- * [eventNodes], which are aggregated by a [PlacementRuleRegistry] and ultimately attached to an
+ * [eventNodes], which are aggregated by a [RuleRegistry] and ultimately attached to an
  * instance or the global event handler.
  *
  * Matching is done by block registry key, so a rule for [BlockSet.fromTag] `minecraft:buttons` matches
  * a button regardless of its properties.
  */
-abstract class PlacementRule(val blocks: BlockSet) {
+abstract class PlacementRule(val blocks: BlockSet) : Rule {
 
     /** Registry keys of every block covered by this rule. */
-    val keys: Set<Key> = blocks.keys
+    override val keys: Set<Key> = blocks.keys
 
     /**
-     * The rule's own event node for block events, owned by its [PlacementRuleRegistry].
+     * The rule's own event node, owned by its [RuleRegistry].
      */
     internal val defaultEventNode: EventNode<BlockEvent> = EventNode.event(
         "interactions:rule:${this::class.simpleName}#${COUNTER.incrementAndGet()}",
         EventFilter.BLOCK,
     ) { event -> matches(event) }
 
-    /**
-     * Every event node owned by this rule, all attached to the registry together.
-     *
-     * Most rules only need [defaultEventNode]. Rules that also react to non-block events, such as item
-     * use, add their extra nodes to this list.
-     */
-    internal open val eventNodes: List<EventNode<out InstanceEvent>> get() = listOf(defaultEventNode)
+    override val eventNodes: List<EventNode<out InstanceEvent>> get() = listOf(defaultEventNode)
 
     /**
      * Whether this rule should receive the [event].
      *
-     * Block rules match on the event's block key. [InteractionRule] overrides this to react to
-     * interactions with any block.
+     * Block rules match on the event's block key.
      */
     protected open fun matches(event: BlockEvent): Boolean = event.block.key() in keys
 

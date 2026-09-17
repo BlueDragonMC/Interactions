@@ -8,45 +8,47 @@ import net.minestom.server.event.trait.InstanceEvent
 import net.minestom.server.instance.block.Block
 
 /**
- * Holds a set of [PlacementRule]s and exposes a single event node that activates them.
+ * Holds a set of [Rule]s and exposes a single event node that activates them.
  */
-class PlacementRuleRegistry {
+class RuleRegistry {
     private val root: EventNode<InstanceEvent> = EventNode.type("interactions:registry", EventFilter.INSTANCE)
     private val rulesByKey = mutableMapOf<Key, PlacementRule>()
-    private val ruleList = mutableListOf<PlacementRule>()
+    private val ruleList = mutableListOf<Rule>()
 
     init {
         root.addChild(PlacementHandler(::ruleFor).node)
     }
 
     /**
-     * Registers [rule] and makes its event node a child of this registry's node.
+     * Registers [rule] and makes its event nodes children of this registry's node.
      *
-     * @throws IllegalStateException if two rules in this registry cover the same block.
+     * @throws IllegalStateException if two placement rules in this registry cover the same block.
      */
-    fun register(rule: PlacementRule) {
-        val conflicts = rule.keys.filter { it in rulesByKey }
-        check(conflicts.isEmpty()) {
-            val owners = conflicts.joinToString { "$it (${rulesByKey[it]?.let { r -> r::class.simpleName }})" }
-            "Block(s) already have a placement rule in this registry: $owners"
+    fun register(rule: Rule) {
+        if (rule is PlacementRule) {
+            val conflicts = rule.keys.filter { it in rulesByKey }
+            check(conflicts.isEmpty()) {
+                val owners = conflicts.joinToString { "$it (${rulesByKey[it]?.let { r -> r::class.simpleName }})" }
+                "Block(s) already have a placement rule in this registry: $owners"
+            }
+            rule.keys.forEach { rulesByKey[it] = rule }
         }
-        rule.keys.forEach { rulesByKey[it] = rule }
         ruleList += rule
         rule.eventNodes.forEach { root.addChild(it) }
     }
 
     /** Removes [rule] and all of its event listeners from this registry. */
-    fun unregister(rule: PlacementRule) {
+    fun unregister(rule: Rule) {
         if (!ruleList.remove(rule)) return
-        rule.keys.forEach { rulesByKey.remove(it) }
+        if (rule is PlacementRule) rule.keys.forEach { rulesByKey.remove(it) }
         rule.eventNodes.forEach { root.removeChild(it) }
     }
 
-    /** The rule responsible for [block], or null if this registry has no rule for it. */
+    /** The placement rule responsible for [block], or null if this registry has none. */
     fun ruleFor(block: Block): PlacementRule? = rulesByKey[block.key()]
 
     /** A snapshot of the registered rules. */
-    fun rules(): List<PlacementRule> = ruleList.toList()
+    fun rules(): List<Rule> = ruleList.toList()
 
     /** Attach this node to an instance's event node or the global event handler to activate the registry. */
     fun eventNode(): EventNode<InstanceEvent> = root

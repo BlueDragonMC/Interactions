@@ -1,7 +1,7 @@
 package com.bluedragonmc.interactions.rules
 
-import com.bluedragonmc.interactions.PlacementRule
-import com.bluedragonmc.interactions.PlacementRuleRegistry
+import com.bluedragonmc.interactions.RuleRegistry
+import com.bluedragonmc.interactions.Rule
 import com.bluedragonmc.interactions.rules.connecting.ChainRule
 import com.bluedragonmc.interactions.rules.connecting.FenceGateRule
 import com.bluedragonmc.interactions.rules.connecting.IronBarsRule
@@ -94,7 +94,7 @@ import com.bluedragonmc.interactions.rules.wall.TorchRule
  * Every rule shipped by this library, and the entry point for registering all of them at once.
  *
  * ```kotlin
- * val registry = PlacementRuleRegistry()
+ * val registry = RuleRegistry()
  * RuleCatalog.registerAll(registry)
  * MinecraftServer.getGlobalEventHandler().addChild(registry.eventNode())
  * ```
@@ -102,7 +102,7 @@ import com.bluedragonmc.interactions.rules.wall.TorchRule
 object RuleCatalog {
 
     /** Creates a fresh list of every rule shipped by the library. */
-    fun createRules(): List<PlacementRule> = listOf(
+    fun createRules(): List<Rule> = listOf(
         ButtonPlacementRule(),
 
         // Directional / axis
@@ -212,7 +212,7 @@ object RuleCatalog {
     )
 
     /** Creates and registers every rule in this catalog into [registry]. */
-    fun registerAll(registry: PlacementRuleRegistry) {
+    fun registerAll(registry: RuleRegistry) {
         createRules().forEach(registry::register)
     }
 }

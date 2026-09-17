@@ -1,7 +1,7 @@
 package com.bluedragonmc.interactions.rules.base
 
-import com.bluedragonmc.interactions.PlacementRule
-import com.bluedragonmc.interactions.PlacementRuleRegistry
+import com.bluedragonmc.interactions.RuleRegistry
+import com.bluedragonmc.interactions.Rule
 import net.minestom.server.coordinate.BlockVec
 import net.minestom.server.coordinate.Vec
 import net.minestom.server.entity.Player
@@ -19,10 +19,10 @@ import net.minestom.server.listener.BlockPlacementListener
 import net.minestom.server.network.packet.client.play.ClientPlayerBlockPlacementPacket
 import net.minestom.testing.Env
 
-internal fun setupInstance(env: Env, vararg rules: PlacementRule): Instance {
+internal fun setupInstance(env: Env, vararg rules: Rule): Instance {
     val instance = env.createFlatInstance()
     instance.loadChunk(0, 0).join()
-    val registry = PlacementRuleRegistry()
+    val registry = RuleRegistry()
     rules.forEach(registry::register)
     instance.eventNode().addChild(registry.eventNode())
     return instance
@@ -70,7 +70,7 @@ internal fun holdItem(player: Player, item: ItemStack) {
 }
 
 internal fun holdMaterial(player: Player, material: Material) {
-    player.setItemInHand(PlayerHand.MAIN, ItemStack.of(material))
+    holdItem(player, ItemStack.of(material))
 }
 
 /** Runs Minestom's real placement listener, as a client click would. */

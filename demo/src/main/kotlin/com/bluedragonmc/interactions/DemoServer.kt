@@ -34,7 +34,7 @@ class DemoServer {
             event.player.gameMode = GameMode.CREATIVE
         }
 
-        val registry = PlacementRuleRegistry()
+        val registry = RuleRegistry()
         RuleCatalog.registerAll(registry)
 
         for (handler in BlockHandlers.getAll()) {

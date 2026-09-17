@@ -10,13 +10,13 @@ import kotlin.test.assertNull
 import kotlin.test.assertSame
 
 @EnvTest
-class PlacementRuleRegistryTest {
+class RuleRegistryTest {
 
     private class NoopRule(blocks: BlockSet) : PlacementRule(blocks)
 
     @Test
     fun `rule is found regardless of block state`(env: Env) {
-        val registry = PlacementRuleRegistry()
+        val registry = RuleRegistry()
         val rule = NoopRule(BlockSet.from(Block.OAK_BUTTON))
         registry.register(rule)
 
@@ -27,7 +27,7 @@ class PlacementRuleRegistryTest {
 
     @Test
     fun `rules covering overlapping blocks are rejected`(env: Env) {
-        val registry = PlacementRuleRegistry()
+        val registry = RuleRegistry()
         registry.register(NoopRule(BlockSet.fromTag("minecraft:buttons")))
 
         assertFailsWith<IllegalStateException> {
@@ -37,7 +37,7 @@ class PlacementRuleRegistryTest {
 
     @Test
     fun `unregister removes the rule`(env: Env) {
-        val registry = PlacementRuleRegistry()
+        val registry = RuleRegistry()
         val rule = NoopRule(BlockSet.from(Block.OAK_BUTTON))
         registry.register(rule)
         registry.unregister(rule)

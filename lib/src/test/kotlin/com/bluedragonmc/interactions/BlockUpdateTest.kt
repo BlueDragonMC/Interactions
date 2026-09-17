@@ -26,7 +26,7 @@ class BlockUpdateTest {
 
     @Test
     fun `block is destroyed when its support is removed`(env: Env) {
-        val registry = PlacementRuleRegistry()
+        val registry = RuleRegistry()
         registry.register(DestroyOnSupportRemoved(BlockSet.from(Block.TORCH), maxDistance = 10))
         MinecraftServer.getGlobalEventHandler().addChild(registry.eventNode())
 
@@ -42,7 +42,7 @@ class BlockUpdateTest {
 
     @Test
     fun `updates do not propagate beyond the configured distance`(env: Env) {
-        val registry = PlacementRuleRegistry()
+        val registry = RuleRegistry()
         registry.register(DestroyOnSupportRemoved(BlockSet.from(Block.TORCH), maxDistance = 1))
         MinecraftServer.getGlobalEventHandler().addChild(registry.eventNode())
 

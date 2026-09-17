@@ -1,6 +1,6 @@
 package com.bluedragonmc.interactions.coverage
 
-import com.bluedragonmc.interactions.PlacementRuleRegistry
+import com.bluedragonmc.interactions.RuleRegistry
 import com.bluedragonmc.interactions.rules.RuleCatalog
 import net.minestom.server.MinecraftServer
 import net.minestom.server.instance.block.Block
@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
 
     MinecraftServer.init()
 
-    val registry = PlacementRuleRegistry()
+    val registry = RuleRegistry()
     RuleCatalog.registerAll(registry)
 
     val supported: Set<String> = registry.rules()

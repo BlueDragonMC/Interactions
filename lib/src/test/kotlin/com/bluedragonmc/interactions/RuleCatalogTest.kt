@@ -12,8 +12,8 @@ class RuleCatalogTest {
 
     @Test
     fun `catalog rules can be registered into multiple registries`(env: Env) {
-        val first = PlacementRuleRegistry()
-        val second = PlacementRuleRegistry()
+        val first = RuleRegistry()
+        val second = RuleRegistry()
 
         RuleCatalog.registerAll(first)
         RuleCatalog.registerAll(second)

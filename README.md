@@ -28,19 +28,19 @@ dependencies {
 
 ## Usage
 
-Create a `PlacementRuleRegistry`, register rules into it, then attach its event node to the global event
+Create a `RuleRegistry`, register rules into it, then attach its event node to the global event
 handler (or to a specific instance's event node to scope the rules to that instance).
 
 ```kotlin
 // Every bundled rule:
-val registry = PlacementRuleRegistry()
+val registry = RuleRegistry()
 RuleCatalog.registerAll(registry)
 MinecraftServer.getGlobalEventHandler().addChild(registry.eventNode())
 ```
 
 ```kotlin
 // Or a curated subset:
-val registry = PlacementRuleRegistry()
+val registry = RuleRegistry()
 registry.register(ButtonPlacementRule())
 instance.eventNode().addChild(registry.eventNode())
 ```

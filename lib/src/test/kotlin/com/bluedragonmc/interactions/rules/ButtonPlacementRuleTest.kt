@@ -1,6 +1,6 @@
 package com.bluedragonmc.interactions.rules
 
-import com.bluedragonmc.interactions.PlacementRuleRegistry
+import com.bluedragonmc.interactions.RuleRegistry
 import com.bluedragonmc.interactions.rules.base.fireInteract
 import com.bluedragonmc.interactions.rules.base.holdBlock
 import com.bluedragonmc.interactions.rules.base.setupInstance
@@ -25,7 +25,7 @@ class ButtonPlacementRuleTest {
 
     @Test
     fun `button mounts on the block the player is looking at`(env: Env) {
-        val registry = PlacementRuleRegistry()
+        val registry = RuleRegistry()
         registry.register(ButtonPlacementRule())
         MinecraftServer.getGlobalEventHandler().addChild(registry.eventNode())
 
@@ -56,7 +56,7 @@ class ButtonPlacementRuleTest {
 
     @Test
     fun `button is not placed without a supporting block`(env: Env) {
-        val registry = PlacementRuleRegistry()
+        val registry = RuleRegistry()
         registry.register(ButtonPlacementRule())
         MinecraftServer.getGlobalEventHandler().addChild(registry.eventNode())
 
