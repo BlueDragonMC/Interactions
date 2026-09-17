@@ -18,6 +18,8 @@ jobs:
           java-version: 25
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
+      - name: Run tests
+        run: ./gradlew test --console=plain
       - name: Build and Publish with Gradle
         env:
           REPOSILITE_USERNAME: ${{ secrets.REPOSILITE_USERNAME }}
