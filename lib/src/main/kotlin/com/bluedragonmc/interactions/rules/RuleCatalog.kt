@@ -28,6 +28,7 @@ import com.bluedragonmc.interactions.rules.misc.AnvilRule
 import com.bluedragonmc.interactions.rules.misc.CalibratedSculkSensorRule
 import com.bluedragonmc.interactions.rules.misc.CampfireRule
 import com.bluedragonmc.interactions.rules.misc.CandlePlacementRule
+import com.bluedragonmc.interactions.rules.misc.CarpetRule
 import com.bluedragonmc.interactions.rules.misc.ChestRule
 import com.bluedragonmc.interactions.rules.misc.CommandBlockRule
 import com.bluedragonmc.interactions.rules.misc.FacingWorkstationRule
@@ -188,6 +189,7 @@ object RuleCatalog {
         FacingWorkstationRule(),
         ScaffoldingRule(),
         WaterloggedRule(),
+        CarpetRule(),
         CommandBlockRule(),
         CalibratedSculkSensorRule(),
         LeafLitterRule(),

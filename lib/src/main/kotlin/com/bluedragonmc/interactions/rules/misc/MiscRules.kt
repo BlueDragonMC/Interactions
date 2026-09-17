@@ -163,6 +163,22 @@ class ScaffoldingRule : PlacementRule(BlockSet.from(Block.SCAFFOLDING)) {
 
 // --- Miscellaneous stateful one-offs -----------------------------------------------------------
 
+/** Wool carpets need a non-empty block below them and are removed when it disappears. */
+class CarpetRule : PlacementRule(BlockSet.fromTag("minecraft:wool_carpets")) {
+    init {
+        onPlace {
+            if (!hasSupport(instance, blockPosition)) isCancelled = true
+        }
+
+        onUpdate {
+            if (fromFace == BlockFace.BOTTOM && !hasSupport(instance, blockPosition)) destroy()
+        }
+    }
+
+    private fun hasSupport(instance: net.minestom.server.instance.Instance, position: BlockVec): Boolean =
+        !instance.getBlockOrAir(position.relative(BlockFace.BOTTOM)).air()
+}
+
 /** Blocks that only track `waterlogged` (barriers, conduits, grates, hanging roots, heavy cores). */
 class WaterloggedRule : PlacementRule(
     BlockSet.matching {
