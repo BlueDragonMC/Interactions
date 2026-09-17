@@ -67,4 +67,51 @@ class MiscRulesTest {
         assertFalse(event.isCancelled)
         assertEquals("0", event.block.getProperty("distance"))
     }
+
+    @Test
+    fun `a chest placed beside a matching chest becomes the other half`(env: Env) {
+        val instance = setupInstance(env, ChestRule())
+        // yaw 0 faces south, so a placed chest faces north; match the existing chest to it.
+        instance.setBlock(0, 40, 0, Block.CHEST.withProperty("facing", "north").withProperty("type", "single"))
+
+        val placed = firePlace(instance, player(env, instance), Block.CHEST, BlockFace.TOP, BlockVec(1, 40, 0))
+        assertEquals("right", placed.block.getProperty("type"))
+
+        instance.setBlock(1, 40, 0, placed.block)
+
+        assertEquals("left", instance.getBlock(0, 40, 0).getProperty("type"))
+    }
+
+    @Test
+    fun `carpet is destroyed when the block below is removed`(env: Env) {
+        val instance = setupInstance(env, CarpetRule())
+        instance.setBlock(0, 39, 0, Block.STONE)
+        instance.setBlock(0, 40, 0, Block.WHITE_CARPET)
+
+        instance.setBlock(0, 39, 0, Block.AIR)
+
+        assertEquals(Block.AIR, instance.getBlock(0, 40, 0))
+    }
+
+    @Test
+    fun `leaf litter merges when the supporting block is clicked`(env: Env) {
+        val instance = setupInstance(env, LeafLitterRule())
+        instance.setBlock(0, 39, 0, Block.GRASS_BLOCK)
+        instance.setBlock(0, 40, 0, Block.LEAF_LITTER)
+
+        // Leaf litter is replaceable, so Minestom fires a normal placement event instead of rejecting it.
+        val event = firePlace(instance, player(env, instance), Block.LEAF_LITTER, BlockFace.TOP, BlockVec(0, 40, 0))
+
+        assertEquals("2", event.block.getProperty("segment_amount"))
+    }
+
+    @Test
+    fun `leaf litter can be placed on a non-vegetation block`(env: Env) {
+        val instance = setupInstance(env, LeafLitterRule())
+        instance.setBlock(0, 39, 0, Block.STONE)
+
+        val event = firePlace(instance, player(env, instance), Block.LEAF_LITTER, BlockFace.TOP, BlockVec(0, 40, 0))
+
+        assertFalse(event.isCancelled)
+    }
 }

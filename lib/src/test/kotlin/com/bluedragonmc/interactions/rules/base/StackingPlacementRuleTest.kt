@@ -4,6 +4,7 @@ import com.bluedragonmc.interactions.BlockSet
 import net.minestom.server.coordinate.BlockVec
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.coordinate.Vec
+import net.minestom.server.entity.PlayerHand
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockFace
@@ -12,6 +13,7 @@ import net.minestom.testing.EnvTest
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @EnvTest
 class StackingPlacementRuleTest {
@@ -135,6 +137,102 @@ class StackingPlacementRuleTest {
 
         val event = firePlace(instance, player(env, instance), Block.CANDLE, BlockFace.TOP, BlockVec(0, 40, 0))
 
-        kotlin.test.assertTrue(event.isCancelled)
+        assertTrue(event.isCancelled)
+    }
+
+    @Test
+    fun `candles merge when the supporting block is clicked`(env: Env) {
+        val instance = setupInstance(env, CandleStackingRule())
+        instance.setBlock(0, 40, 0, Block.STONE)
+        instance.setBlock(0, 41, 0, Block.CANDLE)
+
+        val event = firePlace(instance, player(env, instance), Block.CANDLE, BlockFace.TOP, BlockVec(0, 41, 0))
+
+        assertEquals("2", event.block.getProperty("candles"))
+    }
+
+    @Test
+    fun `sea pickles merge when the supporting block is clicked`(env: Env) {
+        val instance = setupInstance(env, SeaPickleStackingRule())
+        instance.setBlock(0, 39, 0, Block.SAND)
+        instance.setBlock(0, 40, 0, Block.SEA_PICKLE)
+
+        val player = player(env, instance)
+        holdBlock(player, Block.SEA_PICKLE)
+        fireInteract(instance, player, Block.SAND, BlockFace.TOP, BlockVec(0, 39, 0))
+
+        assertEquals("2", instance.getBlock(0, 40, 0).getProperty("pickles"))
+        assertTrue(player.getItemInHand(PlayerHand.MAIN).isAir)
+    }
+
+    @Test
+    fun `turtle eggs merge when the supporting block is clicked`(env: Env) {
+        val instance = setupInstance(env, TurtleEggStackingRule())
+        instance.setBlock(0, 39, 0, Block.SAND)
+        instance.setBlock(0, 40, 0, Block.TURTLE_EGG)
+
+        val player = player(env, instance)
+        holdBlock(player, Block.TURTLE_EGG)
+        fireInteract(instance, player, Block.SAND, BlockFace.TOP, BlockVec(0, 39, 0))
+
+        assertEquals("2", instance.getBlock(0, 40, 0).getProperty("eggs"))
+    }
+
+    @Test
+    fun `stacking blocks do not merge with a different item`(env: Env) {
+        val instance = setupInstance(env, SeaPickleStackingRule())
+        instance.setBlock(0, 39, 0, Block.SAND)
+        instance.setBlock(0, 40, 0, Block.SEA_PICKLE)
+
+        val player = player(env, instance)
+        holdBlock(player, Block.STONE)
+        fireInteract(instance, player, Block.SAND, BlockFace.TOP, BlockVec(0, 39, 0))
+
+        assertEquals("1", instance.getBlock(0, 40, 0).getProperty("pickles"))
+        assertFalse(player.getItemInHand(PlayerHand.MAIN).isAir)
+    }
+
+    @Test
+    fun `snow layer against the side of a block lands beside it`(env: Env) {
+        val instance = setupInstance(env, SnowRule())
+        instance.setBlock(0, 40, 2, Block.STONE)
+
+        simulatePlace(player(env, instance), Block.SNOW, BlockVec(0, 40, 2), BlockFace.NORTH)
+
+        assertEquals("1", instance.getBlock(0, 40, 1).getProperty("layers"))
+    }
+
+    @Test
+    fun `snow layer against the side of a snow layer lands beside it`(env: Env) {
+        val instance = setupInstance(env, SnowRule())
+        instance.setBlock(0, 40, 2, Block.SNOW)
+
+        simulatePlace(player(env, instance), Block.SNOW, BlockVec(0, 40, 2), BlockFace.NORTH)
+
+        assertEquals("1", instance.getBlock(0, 40, 1).getProperty("layers"))
+        assertEquals("1", instance.getBlock(0, 40, 2).getProperty("layers"))
+    }
+
+    @Test
+    fun `snow layer against the side of another snow layer merges into it`(env: Env) {
+        val instance = setupInstance(env, SnowRule())
+        instance.setBlock(0, 40, 1, Block.SNOW)
+        instance.setBlock(0, 40, 2, Block.SNOW)
+
+        simulatePlace(player(env, instance), Block.SNOW, BlockVec(0, 40, 2), BlockFace.NORTH)
+
+        assertEquals("2", instance.getBlock(0, 40, 1).getProperty("layers"))
+        assertEquals("1", instance.getBlock(0, 40, 2).getProperty("layers"))
+    }
+
+    @Test
+    fun `sea pickle against the side of a full stack lands beside it`(env: Env) {
+        val instance = setupInstance(env, SeaPickleStackingRule())
+        instance.setBlock(0, 40, 2, Block.SEA_PICKLE.withProperty("pickles", "4").withProperty("waterlogged", "false"))
+
+        simulatePlace(player(env, instance), Block.SEA_PICKLE, BlockVec(0, 40, 2), BlockFace.NORTH)
+
+        assertEquals("1", instance.getBlock(0, 40, 1).getProperty("pickles"))
+        assertEquals("4", instance.getBlock(0, 40, 2).getProperty("pickles"))
     }
 }

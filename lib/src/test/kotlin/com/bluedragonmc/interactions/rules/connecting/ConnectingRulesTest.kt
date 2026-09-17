@@ -2,6 +2,7 @@ package com.bluedragonmc.interactions.rules.connecting
 
 import com.bluedragonmc.interactions.rules.base.firePlace
 import com.bluedragonmc.interactions.rules.base.setupInstance
+import com.bluedragonmc.interactions.rules.base.simulatePlace
 import net.minestom.server.coordinate.BlockVec
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.instance.Instance
@@ -49,6 +50,77 @@ class ConnectingRulesTest {
 
         assertNotEquals("none", event.block.getProperty("south"))
         assertEquals("true", event.block.getProperty("up"))
+    }
+
+    @Test
+    fun `wall marks a tall arm and raises its post under a full block`(env: Env) {
+        val instance = setupInstance(env, WallRule())
+        instance.setBlock(0, 40, 1, Block.STONE)
+        instance.setBlock(0, 41, 0, Block.STONE)
+
+        val event = firePlace(instance, player(env, instance), Block.COBBLESTONE_WALL, BlockFace.TOP, BlockVec(0, 40, 0))
+
+        assertEquals("tall", event.block.getProperty("south"))
+        assertEquals("true", event.block.getProperty("up"))
+    }
+
+    @Test
+    fun `wall raises its post under a post override`(env: Env) {
+        val instance = setupInstance(env, WallRule())
+        instance.setBlock(0, 40, 1, Block.STONE)
+        instance.setBlock(0, 40, -1, Block.STONE)
+        instance.setBlock(0, 41, 0, Block.TORCH)
+
+        val event = firePlace(instance, player(env, instance), Block.COBBLESTONE_WALL, BlockFace.TOP, BlockVec(0, 40, 0))
+
+        assertEquals("low", event.block.getProperty("south"))
+        assertEquals("true", event.block.getProperty("up"))
+    }
+
+    @Test
+    fun `wall arms are low without a covering block above`(env: Env) {
+        val instance = setupInstance(env, WallRule())
+        instance.setBlock(0, 40, 1, Block.STONE)
+
+        val event = firePlace(instance, player(env, instance), Block.COBBLESTONE_WALL, BlockFace.TOP, BlockVec(0, 40, 0))
+
+        assertEquals("low", event.block.getProperty("south"))
+    }
+
+    /**
+     * A solid placed after the wall it supports must still make the wall below the connected wall
+     * report a tall arm. The change has to travel two blocks, which used to be blocked by the wall's
+     * update distance.
+     */
+    @Test
+    fun `placing the solids after the walls still updates the lower wall`(env: Env) {
+        val instance = setupInstance(env, WallRule())
+        val player = player(env, instance)
+
+        // Walls first, stacked on the ground.
+        simulatePlace(player, Block.COBBLESTONE_WALL, BlockVec(1, 39, 0), BlockFace.TOP)
+        simulatePlace(player, Block.COBBLESTONE_WALL, BlockVec(1, 40, 0), BlockFace.TOP)
+        assertEquals("none", instance.getBlock(1, 40, 0).getProperty("west"))
+
+        // Solids second.
+        instance.setBlock(0, 40, 0, Block.STONE)
+        instance.setBlock(0, 41, 0, Block.STONE)
+
+        assertEquals("tall", instance.getBlock(1, 40, 0).getProperty("west"))
+    }
+
+    @Test
+    fun `placing the solids before the walls updates the lower wall`(env: Env) {
+        val instance = setupInstance(env, WallRule())
+        val player = player(env, instance)
+
+        instance.setBlock(0, 40, 0, Block.STONE)
+        instance.setBlock(0, 41, 0, Block.STONE)
+
+        simulatePlace(player, Block.COBBLESTONE_WALL, BlockVec(0, 40, 0), BlockFace.EAST)
+        simulatePlace(player, Block.COBBLESTONE_WALL, BlockVec(0, 41, 0), BlockFace.EAST)
+
+        assertEquals("tall", instance.getBlock(1, 40, 0).getProperty("west"))
     }
 
     @Test

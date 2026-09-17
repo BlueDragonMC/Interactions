@@ -15,7 +15,8 @@ import kotlin.test.assertEquals
 @EnvTest
 class MultiBlockRulesTest {
 
-    private fun player(env: Env, instance: Instance) = env.createPlayer(instance, Pos(0.0, 40.0, 0.0, 0f, 0f))
+    private fun player(env: Env, instance: Instance, yaw: Float = 0f) =
+        env.createPlayer(instance, Pos(0.0, 40.0, 0.0, yaw, 0f))
 
     @Test
     fun `door places an upper and lower half`(env: Env) {
@@ -60,5 +61,27 @@ class MultiBlockRulesTest {
 
         assertEquals("lower", instance.getBlock(0, 40, 0).getProperty("half"))
         assertEquals("upper", instance.getBlock(0, 41, 0).getProperty("half"))
+    }
+
+    @Test
+    fun `door hinge is right when the right side is blocked`(env: Env) {
+        val instance = setupInstance(env, DoorRule())
+        instance.setBlock(1, 40, 0, Block.STONE)
+
+        // yaw 180 -> facing north, whose clockwise (right) side is east.
+        firePlace(instance, player(env, instance, yaw = 180f), Block.OAK_DOOR, BlockFace.TOP, BlockVec(0, 40, 0))
+
+        assertEquals("right", instance.getBlock(0, 40, 0).getProperty("hinge"))
+    }
+
+    @Test
+    fun `door hinge is left when the left side is blocked`(env: Env) {
+        val instance = setupInstance(env, DoorRule())
+        instance.setBlock(1, 40, 0, Block.STONE)
+
+        // yaw 0 -> facing south, whose counter-clockwise (left) side is east.
+        firePlace(instance, player(env, instance), Block.OAK_DOOR, BlockFace.TOP, BlockVec(0, 40, 0))
+
+        assertEquals("left", instance.getBlock(0, 40, 0).getProperty("hinge"))
     }
 }
