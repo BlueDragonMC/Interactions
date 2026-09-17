@@ -8,6 +8,7 @@ import com.bluedragonmc.interactions.util.*
 import net.minestom.server.coordinate.BlockVec
 import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockFace
+import net.minestom.server.utils.Direction
 
 /** Doors: `facing` from the player, `hinge` from the surrounding blocks, and a two-block tall pair. */
 class DoorRule : MultiBlockPlacementRule(BlockSet.fromTag("minecraft:doors")) {
@@ -25,16 +26,51 @@ class DoorRule : MultiBlockPlacementRule(BlockSet.fromTag("minecraft:doors")) {
     }
 
     private fun hinge(facing: BlockFace, event: BlockPlacementEvent): String {
-        val direction = facing.toDirection()
-        val left = direction.counterClockWise()
-        val right = direction.clockWise()
+        val level = event.instance
+        val placeDirection = facing.toDirection()
         val position = event.blockPosition
+        val abovePosition = position.relative(BlockFace.TOP)
+
+        val leftDirection = placeDirection.counterClockWise()
+        val leftPosition = position.relative(leftDirection.blockFace)
+        val leftAbovePosition = abovePosition.relative(leftDirection.blockFace)
+
+        val rightDirection = placeDirection.clockWise()
+        val rightPosition = position.relative(rightDirection.blockFace)
+        val rightAbovePosition = abovePosition.relative(rightDirection.blockFace)
+
         val balance =
-            (if (Support.isFaceFull(event.instance, position.relative(left.blockFace), BlockFace.TOP)) -1 else 0) +
-                (if (Support.isFaceFull(event.instance, position.relative(left.blockFace).relative(BlockFace.TOP), BlockFace.TOP)) -1 else 0) +
-                (if (Support.isFaceFull(event.instance, position.relative(right.blockFace), BlockFace.TOP)) 1 else 0) +
-                (if (Support.isFaceFull(event.instance, position.relative(right.blockFace).relative(BlockFace.TOP), BlockFace.TOP)) 1 else 0)
-        return if (balance > 0) "right" else "left"
+            (if (Support.isFullBlock(level.getBlockOrAir(leftPosition))) -1 else 0) +
+                (if (Support.isFullBlock(level.getBlockOrAir(leftAbovePosition))) -1 else 0) +
+                (if (Support.isFullBlock(level.getBlockOrAir(rightPosition))) 1 else 0) +
+                (if (Support.isFullBlock(level.getBlockOrAir(rightAbovePosition))) 1 else 0)
+
+        val doorLeft = isLowerDoor(level.getBlockOrAir(leftPosition))
+        val doorRight = isLowerDoor(level.getBlockOrAir(rightPosition))
+
+        if ((!doorLeft || doorRight) && balance <= 0) {
+            if ((!doorRight || doorLeft) && balance >= 0) {
+                return if (clickPrefersLeft(placeDirection, event)) "left" else "right"
+            }
+            return "left"
+        }
+        return "right"
+    }
+
+    private fun isLowerDoor(block: Block): Boolean =
+        block.key() in keys && block.getProperty(States.HALF) == "lower"
+
+    /** Breaks an even support balance by choosing the hinge side from where the player clicked. */
+    private fun clickPrefersLeft(placeDirection: Direction, event: BlockPlacementEvent): Boolean {
+        val stepX = placeDirection.normalX()
+        val stepZ = placeDirection.normalZ()
+        val faceNormal = event.blockFace.toDirection()
+        val clickX = event.cursorPosition.x() - faceNormal.normalX()
+        val clickZ = event.cursorPosition.z() - faceNormal.normalZ()
+        return (stepX >= 0 || !(clickZ < 0.5)) &&
+            (stepX <= 0 || !(clickZ > 0.5)) &&
+            (stepZ >= 0 || !(clickX > 0.5)) &&
+            (stepZ <= 0 || !(clickX < 0.5))
     }
 
     override fun secondaryPosition(primary: Block, event: BlockPlacementEvent): BlockVec =
