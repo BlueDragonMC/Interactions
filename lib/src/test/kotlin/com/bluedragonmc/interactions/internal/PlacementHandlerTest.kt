@@ -4,7 +4,9 @@ import com.bluedragonmc.interactions.rules.base.fireInteract
 import com.bluedragonmc.interactions.rules.base.firePlace
 import com.bluedragonmc.interactions.rules.base.holdBlock
 import com.bluedragonmc.interactions.rules.base.setupInstance
+import com.bluedragonmc.interactions.rules.base.simulatePlace
 import com.bluedragonmc.interactions.rules.directional.LogAxisRule
+import com.bluedragonmc.interactions.rules.interaction.FireRule
 import com.bluedragonmc.interactions.rules.structural.SlabPlacementRule
 import net.minestom.server.coordinate.BlockVec
 import net.minestom.server.coordinate.Pos
@@ -59,5 +61,42 @@ class PlacementHandlerTest {
         EventDispatcher.call(event)
 
         assertEquals(Block.WATER, event.resultBlock)
+    }
+
+    @Test
+    fun `blocks with no rule replace fire instead of being placed beside it`(env: Env) {
+        val instance = setupInstance(env, FireRule())
+        instance.setBlock(0, 40, 0, Block.FIRE)
+        val player = player(env, instance)
+
+        // Minestom resolves the placement above the fire; the library should replace the fire instead.
+        firePlace(instance, player, Block.STONE, BlockFace.TOP, BlockVec(0, 41, 0))
+
+        assertEquals(Block.STONE, instance.getBlock(0, 40, 0))
+        assertEquals(Block.AIR, instance.getBlock(0, 41, 0))
+    }
+
+    @Test
+    fun `blocks with no rule replace short grass`(env: Env) {
+        val instance = setupInstance(env)
+        instance.setBlock(0, 40, 0, Block.SHORT_GRASS)
+        val player = player(env, instance)
+
+        firePlace(instance, player, Block.STONE, BlockFace.TOP, BlockVec(0, 41, 0))
+
+        assertEquals(Block.STONE, instance.getBlock(0, 40, 0))
+        assertEquals(Block.AIR, instance.getBlock(0, 41, 0))
+    }
+
+    @Test
+    fun `replaceable clicks are relocated through the real placement listener`(env: Env) {
+        val instance = setupInstance(env)
+        // Two blocks away from the player so the resolved placement does not collide with them.
+        instance.setBlock(0, 40, 2, Block.SHORT_GRASS)
+
+        simulatePlace(player(env, instance), Block.STONE, BlockVec(0, 40, 2), BlockFace.TOP)
+
+        assertEquals(Block.STONE, instance.getBlock(0, 40, 2))
+        assertEquals(Block.AIR, instance.getBlock(0, 41, 2))
     }
 }

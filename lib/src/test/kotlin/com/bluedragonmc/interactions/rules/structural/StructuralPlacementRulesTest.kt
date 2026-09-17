@@ -1,5 +1,6 @@
 package com.bluedragonmc.interactions.rules.structural
 
+import com.bluedragonmc.interactions.rules.base.fireInteract
 import com.bluedragonmc.interactions.rules.base.firePlace
 import com.bluedragonmc.interactions.rules.base.setupInstance
 import net.minestom.server.coordinate.BlockVec
@@ -12,6 +13,8 @@ import net.minestom.testing.Env
 import net.minestom.testing.EnvTest
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @EnvTest
 class StructuralPlacementRulesTest {
@@ -93,5 +96,29 @@ class StructuralPlacementRulesTest {
 
         assertEquals("true", event.block.getProperty("open"))
         assertEquals("true", event.block.getProperty("powered"))
+    }
+
+    @Test
+    fun `clicking a trapdoor toggles it`(env: Env) {
+        val instance = setupInstance(env, TrapdoorRule())
+        instance.setBlock(0, 40, 0, Block.OAK_TRAPDOOR)
+        val player = env.createPlayer(instance, Pos(0.0, 40.0, 0.0, 0f, 0f))
+
+        val event = fireInteract(instance, player, Block.OAK_TRAPDOOR, BlockFace.NORTH, BlockVec(0, 40, 0))
+
+        assertEquals("true", instance.getBlock(0, 40, 0).getProperty("open"))
+        assertTrue(event.isBlockingItemUse)
+    }
+
+    @Test
+    fun `iron trapdoors do not open by hand`(env: Env) {
+        val instance = setupInstance(env, TrapdoorRule())
+        instance.setBlock(0, 40, 0, Block.IRON_TRAPDOOR)
+        val player = env.createPlayer(instance, Pos(0.0, 40.0, 0.0, 0f, 0f))
+
+        val event = fireInteract(instance, player, Block.IRON_TRAPDOOR, BlockFace.NORTH, BlockVec(0, 40, 0))
+
+        assertEquals("false", instance.getBlock(0, 40, 0).getProperty("open"))
+        assertFalse(event.isBlockingItemUse)
     }
 }

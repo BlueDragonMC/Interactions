@@ -24,6 +24,12 @@ import com.bluedragonmc.interactions.rules.directional.ObserverPlacementRule
 import com.bluedragonmc.interactions.rules.directional.PillarPlacementRule
 import com.bluedragonmc.interactions.rules.directional.PistonPlacementRule
 import com.bluedragonmc.interactions.rules.directional.PumpkinPlacementRule
+import com.bluedragonmc.interactions.rules.interaction.BucketRule
+import com.bluedragonmc.interactions.rules.interaction.FireRule
+import com.bluedragonmc.interactions.rules.interaction.FireStarterRule
+import com.bluedragonmc.interactions.rules.interaction.FlowerPotRule
+import com.bluedragonmc.interactions.rules.interaction.PumpkinCarvingRule
+import com.bluedragonmc.interactions.rules.interaction.SpawnerRule
 import com.bluedragonmc.interactions.rules.misc.AnvilRule
 import com.bluedragonmc.interactions.rules.misc.CalibratedSculkSensorRule
 import com.bluedragonmc.interactions.rules.misc.CampfireRule
@@ -195,6 +201,14 @@ object RuleCatalog {
         CommandBlockRule(),
         CalibratedSculkSensorRule(),
         LeafLitterRule(),
+
+        // Interactions
+        FlowerPotRule(),
+        PumpkinCarvingRule(),
+        SpawnerRule(),
+        BucketRule(),
+        FireStarterRule(),
+        FireRule(),
     )
 
     /** Creates and registers every rule in this catalog into [registry]. */

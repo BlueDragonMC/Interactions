@@ -49,4 +49,7 @@ object Tags {
 
     /** The `minecraft:wall_post_override` tag (torches, signs, banners, pressure plates, ...). */
     val WALL_POST_OVERRIDE: Set<Key> by lazy { blockTag("minecraft:wall_post_override") }
+
+    /** The `minecraft:soul_fire_base_blocks` tag (soul sand, soul soil). */
+    val SOUL_FIRE_BASE_BLOCKS: Set<Key> by lazy { blockTag("minecraft:soul_fire_base_blocks") }
 }

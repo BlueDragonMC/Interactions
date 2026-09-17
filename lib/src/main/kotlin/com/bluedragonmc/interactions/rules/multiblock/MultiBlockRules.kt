@@ -13,6 +13,22 @@ import net.minestom.server.utils.Direction
 /** Doors: `facing` from the player, `hinge` from the surrounding blocks, and a two-block tall pair. */
 class DoorRule : MultiBlockPlacementRule(BlockSet.fromTag("minecraft:doors")) {
 
+    init {
+        // Wooden and copper doors open by hand; iron doors only respond to redstone.
+        onInteract {
+            if (isSecondaryUseActive()) return@onInteract
+            if (block.key() == Block.IRON_DOOR.key()) return@onInteract
+            val open = (block.getProperty(States.OPEN) != "true").toString()
+            instance.setBlock(blockPosition, block.withProperty(States.OPEN, open))
+            val pair = pairPosition(block, blockPosition)
+            val pairBlock = instance.getBlockOrAir(pair)
+            if (pairBlock.key() == block.key()) {
+                instance.setBlock(pair, pairBlock.withProperty(States.OPEN, open))
+            }
+            isBlockingItemUse = true
+        }
+    }
+
     override fun primaryState(event: BlockPlacementEvent): Block {
         val facing = event.player.position.horizontalDirection()
         val powered = Signals.hasNeighborSignal(event.instance, event.blockPosition) ||

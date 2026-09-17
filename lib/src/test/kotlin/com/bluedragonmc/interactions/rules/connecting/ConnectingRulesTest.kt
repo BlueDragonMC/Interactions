@@ -1,6 +1,8 @@
 package com.bluedragonmc.interactions.rules.connecting
 
+import com.bluedragonmc.interactions.rules.base.fireInteract
 import com.bluedragonmc.interactions.rules.base.firePlace
+import com.bluedragonmc.interactions.rules.base.holdBlock
 import com.bluedragonmc.interactions.rules.base.setupInstance
 import com.bluedragonmc.interactions.rules.base.simulatePlace
 import net.minestom.server.coordinate.BlockVec
@@ -12,7 +14,9 @@ import net.minestom.testing.Env
 import net.minestom.testing.EnvTest
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
+import kotlin.test.assertTrue
 
 @EnvTest
 class ConnectingRulesTest {
@@ -140,5 +144,44 @@ class ConnectingRulesTest {
 
         assertEquals("south", event.block.getProperty("facing"))
         assertEquals("false", event.block.getProperty("powered"))
+    }
+
+    @Test
+    fun `clicking a fence gate opens and closes it`(env: Env) {
+        val instance = setupInstance(env, FenceGateRule())
+        instance.setBlock(0, 40, 0, Block.OAK_FENCE_GATE.withProperty("open", "false"))
+        val player = player(env, instance)
+
+        val event = fireInteract(instance, player, Block.OAK_FENCE_GATE, BlockFace.NORTH, BlockVec(0, 40, 0))
+
+        assertEquals("true", instance.getBlock(0, 40, 0).getProperty("open"))
+        assertTrue(event.isBlockingItemUse)
+    }
+
+    @Test
+    fun `fence gate opens toward the player`(env: Env) {
+        val instance = setupInstance(env, FenceGateRule())
+        // Facing north while the player (yaw 0) faces south, so the gate flips to face south.
+        instance.setBlock(0, 40, 0, Block.OAK_FENCE_GATE.withProperty("open", "false").withProperty("facing", "north"))
+        val player = player(env, instance)
+
+        fireInteract(instance, player, Block.OAK_FENCE_GATE, BlockFace.NORTH, BlockVec(0, 40, 0))
+
+        assertEquals("south", instance.getBlock(0, 40, 0).getProperty("facing"))
+        assertEquals("true", instance.getBlock(0, 40, 0).getProperty("open"))
+    }
+
+    @Test
+    fun `shift clicking a fence gate leaves it closed`(env: Env) {
+        val instance = setupInstance(env, FenceGateRule())
+        instance.setBlock(0, 40, 0, Block.OAK_FENCE_GATE.withProperty("open", "false"))
+        val player = player(env, instance)
+        player.setSneaking(true)
+        holdBlock(player, Block.STONE)
+
+        val event = fireInteract(instance, player, Block.OAK_FENCE_GATE, BlockFace.NORTH, BlockVec(0, 40, 0))
+
+        assertEquals("false", instance.getBlock(0, 40, 0).getProperty("open"))
+        assertFalse(event.isBlockingItemUse)
     }
 }

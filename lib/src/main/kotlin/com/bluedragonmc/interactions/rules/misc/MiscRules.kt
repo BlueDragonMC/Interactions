@@ -10,6 +10,7 @@ import net.minestom.server.coordinate.BlockVec
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockFace
+import net.minestom.server.item.Material
 import net.minestom.server.utils.Direction
 
 // --- Containers --------------------------------------------------------------------------------
@@ -113,8 +114,18 @@ class HopperRule : PlacementRule(BlockSet.from(Block.HOPPER)) {
 
 // --- Stacking single blocks --------------------------------------------------------------------
 
-/** Candles stack up to four per block. */
-class CandlePlacementRule : CandleRule(BlockSet.fromTag("minecraft:candles"))
+/** Candles stack up to four per block and can be lit with flint and steel or a fire charge. */
+class CandlePlacementRule : CandleRule(BlockSet.fromTag("minecraft:candles")) {
+    init {
+        onInteract {
+            if (heldMaterial != Material.FLINT_AND_STEEL && heldMaterial != Material.FIRE_CHARGE) return@onInteract
+            if (block.getProperty(States.LIT) != "false") return@onInteract
+            if (block.getProperty(States.WATERLOGGED) == "true") return@onInteract
+            instance.setBlock(blockPosition, block.withProperty(States.LIT, "true"))
+            isBlockingItemUse = true
+        }
+    }
+}
 
 /** Snow layers stack only when clicked from above. */
 class SnowRule : SnowLayerRule(BlockSet.from(Block.SNOW))

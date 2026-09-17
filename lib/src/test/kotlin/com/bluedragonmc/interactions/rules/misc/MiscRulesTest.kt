@@ -1,17 +1,21 @@
 package com.bluedragonmc.interactions.rules.misc
 
+import com.bluedragonmc.interactions.rules.base.fireInteract
 import com.bluedragonmc.interactions.rules.base.firePlace
+import com.bluedragonmc.interactions.rules.base.holdMaterial
 import com.bluedragonmc.interactions.rules.base.setupInstance
 import net.minestom.server.coordinate.BlockVec
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockFace
+import net.minestom.server.item.Material
 import net.minestom.testing.Env
 import net.minestom.testing.EnvTest
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @EnvTest
 class MiscRulesTest {
@@ -113,5 +117,32 @@ class MiscRulesTest {
         val event = firePlace(instance, player(env, instance), Block.LEAF_LITTER, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertFalse(event.isCancelled)
+    }
+
+    @Test
+    fun `flint and steel lights a candle`(env: Env) {
+        val instance = setupInstance(env, CandlePlacementRule())
+        instance.setBlock(0, 40, 0, Block.CANDLE)
+        val player = player(env, instance)
+        holdMaterial(player, Material.FLINT_AND_STEEL)
+
+        val event = fireInteract(instance, player, Block.CANDLE, BlockFace.TOP, BlockVec(0, 40, 0))
+
+        assertEquals("true", instance.getBlock(0, 40, 0).getProperty("lit"))
+        assertTrue(event.isBlockingItemUse)
+    }
+
+    @Test
+    fun `waterlogged candles cannot be lit`(env: Env) {
+        val instance = setupInstance(env, CandlePlacementRule())
+        val waterlogged = Block.CANDLE.withProperty("waterlogged", "true")
+        instance.setBlock(0, 40, 0, waterlogged)
+        val player = player(env, instance)
+        holdMaterial(player, Material.FLINT_AND_STEEL)
+
+        val event = fireInteract(instance, player, waterlogged, BlockFace.TOP, BlockVec(0, 40, 0))
+
+        assertEquals("false", instance.getBlock(0, 40, 0).getProperty("lit"))
+        assertFalse(event.isBlockingItemUse)
     }
 }

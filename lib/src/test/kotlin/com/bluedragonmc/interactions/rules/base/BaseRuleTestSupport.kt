@@ -9,10 +9,12 @@ import net.minestom.server.entity.PlayerHand
 import net.minestom.server.event.EventDispatcher
 import net.minestom.server.event.player.PlayerBlockInteractEvent
 import net.minestom.server.event.player.PlayerBlockPlaceEvent
+import net.minestom.server.event.player.PlayerUseItemEvent
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockFace
 import net.minestom.server.item.ItemStack
+import net.minestom.server.item.Material
 import net.minestom.server.listener.BlockPlacementListener
 import net.minestom.server.network.packet.client.play.ClientPlayerBlockPlacementPacket
 import net.minestom.testing.Env
@@ -52,8 +54,23 @@ internal fun fireInteract(
     return event
 }
 
+/** Runs an item use with no block target, as the client does for, e.g., an empty bucket on a fluid. */
+internal fun fireUseItem(player: Player): PlayerUseItemEvent {
+    val event = PlayerUseItemEvent(player, PlayerHand.MAIN, player.getItemInHand(PlayerHand.MAIN), 0L)
+    EventDispatcher.call(event)
+    return event
+}
+
 internal fun holdBlock(player: Player, block: Block) {
     player.setItemInHand(PlayerHand.MAIN, ItemStack.of(block.material()!!))
+}
+
+internal fun holdItem(player: Player, item: ItemStack) {
+    player.setItemInHand(PlayerHand.MAIN, item)
+}
+
+internal fun holdMaterial(player: Player, material: Material) {
+    player.setItemInHand(PlayerHand.MAIN, ItemStack.of(material))
 }
 
 /** Runs Minestom's real placement listener, as a client click would. */

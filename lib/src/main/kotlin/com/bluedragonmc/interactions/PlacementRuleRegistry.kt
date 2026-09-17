@@ -32,14 +32,14 @@ class PlacementRuleRegistry {
         }
         rule.keys.forEach { rulesByKey[it] = rule }
         ruleList += rule
-        root.addChild(rule.eventNode)
+        rule.eventNodes.forEach { root.addChild(it) }
     }
 
     /** Removes [rule] and all of its event listeners from this registry. */
     fun unregister(rule: PlacementRule) {
         if (!ruleList.remove(rule)) return
         rule.keys.forEach { rulesByKey.remove(it) }
-        root.removeChild(rule.eventNode)
+        rule.eventNodes.forEach { root.removeChild(it) }
     }
 
     /** The rule responsible for [block], or null if this registry has no rule for it. */

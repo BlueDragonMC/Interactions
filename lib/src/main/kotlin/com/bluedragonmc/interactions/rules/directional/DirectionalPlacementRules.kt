@@ -130,7 +130,7 @@ class LightningRodPlacementRule : ClickFacingRule(
 
 /**
  * End rods face the clicked face, but flip to the opposite face when the clicked block is an end
- * rod already facing the same direction (mirroring vanilla `EndRodBlock`).
+ * rod already facing the same direction.
  */
 class EndRodPlacementRule : DirectionalPlacementRule(BlockSet.from(Block.END_ROD)) {
 

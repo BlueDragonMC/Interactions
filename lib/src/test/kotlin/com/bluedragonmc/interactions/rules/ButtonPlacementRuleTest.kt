@@ -1,6 +1,9 @@
 package com.bluedragonmc.interactions.rules
 
 import com.bluedragonmc.interactions.PlacementRuleRegistry
+import com.bluedragonmc.interactions.rules.base.fireInteract
+import com.bluedragonmc.interactions.rules.base.holdBlock
+import com.bluedragonmc.interactions.rules.base.setupInstance
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.BlockVec
 import net.minestom.server.coordinate.Pos
@@ -74,5 +77,30 @@ class ButtonPlacementRuleTest {
         EventDispatcher.call(event)
 
         assertTrue(event.isCancelled)
+    }
+
+    @Test
+    fun `clicking a button blocks item use`(env: Env) {
+        val instance = setupInstance(env, ButtonPlacementRule())
+        instance.setBlock(0, 40, 0, Block.OAK_BUTTON)
+        val player = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
+        holdBlock(player, Block.STONE)
+
+        val event = fireInteract(instance, player, Block.OAK_BUTTON, BlockFace.NORTH, BlockVec(0, 40, 0))
+
+        assertTrue(event.isBlockingItemUse)
+    }
+
+    @Test
+    fun `shift clicking a button still allows placing a block`(env: Env) {
+        val instance = setupInstance(env, ButtonPlacementRule())
+        instance.setBlock(0, 40, 0, Block.OAK_BUTTON)
+        val player = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
+        player.setSneaking(true)
+        holdBlock(player, Block.STONE)
+
+        val event = fireInteract(instance, player, Block.OAK_BUTTON, BlockFace.NORTH, BlockVec(0, 40, 0))
+
+        assertFalse(event.isBlockingItemUse)
     }
 }

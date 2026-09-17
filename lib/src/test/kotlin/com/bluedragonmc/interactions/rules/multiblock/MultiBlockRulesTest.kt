@@ -1,5 +1,6 @@
 package com.bluedragonmc.interactions.rules.multiblock
 
+import com.bluedragonmc.interactions.rules.base.fireInteract
 import com.bluedragonmc.interactions.rules.base.firePlace
 import com.bluedragonmc.interactions.rules.base.setupInstance
 import net.minestom.server.coordinate.BlockVec
@@ -11,6 +12,8 @@ import net.minestom.testing.Env
 import net.minestom.testing.EnvTest
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @EnvTest
 class MultiBlockRulesTest {
@@ -83,5 +86,32 @@ class MultiBlockRulesTest {
         firePlace(instance, player(env, instance), Block.OAK_DOOR, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("left", instance.getBlock(0, 40, 0).getProperty("hinge"))
+    }
+
+    @Test
+    fun `clicking a door toggles both halves`(env: Env) {
+        val instance = setupInstance(env, DoorRule())
+        instance.setBlock(0, 40, 0, Block.OAK_DOOR.withProperty("half", "lower"))
+        instance.setBlock(0, 41, 0, Block.OAK_DOOR.withProperty("half", "upper"))
+        val player = player(env, instance)
+
+        val event = fireInteract(instance, player, Block.OAK_DOOR, BlockFace.NORTH, BlockVec(0, 40, 0))
+
+        assertEquals("true", instance.getBlock(0, 40, 0).getProperty("open"))
+        assertEquals("true", instance.getBlock(0, 41, 0).getProperty("open"))
+        assertTrue(event.isBlockingItemUse)
+    }
+
+    @Test
+    fun `iron doors do not open by hand`(env: Env) {
+        val instance = setupInstance(env, DoorRule())
+        instance.setBlock(0, 40, 0, Block.IRON_DOOR.withProperty("half", "lower"))
+        instance.setBlock(0, 41, 0, Block.IRON_DOOR.withProperty("half", "upper"))
+        val player = player(env, instance)
+
+        val event = fireInteract(instance, player, Block.IRON_DOOR, BlockFace.NORTH, BlockVec(0, 40, 0))
+
+        assertEquals("false", instance.getBlock(0, 40, 0).getProperty("open"))
+        assertFalse(event.isBlockingItemUse)
     }
 }

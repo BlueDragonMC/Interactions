@@ -43,8 +43,6 @@ internal class PlacementHandler(
     }
 
     private fun handlePlacement(event: PlayerBlockPlaceEvent) {
-        val rule = lookup(event.block) ?: return
-
         val minestomPosition = event.blockPosition
         val clickedPosition = minestomPosition.relative(event.blockFace.oppositeFace).toBlockVec()
         val clickedBlock = event.instance.getBlock(clickedPosition)
@@ -59,6 +57,30 @@ internal class PlacementHandler(
             clickedBlock = clickedBlock,
             defaultPosition = minestomPosition,
         )
+
+        val rule = lookup(event.block)
+        if (rule == null) {
+            // The server resolves a placement beside a replaceable clicked block (fire, grass, ...) to
+            // the adjacent position; the clicked block should be replaced instead. Take over for held
+            // blocks that have no rule, which the rule dispatch below would otherwise leave to the
+            // server.
+            if (context.placementPosition != minestomPosition) {
+                event.isCancelled = true
+                place(
+                    instance = event.instance,
+                    player = event.player,
+                    hand = event.hand,
+                    blockFace = event.blockFace,
+                    cursorPosition = event.cursorPosition,
+                    position = context.placementPosition,
+                    block = event.block,
+                    extras = emptyList(),
+                    consumeBlock = event.doesConsumeBlock(),
+                    doBlockUpdates = event.shouldDoBlockUpdates(),
+                )
+            }
+            return
+        }
 
         val placementEvent = callRule(rule, context, event.doesConsumeBlock())
         if (placementEvent.isCancelled) {
@@ -198,7 +220,7 @@ internal class PlacementHandler(
             consumeBlock = consumeBlock,
             context = context,
         )
-        rule.eventNode.call(placementEvent)
+        rule.defaultEventNode.call(placementEvent)
         return placementEvent
     }
 
@@ -290,7 +312,7 @@ internal class PlacementHandler(
                     block = neighborBlock,
                     fromFace = face.oppositeFace,
                 )
-                rule.eventNode.call(updateEvent)
+                rule.defaultEventNode.call(updateEvent)
 
                 if (updateEvent.resultBlock != neighborBlock) {
                     instance.setBlock(neighbor, updateEvent.resultBlock)
