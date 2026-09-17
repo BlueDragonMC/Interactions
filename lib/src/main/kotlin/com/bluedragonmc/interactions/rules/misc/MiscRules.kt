@@ -3,33 +3,97 @@ package com.bluedragonmc.interactions.rules.misc
 import com.bluedragonmc.interactions.BlockSet
 import com.bluedragonmc.interactions.PlacementRule
 import com.bluedragonmc.interactions.event.BlockPlacementEvent
-import com.bluedragonmc.interactions.rules.base.CandleRule
-import com.bluedragonmc.interactions.rules.base.ClickFacingRule
-import com.bluedragonmc.interactions.rules.base.DirectionalPlacementRule
-import com.bluedragonmc.interactions.rules.base.FaceAttachedPlacementRule
-import com.bluedragonmc.interactions.rules.base.HorizontalFacingRule
-import com.bluedragonmc.interactions.rules.base.NearestFacingRule
-import com.bluedragonmc.interactions.rules.base.SeaPickleRule
-import com.bluedragonmc.interactions.rules.base.SnowLayerRule
-import com.bluedragonmc.interactions.rules.base.TurtleEggRule
-import com.bluedragonmc.interactions.util.Signals
-import com.bluedragonmc.interactions.util.States
-import com.bluedragonmc.interactions.util.Support
-import com.bluedragonmc.interactions.util.Waterlogged
-import com.bluedragonmc.interactions.util.clockWise
-import com.bluedragonmc.interactions.util.getBlockOrAir
-import com.bluedragonmc.interactions.util.horizontalDirection
+import com.bluedragonmc.interactions.rules.base.*
+import com.bluedragonmc.interactions.util.*
+import net.kyori.adventure.key.Key
 import net.minestom.server.coordinate.BlockVec
+import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockFace
 import net.minestom.server.utils.Direction
 
 // --- Containers --------------------------------------------------------------------------------
 
-/** Chests (and copper chests) face the player. */
-class ChestRule : HorizontalFacingRule(
+/** Chests (and copper chests) face the player and pair with an adjacent chest into a double chest. */
+class ChestRule : PlacementRule(
     BlockSet.matching { it == "minecraft:chest" || (it.endsWith("_chest") && it != "minecraft:ender_chest") },
-)
+) {
+    init {
+        onPlace {
+            val clickedFace = blockFace
+            val clickedDirection = clickedFace.oppositeFace.toDirection()
+            var facingDirection = player.position.horizontalDirection().oppositeFace.toDirection()
+            var type = "single"
+            if (clickedFace.toDirection().horizontal() && context.isSneaking) {
+                val neighbourFacing = candidatePartnerFacing(instance, blockPosition, clickedDirection, block.key())
+                if (neighbourFacing != null && neighbourFacing.axisName != clickedFace.axisName) {
+                    facingDirection = neighbourFacing
+                    type = if (facingDirection.counterClockWise() == clickedDirection) "right" else "left"
+                }
+            }
+            if (type == "single" && !context.isSneaking) {
+                type = chestType(instance, blockPosition, facingDirection, block.key())
+            }
+            block = Waterlogged.apply(
+                block
+                    .withProperty(States.FACING, facingDirection.name.lowercase())
+                    .withProperty(States.TYPE, type),
+                instance,
+                blockPosition,
+            )
+        }
+
+        onUpdate {
+            val direction = fromFace.toDirection()
+            val neighbor = if (direction.horizontal()) instance.getBlockOrAir(blockPosition.relative(fromFace)) else null
+            if (neighbor != null && neighbor.key() == block.key()) {
+                val neighbourType = neighbor.getProperty(States.TYPE)
+                if (block.getProperty(States.TYPE) == "single" &&
+                    neighbourType != "single" &&
+                    block.getProperty(States.FACING) == neighbor.getProperty(States.FACING) &&
+                    connectedDirection(neighbor) == direction.opposite()
+                ) {
+                    resultBlock = block.withProperty(States.TYPE, if (neighbourType == "left") "right" else "left")
+                    return@onUpdate
+                }
+            } else if (connectedDirection(block) == direction) {
+                resultBlock = block.withProperty(States.TYPE, "single")
+            }
+        }
+    }
+
+    private fun connectedDirection(state: Block): Direction {
+        val facing = directionOf(state.getProperty(States.FACING)!!)
+        return if (state.getProperty(States.TYPE) == "left") facing.clockWise() else facing.counterClockWise()
+    }
+
+    private fun candidatePartnerFacing(
+        instance: Instance,
+        position: BlockVec,
+        neighbourDirection: Direction,
+        key: Key,
+    ): Direction? {
+        val state = instance.getBlockOrAir(position.relative(neighbourDirection.blockFace))
+        if (state.key() != key || state.getProperty(States.TYPE) != "single") return null
+        return state.getProperty(States.FACING)?.let(::directionOf)
+    }
+
+    private fun chestType(
+        instance: Instance,
+        position: BlockVec,
+        facingDirection: Direction,
+        key: Key,
+    ): String {
+        if (facingDirection == candidatePartnerFacing(instance, position, facingDirection.clockWise(), key)) {
+            return "left"
+        }
+        return if (facingDirection == candidatePartnerFacing(instance, position, facingDirection.counterClockWise(), key)) {
+            "right"
+        } else {
+            "single"
+        }
+    }
+}
 
 /** Shulker boxes face the clicked face. */
 class ShulkerBoxRule : ClickFacingRule(BlockSet.fromTag("minecraft:shulker_boxes"))
@@ -139,7 +203,7 @@ class ScaffoldingRule : PlacementRule(BlockSet.from(Block.SCAFFOLDING)) {
 
     override fun maxUpdateDistance(): Int = 8
 
-    private fun distance(instance: net.minestom.server.instance.Instance, position: BlockVec): Int {
+    private fun distance(instance: Instance, position: BlockVec): Int {
         val belowPosition = position.relative(BlockFace.BOTTOM)
         val below = instance.getBlockOrAir(belowPosition)
         var distance = 7
@@ -175,7 +239,7 @@ class CarpetRule : PlacementRule(BlockSet.fromTag("minecraft:wool_carpets")) {
         }
     }
 
-    private fun hasSupport(instance: net.minestom.server.instance.Instance, position: BlockVec): Boolean =
+    private fun hasSupport(instance: Instance, position: BlockVec): Boolean =
         !instance.getBlockOrAir(position.relative(BlockFace.BOTTOM)).air()
 }
 
