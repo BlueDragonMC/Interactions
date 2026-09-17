@@ -4,7 +4,7 @@ import com.bluedragonmc.interactions.BlockSet
 import com.bluedragonmc.interactions.PlacementRule
 import com.bluedragonmc.interactions.rules.base.BushPlacementRule
 import com.bluedragonmc.interactions.rules.base.GrowingPlantPlacementRule
-import com.bluedragonmc.interactions.rules.base.HorizontalFacingRule
+import com.bluedragonmc.interactions.rules.base.SpeleothemPlacementRule
 import com.bluedragonmc.interactions.util.Fluids
 import com.bluedragonmc.interactions.util.States
 import com.bluedragonmc.interactions.util.Support
@@ -166,24 +166,13 @@ private fun wallFanVariant(block: Block): Block? {
     return Block.fromKey(net.kyori.adventure.key.Key.key(block.key().namespace(), path.removeSuffix("_coral_fan") + "_coral_wall_fan").asString())
 }
 
-// --- Dripstone ---------------------------------------------------------------------------------
+// --- Dripstone and sulfur ----------------------------------------------------------------------
 
-/** Pointed dripstone points away from the player's vertical look, starting as a tip. */
-class PointedDripstoneRule : PlacementRule(BlockSet.from(Block.POINTED_DRIPSTONE)) {
+/** Pointed dripstone points away from the player's vertical look and connects to its neighbours. */
+class PointedDripstoneRule : SpeleothemPlacementRule(BlockSet.from(Block.POINTED_DRIPSTONE))
 
-    init {
-        onPlace {
-            val direction = player.position.nearestLookingVerticalDirection().opposite()
-            block = Waterlogged.apply(
-                block
-                    .withProperty(States.VERTICAL_DIRECTION, direction.name.lowercase())
-                    .withProperty(States.THICKNESS, "tip"),
-                instance,
-                blockPosition,
-            )
-        }
-    }
-}
+/** Sulfur spikes point away from the player's vertical look and connect to their neighbours. */
+class SulfurSpikeRule : SpeleothemPlacementRule(BlockSet.from(Block.SULFUR_SPIKE))
 
 /** Sweet berry bushes grow on vegetation-supporting blocks. */
 class SweetBerryBushRule : BushPlacementRule(BlockSet.from(Block.SWEET_BERRY_BUSH))

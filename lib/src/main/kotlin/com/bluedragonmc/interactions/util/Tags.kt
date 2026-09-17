@@ -43,4 +43,7 @@ object Tags {
 
     /** The `minecraft:leaves` tag. */
     val LEAVES: Set<Key> by lazy { blockTag("minecraft:leaves") }
+
+    /** The `minecraft:speleothems` tag (pointed dripstone, sulfur spikes). */
+    val SPELEOTHEMS: Set<Key> by lazy { blockTag("minecraft:speleothems") }
 }

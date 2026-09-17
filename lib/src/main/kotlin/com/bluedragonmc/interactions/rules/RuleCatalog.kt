@@ -63,6 +63,7 @@ import com.bluedragonmc.interactions.rules.plants.PointedDripstoneRule
 import com.bluedragonmc.interactions.rules.plants.SaplingRule
 import com.bluedragonmc.interactions.rules.plants.StemRule
 import com.bluedragonmc.interactions.rules.plants.SugarCaneRule
+import com.bluedragonmc.interactions.rules.plants.SulfurSpikeRule
 import com.bluedragonmc.interactions.rules.plants.SweetBerryBushRule
 import com.bluedragonmc.interactions.rules.plants.TwistingVinesRule
 import com.bluedragonmc.interactions.rules.plants.VineRule
@@ -156,6 +157,7 @@ object RuleCatalog {
         CoralRule(),
         CoralFanRule(),
         PointedDripstoneRule(),
+        SulfurSpikeRule(),
         VineRule(),
         MultifaceVeinRule(),
         CocoaRule(),
