@@ -4,6 +4,7 @@ import com.bluedragonmc.interactions.BlockSet
 import com.bluedragonmc.interactions.PlacementRule
 import com.bluedragonmc.interactions.rules.base.BushPlacementRule
 import com.bluedragonmc.interactions.rules.base.GrowingPlantPlacementRule
+import com.bluedragonmc.interactions.rules.base.SegmentablePlacementRule
 import com.bluedragonmc.interactions.rules.base.SpeleothemPlacementRule
 import com.bluedragonmc.interactions.util.Fluids
 import com.bluedragonmc.interactions.util.States
@@ -13,7 +14,6 @@ import com.bluedragonmc.interactions.util.Waterlogged
 import com.bluedragonmc.interactions.util.blockFace
 import com.bluedragonmc.interactions.util.directionOf
 import com.bluedragonmc.interactions.util.getBlockOrAir
-import com.bluedragonmc.interactions.util.nearestLookingVerticalDirection
 import com.bluedragonmc.interactions.util.orderedDirections
 import net.minestom.server.coordinate.BlockVec
 import net.minestom.server.instance.Instance
@@ -43,11 +43,9 @@ class NetherWartRule : BushPlacementRule(BlockSet.from(Block.NETHER_WART)) {
 /** Saplings grow on vegetation-supporting blocks. */
 class SaplingRule : BushPlacementRule(BlockSet.fromTag("minecraft:saplings"))
 
-/** Flower beds (`pink_petals`, `wildflowers`) face the player with one flower. */
-class FlowerBedRule : HorizontalFacingRule(
-    BlockSet.from(Block.PINK_PETALS, Block.WILDFLOWERS),
-    facesPlayer = false,
-)
+/** Flower beds (`pink_petals`, `wildflowers`) grow on vegetation and stack up to four flowers per block. */
+class FlowerBedRule :
+    SegmentablePlacementRule(BlockSet.from(Block.PINK_PETALS, Block.WILDFLOWERS), States.FLOWER_AMOUNT)
 
 // --- Growing plants ----------------------------------------------------------------------------
 

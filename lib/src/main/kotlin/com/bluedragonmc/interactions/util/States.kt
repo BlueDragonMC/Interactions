@@ -23,6 +23,8 @@ object States {
     const val CANDLES = "candles"
     const val PICKLES = "pickles"
     const val EGGS = "eggs"
+    const val FLOWER_AMOUNT = "flower_amount"
+    const val SEGMENT_AMOUNT = "segment_amount"
     const val LIT = "lit"
     const val PART = "part"
     const val ROTATION = "rotation"

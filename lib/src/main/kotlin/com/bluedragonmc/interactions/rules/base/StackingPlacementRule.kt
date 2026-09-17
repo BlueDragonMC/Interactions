@@ -15,16 +15,21 @@ import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockFace
 
 /**
- * Base for blocks that merge into the clicked block: slabs, snow layers, candles, sea pickles and
- * turtle eggs.
+ * Base for blocks that merge into an existing block of the same type: slabs, snow layers, candles,
+ * sea pickles, turtle eggs and segmentable blocks (flower beds, leaf litter).
  *
  * [getPlacementPosition] returns the clicked position when the clicked block is the same block and
  * [canMerge] accepts it, so the engine replaces the clicked block instead of placing a neighbor.
  */
 abstract class StackingPlacementRule(blocks: BlockSet) : PlacementRule(blocks) {
 
-    /** Whether [clicked] (which has the same key as the held block) should be merged into. */
-    protected open fun canMerge(clicked: Block, context: PlacementContext): Boolean = true
+    /**
+     * Whether [existing] (which has the same key as the held block) should be merged into.
+     *
+     * If [replacingClicked] is `true`, then [existing] is the clicked block (i.e. clicking on the top of a non-full snow layer block).
+     * Otherwise, [existing] is the position of the air block adjacent to the clicked block on the face that the player clicked.
+     */
+    protected open fun canMerge(existing: Block, context: PlacementContext, replacingClicked: Boolean): Boolean = true
 
     /** The merged state when placed into [clicked], an existing block of the same type. */
     protected abstract fun merge(clicked: Block, event: BlockPlacementEvent): Block
@@ -37,13 +42,9 @@ abstract class StackingPlacementRule(blocks: BlockSet) : PlacementRule(blocks) {
 
     init {
         onPlace {
-            val target = instance.getBlockOrAir(blockPosition)
-            val existing = when {
-                target.key() == block.key() -> target
-                clickedBlock.key() == block.key() -> clickedBlock
-                else -> null
-            }
-            if (existing != null && !canMerge(existing, context)) {
+            val replacingClicked = blockPosition == context.clickedPosition
+            val existing = instance.getBlockOrAir(blockPosition).takeIf { it.key() == block.key() }
+            if (existing != null && !canMerge(existing, context, replacingClicked)) {
                 isCancelled = true
                 return@onPlace
             }
@@ -61,19 +62,29 @@ abstract class StackingPlacementRule(blocks: BlockSet) : PlacementRule(blocks) {
     }
 
     final override fun getPlacementPosition(context: PlacementContext): Point {
-        if (context.clickedBlock.key() == context.block.key() && canMerge(context.clickedBlock, context)) {
+        if (context.clickedBlock.key() == context.block.key() &&
+            canMerge(context.clickedBlock, context, replacingClicked = true)
+        ) {
             return context.clickedPosition
         }
         return context.placementPosition
+    }
+
+    final override fun canHandleOccupiedPlacement(context: PlacementContext): Boolean {
+        val target = context.instance.getBlockOrAir(context.placementPosition)
+        if (target.key() == context.block.key() && canMerge(target, context, replacingClicked = false)) return true
+        return context.clickedBlock.key() == context.block.key() &&
+            canMerge(context.clickedBlock, context, replacingClicked = true)
     }
 }
 
 /** Two matching slabs merge into a double slab. */
 open class SlabRule(blocks: BlockSet) : StackingPlacementRule(blocks) {
 
-    override fun canMerge(clicked: Block, context: PlacementContext): Boolean {
-        val type = clicked.getProperty(States.TYPE)
+    override fun canMerge(existing: Block, context: PlacementContext, replacingClicked: Boolean): Boolean {
+        val type = existing.getProperty(States.TYPE)
         if (type == "double") return false
+        if (!replacingClicked) return true
         val above = context.cursorPosition.y() > 0.5
         val horizontal = context.blockFace.toDirection().horizontal()
         return if (type == "bottom") {
@@ -98,8 +109,8 @@ open class SlabRule(blocks: BlockSet) : StackingPlacementRule(blocks) {
 /** Snow layers stack up to eight, but only when clicked from above. */
 open class SnowLayerRule(blocks: BlockSet) : StackingPlacementRule(blocks) {
 
-    override fun canMerge(clicked: Block, context: PlacementContext): Boolean =
-        layers(clicked) < MAX_LAYERS && context.blockFace == BlockFace.TOP
+    override fun canMerge(existing: Block, context: PlacementContext, replacingClicked: Boolean): Boolean =
+        layers(existing) < MAX_LAYERS && (!replacingClicked || context.blockFace == BlockFace.TOP)
 
     override fun merge(clicked: Block, event: BlockPlacementEvent): Block =
         clicked.withProperty(States.LAYERS, (layers(clicked) + 1).coerceAtMost(MAX_LAYERS).toString())
@@ -122,8 +133,8 @@ open class SnowLayerRule(blocks: BlockSet) : StackingPlacementRule(blocks) {
 /** Up to four candles per block. */
 open class CandleRule(blocks: BlockSet) : StackingPlacementRule(blocks) {
 
-    override fun canMerge(clicked: Block, context: PlacementContext): Boolean =
-        !context.isSneaking && candles(clicked) < MAX_CANDLES
+    override fun canMerge(existing: Block, context: PlacementContext, replacingClicked: Boolean): Boolean =
+        !context.isSneaking && candles(existing) < MAX_CANDLES
 
     override fun merge(clicked: Block, event: BlockPlacementEvent): Block =
         clicked.withProperty(States.CANDLES, (candles(clicked) + 1).coerceAtMost(MAX_CANDLES).toString())
@@ -146,8 +157,8 @@ open class CandleRule(blocks: BlockSet) : StackingPlacementRule(blocks) {
 /** Up to four pickles per block, waterlogged when placed in water. */
 open class SeaPickleRule(blocks: BlockSet) : StackingPlacementRule(blocks) {
 
-    override fun canMerge(clicked: Block, context: PlacementContext): Boolean =
-        !context.isSneaking && pickles(clicked) < MAX_PICKLES
+    override fun canMerge(existing: Block, context: PlacementContext, replacingClicked: Boolean): Boolean =
+        !context.isSneaking && pickles(existing) < MAX_PICKLES
 
     override fun merge(clicked: Block, event: BlockPlacementEvent): Block =
         clicked.withProperty(States.PICKLES, (pickles(clicked) + 1).coerceAtMost(MAX_PICKLES).toString())
@@ -170,8 +181,8 @@ open class SeaPickleRule(blocks: BlockSet) : StackingPlacementRule(blocks) {
 /** Up to four eggs per block. */
 open class TurtleEggRule(blocks: BlockSet) : StackingPlacementRule(blocks) {
 
-    override fun canMerge(clicked: Block, context: PlacementContext): Boolean =
-        !context.isSneaking && eggs(clicked) < MAX_EGGS
+    override fun canMerge(existing: Block, context: PlacementContext, replacingClicked: Boolean): Boolean =
+        !context.isSneaking && eggs(existing) < MAX_EGGS
 
     override fun merge(clicked: Block, event: BlockPlacementEvent): Block =
         clicked.withProperty(States.EGGS, (eggs(clicked) + 1).coerceAtMost(MAX_EGGS).toString())

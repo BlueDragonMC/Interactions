@@ -263,6 +263,8 @@ class CommandBlockRule : NearestFacingRule(
 /** Calibrated sculk sensors face away from the player. */
 class CalibratedSculkSensorRule : HorizontalFacingRule(BlockSet.from(Block.CALIBRATED_SCULK_SENSOR))
 
-/** Leaf litter faces the player's horizontal look. */
-class LeafLitterRule : HorizontalFacingRule(BlockSet.from(Block.LEAF_LITTER), facesPlayer = false)
+/** Leaf litter sits on any sturdy top face and stacks up to four segments per block. */
+class LeafLitterRule : SegmentablePlacementRule(BlockSet.from(Block.LEAF_LITTER), States.SEGMENT_AMOUNT) {
+    override fun mayPlaceOn(block: Block): Boolean = Support.isFaceFull(block, BlockFace.TOP)
+}
 

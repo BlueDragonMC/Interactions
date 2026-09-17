@@ -75,6 +75,15 @@ abstract class PlacementRule(val blocks: BlockSet) {
     open fun getPlacementPosition(context: PlacementContext): Point = context.placementPosition
 
     /**
+     * Whether this rule can handle a click that Minestom refuses to turn into a placement event because
+     * the resolved position is already occupied by another block.
+     *
+     * This allows blocks like slabs, snow layers, candles, sea pickles, turtle eggs and flower beds grow into
+     * an existing block of the same type. See [com.bluedragonmc.interactions.rules.base.StackingPlacementRule].
+     */
+    open fun canHandleOccupiedPlacement(context: PlacementContext): Boolean = false
+
+    /**
      * Maximum distance, in blocks, that an update originating from this rule may propagate.
      */
     open fun maxUpdateDistance(): Int = BlockPlacementRule.DEFAULT_UPDATE_RANGE
