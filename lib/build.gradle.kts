@@ -8,14 +8,9 @@ plugins {
     `maven-publish`
 }
 
-repositories {
-    // Use Maven Central for resolving dependencies.
-    mavenCentral()
-}
-
 dependencies {
-    api(libs.minestom)
-    api(libs.adventure.api)
+    compileOnly(libs.minestom)
+    compileOnly(libs.adventure.api)
 
     testImplementation(libs.minestom.testing)
 }

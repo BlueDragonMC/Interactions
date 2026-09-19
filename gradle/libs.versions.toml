@@ -1,7 +1,7 @@
 [versions]
 adventure = "5.1.1"
 kotlin = "2.3.0"
-minestom = "2026.09.12-26.2"
+minestom = "26_3-SNAPSHOT"
 dokka = "2.2.0"
 
 [libraries]

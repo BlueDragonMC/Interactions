@@ -3,10 +3,6 @@ plugins {
     application
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation(libs.minestom)
     implementation(libs.adventure.api)

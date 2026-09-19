@@ -3,10 +3,6 @@ plugins {
     application
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation(project(":lib"))
     implementation(libs.minestom)
