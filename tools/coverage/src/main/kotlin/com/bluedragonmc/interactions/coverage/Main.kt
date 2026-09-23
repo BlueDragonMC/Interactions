@@ -1,5 +1,6 @@
 package com.bluedragonmc.interactions.coverage
 
+import com.bluedragonmc.interactions.PlacementRule
 import com.bluedragonmc.interactions.RuleRegistry
 import com.bluedragonmc.interactions.rules.RuleCatalog
 import net.minestom.server.MinecraftServer
@@ -20,6 +21,7 @@ fun main(args: Array<String>) {
     RuleCatalog.registerAll(registry)
 
     val supported: Set<String> = registry.rules()
+        .filterIsInstance<PlacementRule>()
         .flatMap { it.keys }
         .map { it.asString() }
         .toSet()

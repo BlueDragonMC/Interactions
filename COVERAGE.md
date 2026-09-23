@@ -7,34 +7,15 @@
 
 | Metric | Count |
 | --- | ---: |
-| Blocks with state | 797 |
-| Ignored (no custom logic needed) | 87 |
-| Covered by a rule | 690 |
-| Not yet covered | 20 |
-| **Coverage** | **97%** (690 / 710) |
+| Blocks with state | 884 |
+| Ignored (no custom logic needed) | 92 |
+| Covered by a rule | 792 |
+| Not yet covered | 0 |
+| **Coverage** | **100%** (792 / 792) |
 
 ## Unsupported blocks
 
-- [ ] minecraft:attached_melon_stem
-- [ ] minecraft:attached_pumpkin_stem
-- [ ] minecraft:bell
-- [ ] minecraft:brown_mushroom_block
-- [ ] minecraft:chorus_flower
-- [ ] minecraft:chorus_plant
-- [ ] minecraft:crafter
-- [ ] minecraft:creaking_heart
-- [ ] minecraft:farmland
-- [ ] minecraft:grass_block
-- [ ] minecraft:jigsaw
-- [ ] minecraft:mushroom_stem
-- [ ] minecraft:mycelium
-- [ ] minecraft:pale_hanging_moss
-- [ ] minecraft:pale_moss_carpet
-- [ ] minecraft:potent_sulfur
-- [ ] minecraft:red_mushroom_block
-- [ ] minecraft:redstone_wire
-- [ ] minecraft:tripwire
-- [ ] minecraft:tripwire_hook
+_None._
 
 ## Supported blocks
 
@@ -82,6 +63,7 @@
 - [x] minecraft:bee_nest
 - [x] minecraft:beehive
 - [x] minecraft:beetroots
+- [x] minecraft:bell
 - [x] minecraft:big_dripleaf
 - [x] minecraft:big_dripleaf_stem
 - [x] minecraft:birch_button
@@ -102,10 +84,14 @@
 - [x] minecraft:black_banner
 - [x] minecraft:black_bed
 - [x] minecraft:black_candle
+- [x] minecraft:black_concrete_slab
+- [x] minecraft:black_concrete_stairs
 - [x] minecraft:black_glazed_terracotta
 - [x] minecraft:black_shulker_box
 - [x] minecraft:black_stained_glass_pane
 - [x] minecraft:black_wall_banner
+- [x] minecraft:black_wool_slab
+- [x] minecraft:black_wool_stairs
 - [x] minecraft:blackstone_slab
 - [x] minecraft:blackstone_stairs
 - [x] minecraft:blackstone_wall
@@ -113,10 +99,14 @@
 - [x] minecraft:blue_banner
 - [x] minecraft:blue_bed
 - [x] minecraft:blue_candle
+- [x] minecraft:blue_concrete_slab
+- [x] minecraft:blue_concrete_stairs
 - [x] minecraft:blue_glazed_terracotta
 - [x] minecraft:blue_shulker_box
 - [x] minecraft:blue_stained_glass_pane
 - [x] minecraft:blue_wall_banner
+- [x] minecraft:blue_wool_slab
+- [x] minecraft:blue_wool_stairs
 - [x] minecraft:bone_block
 - [x] minecraft:brain_coral
 - [x] minecraft:brain_coral_fan
@@ -127,10 +117,15 @@
 - [x] minecraft:brown_banner
 - [x] minecraft:brown_bed
 - [x] minecraft:brown_candle
+- [x] minecraft:brown_concrete_slab
+- [x] minecraft:brown_concrete_stairs
 - [x] minecraft:brown_glazed_terracotta
+- [x] minecraft:brown_mushroom_block
 - [x] minecraft:brown_shulker_box
 - [x] minecraft:brown_stained_glass_pane
 - [x] minecraft:brown_wall_banner
+- [x] minecraft:brown_wool_slab
+- [x] minecraft:brown_wool_stairs
 - [x] minecraft:bubble_coral
 - [x] minecraft:bubble_coral_fan
 - [x] minecraft:bubble_coral_wall_fan
@@ -160,6 +155,8 @@
 - [x] minecraft:chest
 - [x] minecraft:chipped_anvil
 - [x] minecraft:chiseled_bookshelf
+- [x] minecraft:chorus_flower
+- [x] minecraft:chorus_plant
 - [x] minecraft:cinnabar_brick_slab
 - [x] minecraft:cinnabar_brick_stairs
 - [x] minecraft:cinnabar_brick_wall
@@ -185,6 +182,8 @@
 - [x] minecraft:copper_lantern
 - [x] minecraft:copper_trapdoor
 - [x] minecraft:copper_wall_torch
+- [x] minecraft:crafter
+- [x] minecraft:creaking_heart
 - [x] minecraft:creeper_head
 - [x] minecraft:crimson_button
 - [x] minecraft:crimson_door
@@ -208,10 +207,14 @@
 - [x] minecraft:cyan_banner
 - [x] minecraft:cyan_bed
 - [x] minecraft:cyan_candle
+- [x] minecraft:cyan_concrete_slab
+- [x] minecraft:cyan_concrete_stairs
 - [x] minecraft:cyan_glazed_terracotta
 - [x] minecraft:cyan_shulker_box
 - [x] minecraft:cyan_stained_glass_pane
 - [x] minecraft:cyan_wall_banner
+- [x] minecraft:cyan_wool_slab
+- [x] minecraft:cyan_wool_stairs
 - [x] minecraft:damaged_anvil
 - [x] minecraft:dark_oak_button
 - [x] minecraft:dark_oak_door
@@ -277,6 +280,7 @@
 - [x] minecraft:exposed_cut_copper_slab
 - [x] minecraft:exposed_cut_copper_stairs
 - [x] minecraft:exposed_lightning_rod
+- [x] minecraft:farmland
 - [x] minecraft:fire_coral
 - [x] minecraft:fire_coral_fan
 - [x] minecraft:fire_coral_wall_fan
@@ -286,20 +290,29 @@
 - [x] minecraft:granite_slab
 - [x] minecraft:granite_stairs
 - [x] minecraft:granite_wall
+- [x] minecraft:grass_block
 - [x] minecraft:gray_banner
 - [x] minecraft:gray_bed
 - [x] minecraft:gray_candle
+- [x] minecraft:gray_concrete_slab
+- [x] minecraft:gray_concrete_stairs
 - [x] minecraft:gray_glazed_terracotta
 - [x] minecraft:gray_shulker_box
 - [x] minecraft:gray_stained_glass_pane
 - [x] minecraft:gray_wall_banner
+- [x] minecraft:gray_wool_slab
+- [x] minecraft:gray_wool_stairs
 - [x] minecraft:green_banner
 - [x] minecraft:green_bed
 - [x] minecraft:green_candle
+- [x] minecraft:green_concrete_slab
+- [x] minecraft:green_concrete_stairs
 - [x] minecraft:green_glazed_terracotta
 - [x] minecraft:green_shulker_box
 - [x] minecraft:green_stained_glass_pane
 - [x] minecraft:green_wall_banner
+- [x] minecraft:green_wool_slab
+- [x] minecraft:green_wool_stairs
 - [x] minecraft:grindstone
 - [x] minecraft:hanging_roots
 - [x] minecraft:hay_block
@@ -315,6 +328,7 @@
 - [x] minecraft:iron_door
 - [x] minecraft:iron_trapdoor
 - [x] minecraft:jack_o_lantern
+- [x] minecraft:jigsaw
 - [x] minecraft:jungle_button
 - [x] minecraft:jungle_door
 - [x] minecraft:jungle_fence
@@ -341,35 +355,51 @@
 - [x] minecraft:light_blue_banner
 - [x] minecraft:light_blue_bed
 - [x] minecraft:light_blue_candle
+- [x] minecraft:light_blue_concrete_slab
+- [x] minecraft:light_blue_concrete_stairs
 - [x] minecraft:light_blue_glazed_terracotta
 - [x] minecraft:light_blue_shulker_box
 - [x] minecraft:light_blue_stained_glass_pane
 - [x] minecraft:light_blue_wall_banner
+- [x] minecraft:light_blue_wool_slab
+- [x] minecraft:light_blue_wool_stairs
 - [x] minecraft:light_gray_banner
 - [x] minecraft:light_gray_bed
 - [x] minecraft:light_gray_candle
+- [x] minecraft:light_gray_concrete_slab
+- [x] minecraft:light_gray_concrete_stairs
 - [x] minecraft:light_gray_glazed_terracotta
 - [x] minecraft:light_gray_shulker_box
 - [x] minecraft:light_gray_stained_glass_pane
 - [x] minecraft:light_gray_wall_banner
+- [x] minecraft:light_gray_wool_slab
+- [x] minecraft:light_gray_wool_stairs
 - [x] minecraft:light_weighted_pressure_plate
 - [x] minecraft:lightning_rod
 - [x] minecraft:lilac
 - [x] minecraft:lime_banner
 - [x] minecraft:lime_bed
 - [x] minecraft:lime_candle
+- [x] minecraft:lime_concrete_slab
+- [x] minecraft:lime_concrete_stairs
 - [x] minecraft:lime_glazed_terracotta
 - [x] minecraft:lime_shulker_box
 - [x] minecraft:lime_stained_glass_pane
 - [x] minecraft:lime_wall_banner
+- [x] minecraft:lime_wool_slab
+- [x] minecraft:lime_wool_stairs
 - [x] minecraft:loom
 - [x] minecraft:magenta_banner
 - [x] minecraft:magenta_bed
 - [x] minecraft:magenta_candle
+- [x] minecraft:magenta_concrete_slab
+- [x] minecraft:magenta_concrete_stairs
 - [x] minecraft:magenta_glazed_terracotta
 - [x] minecraft:magenta_shulker_box
 - [x] minecraft:magenta_stained_glass_pane
 - [x] minecraft:magenta_wall_banner
+- [x] minecraft:magenta_wool_slab
+- [x] minecraft:magenta_wool_stairs
 - [x] minecraft:mangrove_button
 - [x] minecraft:mangrove_door
 - [x] minecraft:mangrove_fence
@@ -397,6 +427,8 @@
 - [x] minecraft:mud_brick_stairs
 - [x] minecraft:mud_brick_wall
 - [x] minecraft:muddy_mangrove_roots
+- [x] minecraft:mushroom_stem
+- [x] minecraft:mycelium
 - [x] minecraft:nether_brick_fence
 - [x] minecraft:nether_brick_slab
 - [x] minecraft:nether_brick_stairs
@@ -422,10 +454,14 @@
 - [x] minecraft:orange_banner
 - [x] minecraft:orange_bed
 - [x] minecraft:orange_candle
+- [x] minecraft:orange_concrete_slab
+- [x] minecraft:orange_concrete_stairs
 - [x] minecraft:orange_glazed_terracotta
 - [x] minecraft:orange_shulker_box
 - [x] minecraft:orange_stained_glass_pane
 - [x] minecraft:orange_wall_banner
+- [x] minecraft:orange_wool_slab
+- [x] minecraft:orange_wool_stairs
 - [x] minecraft:oxidized_copper_bars
 - [x] minecraft:oxidized_copper_chain
 - [x] minecraft:oxidized_copper_chest
@@ -437,6 +473,8 @@
 - [x] minecraft:oxidized_cut_copper_slab
 - [x] minecraft:oxidized_cut_copper_stairs
 - [x] minecraft:oxidized_lightning_rod
+- [x] minecraft:pale_hanging_moss
+- [x] minecraft:pale_moss_carpet
 - [x] minecraft:pale_oak_button
 - [x] minecraft:pale_oak_door
 - [x] minecraft:pale_oak_fence
@@ -460,11 +498,15 @@
 - [x] minecraft:pink_banner
 - [x] minecraft:pink_bed
 - [x] minecraft:pink_candle
+- [x] minecraft:pink_concrete_slab
+- [x] minecraft:pink_concrete_stairs
 - [x] minecraft:pink_glazed_terracotta
 - [x] minecraft:pink_petals
 - [x] minecraft:pink_shulker_box
 - [x] minecraft:pink_stained_glass_pane
 - [x] minecraft:pink_wall_banner
+- [x] minecraft:pink_wool_slab
+- [x] minecraft:pink_wool_stairs
 - [x] minecraft:piston
 - [x] minecraft:pitcher_crop
 - [x] minecraft:pitcher_plant
@@ -497,7 +539,24 @@
 - [x] minecraft:polished_tuff_slab
 - [x] minecraft:polished_tuff_stairs
 - [x] minecraft:polished_tuff_wall
+- [x] minecraft:poplar_button
+- [x] minecraft:poplar_door
+- [x] minecraft:poplar_fence
+- [x] minecraft:poplar_fence_gate
+- [x] minecraft:poplar_hanging_sign
+- [x] minecraft:poplar_log
+- [x] minecraft:poplar_pressure_plate
+- [x] minecraft:poplar_sapling
+- [x] minecraft:poplar_shelf
+- [x] minecraft:poplar_sign
+- [x] minecraft:poplar_slab
+- [x] minecraft:poplar_stairs
+- [x] minecraft:poplar_trapdoor
+- [x] minecraft:poplar_wall_hanging_sign
+- [x] minecraft:poplar_wall_sign
+- [x] minecraft:poplar_wood
 - [x] minecraft:potatoes
+- [x] minecraft:potent_sulfur
 - [x] minecraft:powered_rail
 - [x] minecraft:prismarine_brick_slab
 - [x] minecraft:prismarine_brick_stairs
@@ -508,10 +567,14 @@
 - [x] minecraft:purple_banner
 - [x] minecraft:purple_bed
 - [x] minecraft:purple_candle
+- [x] minecraft:purple_concrete_slab
+- [x] minecraft:purple_concrete_stairs
 - [x] minecraft:purple_glazed_terracotta
 - [x] minecraft:purple_shulker_box
 - [x] minecraft:purple_stained_glass_pane
 - [x] minecraft:purple_wall_banner
+- [x] minecraft:purple_wool_slab
+- [x] minecraft:purple_wool_stairs
 - [x] minecraft:purpur_pillar
 - [x] minecraft:purpur_slab
 - [x] minecraft:purpur_stairs
@@ -522,7 +585,10 @@
 - [x] minecraft:red_banner
 - [x] minecraft:red_bed
 - [x] minecraft:red_candle
+- [x] minecraft:red_concrete_slab
+- [x] minecraft:red_concrete_stairs
 - [x] minecraft:red_glazed_terracotta
+- [x] minecraft:red_mushroom_block
 - [x] minecraft:red_nether_brick_slab
 - [x] minecraft:red_nether_brick_stairs
 - [x] minecraft:red_nether_brick_wall
@@ -532,8 +598,11 @@
 - [x] minecraft:red_shulker_box
 - [x] minecraft:red_stained_glass_pane
 - [x] minecraft:red_wall_banner
+- [x] minecraft:red_wool_slab
+- [x] minecraft:red_wool_stairs
 - [x] minecraft:redstone_torch
 - [x] minecraft:redstone_wall_torch
+- [x] minecraft:redstone_wire
 - [x] minecraft:repeater
 - [x] minecraft:repeating_command_block
 - [x] minecraft:resin_brick_slab
@@ -547,6 +616,7 @@
 - [x] minecraft:scaffolding
 - [x] minecraft:sculk_vein
 - [x] minecraft:sea_pickle
+- [x] minecraft:shelf_mushroom
 - [x] minecraft:shulker_box
 - [x] minecraft:skeleton_skull
 - [x] minecraft:small_amethyst_bud
@@ -587,6 +657,7 @@
 - [x] minecraft:stone_slab
 - [x] minecraft:stone_stairs
 - [x] minecraft:stonecutter
+- [x] minecraft:straw_bed
 - [x] minecraft:stripped_acacia_log
 - [x] minecraft:stripped_acacia_wood
 - [x] minecraft:stripped_bamboo_block
@@ -606,6 +677,8 @@
 - [x] minecraft:stripped_oak_wood
 - [x] minecraft:stripped_pale_oak_log
 - [x] minecraft:stripped_pale_oak_wood
+- [x] minecraft:stripped_poplar_log
+- [x] minecraft:stripped_poplar_wood
 - [x] minecraft:stripped_spruce_log
 - [x] minecraft:stripped_spruce_wood
 - [x] minecraft:stripped_warped_hyphae
@@ -624,6 +697,8 @@
 - [x] minecraft:tall_seagrass
 - [x] minecraft:torchflower_crop
 - [x] minecraft:trapped_chest
+- [x] minecraft:tripwire
+- [x] minecraft:tripwire_hook
 - [x] minecraft:tube_coral
 - [x] minecraft:tube_coral_fan
 - [x] minecraft:tube_coral_wall_fan
@@ -714,19 +789,27 @@
 - [x] minecraft:white_banner
 - [x] minecraft:white_bed
 - [x] minecraft:white_candle
+- [x] minecraft:white_concrete_slab
+- [x] minecraft:white_concrete_stairs
 - [x] minecraft:white_glazed_terracotta
 - [x] minecraft:white_shulker_box
 - [x] minecraft:white_stained_glass_pane
 - [x] minecraft:white_wall_banner
+- [x] minecraft:white_wool_slab
+- [x] minecraft:white_wool_stairs
 - [x] minecraft:wildflowers
 - [x] minecraft:wither_skeleton_skull
 - [x] minecraft:yellow_banner
 - [x] minecraft:yellow_bed
 - [x] minecraft:yellow_candle
+- [x] minecraft:yellow_concrete_slab
+- [x] minecraft:yellow_concrete_stairs
 - [x] minecraft:yellow_glazed_terracotta
 - [x] minecraft:yellow_shulker_box
 - [x] minecraft:yellow_stained_glass_pane
 - [x] minecraft:yellow_wall_banner
+- [x] minecraft:yellow_wool_slab
+- [x] minecraft:yellow_wool_stairs
 - [x] minecraft:zombie_head
 
 ---
