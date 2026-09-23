@@ -15,6 +15,7 @@ import com.bluedragonmc.interactions.util.blockFace
 import com.bluedragonmc.interactions.util.directionOf
 import com.bluedragonmc.interactions.util.getBlockOrAir
 import com.bluedragonmc.interactions.util.orderedDirections
+import net.kyori.adventure.key.Key
 import net.minestom.server.coordinate.BlockVec
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
@@ -161,7 +162,7 @@ private fun wallFanVariant(block: Block): Block? {
     val path = block.key().value()
     if (path.endsWith("_coral_wall_fan")) return block
     if (!path.endsWith("_coral_fan")) return null
-    return Block.fromKey(net.kyori.adventure.key.Key.key(block.key().namespace(), path.removeSuffix("_coral_fan") + "_coral_wall_fan").asString())
+    return Block.fromKey(Key.key(block.key().namespace(), path.removeSuffix("_coral_fan") + "_coral_wall_fan").asString())
 }
 
 // --- Dripstone and sulfur ----------------------------------------------------------------------

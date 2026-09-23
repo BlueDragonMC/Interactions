@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger
  * [RuleRegistry.ruleFor] and never conflict with block-keyed rules in a registry. They are
  * dispatched after placement rules (see [INTERACTION_PRIORITY]), which lets a placement rule claim an
  * interaction first by setting
- * [net.minestom.server.event.player.PlayerBlockInteractEvent.isBlockingItemUse].
+ * [PlayerBlockInteractEvent.isBlockingItemUse].
  */
 abstract class InteractionRule : Rule {
 

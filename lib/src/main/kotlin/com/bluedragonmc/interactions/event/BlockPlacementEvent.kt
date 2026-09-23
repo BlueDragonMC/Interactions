@@ -5,6 +5,7 @@ import net.minestom.server.coordinate.BlockVec
 import net.minestom.server.coordinate.Point
 import net.minestom.server.entity.Player
 import net.minestom.server.entity.PlayerHand
+import net.minestom.server.event.player.PlayerBlockPlaceEvent
 import net.minestom.server.event.trait.BlockEvent
 import net.minestom.server.event.trait.CancellableEvent
 import net.minestom.server.instance.Instance
@@ -14,7 +15,7 @@ import net.minestom.server.instance.block.BlockFace
 /**
  * Dispatched before a block is placed, with the placement position already resolved by the library.
  *
- * Unlike [net.minestom.server.event.player.PlayerBlockPlaceEvent], this event exposes both the position
+ * Unlike [PlayerBlockPlaceEvent], this event exposes both the position
  * the player clicked and the position the block will actually occupy, and is not coupled to Minestom's
  * placement-rule based position resolution.
  *

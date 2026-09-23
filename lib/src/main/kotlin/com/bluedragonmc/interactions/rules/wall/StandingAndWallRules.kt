@@ -20,6 +20,8 @@ import net.minestom.server.coordinate.BlockVec
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockFace
+import net.minestom.server.instance.block.SignTextSlot
+import net.minestom.server.network.packet.server.play.OpenSignEditorPacket
 import net.minestom.server.utils.Direction
 
 // --- Signs -------------------------------------------------------------------------------------
@@ -31,6 +33,10 @@ class SignRule : StandingAndWallPlacementRule(
     Direction.DOWN,
     Signs::wallVariant,
 ) {
+    init {
+        onPlace { openSignEditor() }
+    }
+
     override fun standingState(standing: Block, event: BlockPlacementEvent): Block =
         standing.withProperty(States.ROTATION, rotationSegment(event.player.position.yaw + 180f).toString())
 
@@ -48,6 +54,10 @@ class HangingSignRule : StandingAndWallPlacementRule(
     Direction.UP,
     Signs::wallVariant,
 ) {
+    init {
+        onPlace { openSignEditor() }
+    }
+
     override fun standingState(standing: Block, event: BlockPlacementEvent): Block {
         val abovePosition = event.blockPosition.relative(BlockFace.TOP)
         val above = event.instance.getBlockOrAir(abovePosition)
@@ -92,6 +102,14 @@ class HangingSignRule : StandingAndWallPlacementRule(
         }
         return Support.isFaceSturdy(instance, attachPosition, attachFace.blockFace)
     }
+}
+
+/**
+ * Opens the front-text sign editor after a player places a sign
+ */
+private fun BlockPlacementEvent.openSignEditor() {
+    if (isCancelled) return
+    player.sendPacket(OpenSignEditorPacket(blockPosition, SignTextSlot.FRONT))
 }
 
 // --- Banners and skulls ------------------------------------------------------------------------
