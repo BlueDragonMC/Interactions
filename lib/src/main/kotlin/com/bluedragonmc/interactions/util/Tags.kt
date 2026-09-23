@@ -61,4 +61,22 @@ object Tags {
 
     /** The `minecraft:copper_trapdoors` tag. */
     val COPPER_TRAPDOORS: Set<Key> by lazy { blockTag("minecraft:copper_trapdoors") }
+
+    /** The `minecraft:snow` tag (snow, snow blocks). */
+    val SNOW: Set<Key> by lazy { blockTag("minecraft:snow") }
+
+    /** The `minecraft:maintains_farmland` tag (crops that keep farmland hydrated regardless). */
+    val MAINTAINS_FARMLAND: Set<Key> by lazy { blockTag("minecraft:maintains_farmland") }
+
+    /** The `minecraft:supports_chorus_plant` tag. */
+    val SUPPORTS_CHORUS_PLANT: Set<Key> by lazy { blockTag("minecraft:supports_chorus_plant") }
+
+    /** The `minecraft:pale_oak_logs` tag. */
+    val PALE_OAK_LOGS: Set<Key> by lazy { blockTag("minecraft:pale_oak_logs") }
+
+    /** The `minecraft:causes_continuous_geyser_eruptions` tag (magma-like blocks). */
+    val CONTINUOUS_GEYSER: Set<Key> by lazy { blockTag("minecraft:causes_continuous_geyser_eruptions") }
+
+    /** The `minecraft:causes_periodic_geyser_eruptions` tag (soul sand). */
+    val PERIODIC_GEYSER: Set<Key> by lazy { blockTag("minecraft:causes_periodic_geyser_eruptions") }
 }

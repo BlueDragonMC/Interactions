@@ -113,6 +113,12 @@ object Support {
     fun canSupportRigidBlock(instance: Instance, position: Point): Boolean =
         isFaceFull(instance, position, BlockFace.TOP)
 
+    /** Whether the block at [position] is solid and has a full [face] (vanilla `canSupportRigidBlock`). */
+    fun canSupportRigidBlock(instance: Instance, position: Point, face: BlockFace): Boolean {
+        val block = instance.getBlockOrAir(position)
+        return block.solid() && isFaceFull(block, face)
+    }
+
     /** Shapes that are full blocks but never connect to fences, walls, bars or panes. */
     fun isExceptionForConnection(block: Block): Boolean =
         block.key() in connectionExceptions || block.key() in Tags.SHULKER_BOXES || block.key() in Tags.LEAVES

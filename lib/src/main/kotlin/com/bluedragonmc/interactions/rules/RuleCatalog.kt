@@ -53,6 +53,16 @@ import com.bluedragonmc.interactions.rules.misc.ShelfRule
 import com.bluedragonmc.interactions.rules.misc.ShulkerBoxRule
 import com.bluedragonmc.interactions.rules.misc.SnowRule
 import com.bluedragonmc.interactions.rules.misc.TurtleEggPlacementRule
+import com.bluedragonmc.interactions.rules.misc.CreakingHeartRule
+import com.bluedragonmc.interactions.rules.misc.CrafterRule
+import com.bluedragonmc.interactions.rules.misc.FarmlandRule
+import com.bluedragonmc.interactions.rules.misc.HugeMushroomRule
+import com.bluedragonmc.interactions.rules.misc.JigsawRule
+import com.bluedragonmc.interactions.rules.misc.PaleHangingMossRule
+import com.bluedragonmc.interactions.rules.misc.PaleMossCarpetRule
+import com.bluedragonmc.interactions.rules.misc.PotentSulfurRule
+import com.bluedragonmc.interactions.rules.misc.ShelfMushroomRule
+import com.bluedragonmc.interactions.rules.misc.SnowyRule
 import com.bluedragonmc.interactions.rules.misc.WaterloggedRule
 import com.bluedragonmc.interactions.rules.multiblock.BedRule
 import com.bluedragonmc.interactions.rules.multiblock.BigDripleafRule
@@ -63,6 +73,7 @@ import com.bluedragonmc.interactions.rules.multiblock.TallPlantRule
 import com.bluedragonmc.interactions.rules.plants.BambooRule
 import com.bluedragonmc.interactions.rules.plants.CactusRule
 import com.bluedragonmc.interactions.rules.plants.CaveVinesRule
+import com.bluedragonmc.interactions.rules.plants.ChorusPlantRule
 import com.bluedragonmc.interactions.rules.plants.CocoaRule
 import com.bluedragonmc.interactions.rules.plants.CoralFanRule
 import com.bluedragonmc.interactions.rules.plants.CoralRule
@@ -83,11 +94,15 @@ import com.bluedragonmc.interactions.rules.plants.WeepingVinesRule
 import com.bluedragonmc.interactions.rules.redstone.ComparatorRule
 import com.bluedragonmc.interactions.rules.redstone.PressurePlateRule
 import com.bluedragonmc.interactions.rules.redstone.RailRule
+import com.bluedragonmc.interactions.rules.redstone.RedstoneWireRule
 import com.bluedragonmc.interactions.rules.redstone.RepeaterRule
+import com.bluedragonmc.interactions.rules.redstone.TripwireHookRule
+import com.bluedragonmc.interactions.rules.redstone.TripwireRule
 import com.bluedragonmc.interactions.rules.structural.SlabPlacementRule
 import com.bluedragonmc.interactions.rules.structural.StairsPlacementRule
 import com.bluedragonmc.interactions.rules.structural.TrapdoorRule
 import com.bluedragonmc.interactions.rules.wall.BannerRule
+import com.bluedragonmc.interactions.rules.wall.BellRule
 import com.bluedragonmc.interactions.rules.wall.HangingSignRule
 import com.bluedragonmc.interactions.rules.wall.LadderRule
 import com.bluedragonmc.interactions.rules.wall.LanternRule
@@ -143,6 +158,7 @@ object RuleCatalog {
         HangingSignRule(),
         BannerRule(),
         SkullRule(),
+        BellRule(),
 
         // Connecting
         WoodenFenceRule(),
@@ -173,6 +189,7 @@ object RuleCatalog {
         VineRule(),
         MultifaceVeinRule(),
         CocoaRule(),
+        ChorusPlantRule(),
 
         // Multi-block
         DoorRule(),
@@ -187,6 +204,9 @@ object RuleCatalog {
         RailRule(),
         RepeaterRule(),
         ComparatorRule(),
+        RedstoneWireRule(),
+        TripwireRule(),
+        TripwireHookRule(),
 
         // Containers / workstations / misc
         ChestRule(),
@@ -207,6 +227,16 @@ object RuleCatalog {
         CommandBlockRule(),
         CalibratedSculkSensorRule(),
         LeafLitterRule(),
+        SnowyRule(),
+        FarmlandRule(),
+        HugeMushroomRule(),
+        CreakingHeartRule(),
+        PotentSulfurRule(),
+        CrafterRule(),
+        JigsawRule(),
+        PaleMossCarpetRule(),
+        PaleHangingMossRule(),
+        ShelfMushroomRule(),
 
         // Interactions
         FlowerPotRule(),

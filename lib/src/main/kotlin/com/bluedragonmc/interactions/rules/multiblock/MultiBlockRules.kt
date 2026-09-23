@@ -2,6 +2,7 @@ package com.bluedragonmc.interactions.rules.multiblock
 
 import com.bluedragonmc.interactions.BlockSet
 import com.bluedragonmc.interactions.event.BlockPlacementEvent
+import com.bluedragonmc.interactions.plus
 import com.bluedragonmc.interactions.rules.base.HorizontalFacingRule
 import com.bluedragonmc.interactions.rules.base.MultiBlockPlacementRule
 import com.bluedragonmc.interactions.util.*
@@ -85,7 +86,7 @@ class DoorRule : MultiBlockPlacementRule(BlockSet.fromTag("minecraft:doors")) {
 }
 
 /** Beds: the clicked position is the foot, and the head is placed in the facing direction. */
-class BedRule : MultiBlockPlacementRule(BlockSet.fromTag("minecraft:beds")) {
+class BedRule : MultiBlockPlacementRule(BlockSet.fromTag("minecraft:beds") + BlockSet.from(Block.STRAW_BED)) {
 
     override fun primaryState(event: BlockPlacementEvent): Block =
         event.block
