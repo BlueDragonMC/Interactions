@@ -52,4 +52,13 @@ object Tags {
 
     /** The `minecraft:soul_fire_base_blocks` tag (soul sand, soul soil). */
     val SOUL_FIRE_BASE_BLOCKS: Set<Key> by lazy { blockTag("minecraft:soul_fire_base_blocks") }
+
+    /** The `minecraft:wooden_buttons` tag. */
+    val WOODEN_BUTTONS: Set<Key> by lazy { blockTag("minecraft:wooden_buttons") }
+
+    /** The `minecraft:copper_doors` tag. */
+    val COPPER_DOORS: Set<Key> by lazy { blockTag("minecraft:copper_doors") }
+
+    /** The `minecraft:copper_trapdoors` tag. */
+    val COPPER_TRAPDOORS: Set<Key> by lazy { blockTag("minecraft:copper_trapdoors") }
 }

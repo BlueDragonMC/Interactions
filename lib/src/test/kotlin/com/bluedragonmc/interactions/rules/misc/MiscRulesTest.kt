@@ -1,6 +1,7 @@
 package com.bluedragonmc.interactions.rules.misc
 
 import com.bluedragonmc.interactions.rules.base.fireInteract
+import com.bluedragonmc.interactions.rules.interaction.misc.CandleInteractionRule
 import com.bluedragonmc.interactions.rules.base.firePlace
 import com.bluedragonmc.interactions.rules.base.holdMaterial
 import com.bluedragonmc.interactions.rules.base.setupInstance
@@ -121,7 +122,7 @@ class MiscRulesTest {
 
     @Test
     fun `flint and steel lights a candle`(env: Env) {
-        val instance = setupInstance(env, CandlePlacementRule())
+        val instance = setupInstance(env, CandlePlacementRule(), CandleInteractionRule())
         instance.setBlock(0, 40, 0, Block.CANDLE)
         val player = player(env, instance)
         holdMaterial(player, Material.FLINT_AND_STEEL)
@@ -134,7 +135,7 @@ class MiscRulesTest {
 
     @Test
     fun `waterlogged candles cannot be lit`(env: Env) {
-        val instance = setupInstance(env, CandlePlacementRule())
+        val instance = setupInstance(env, CandlePlacementRule(), CandleInteractionRule())
         val waterlogged = Block.CANDLE.withProperty("waterlogged", "true")
         instance.setBlock(0, 40, 0, waterlogged)
         val player = player(env, instance)

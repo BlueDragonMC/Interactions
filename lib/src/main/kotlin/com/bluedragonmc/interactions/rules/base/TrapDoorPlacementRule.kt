@@ -6,8 +6,6 @@ import com.bluedragonmc.interactions.util.Signals
 import com.bluedragonmc.interactions.util.States
 import com.bluedragonmc.interactions.util.Waterlogged
 import com.bluedragonmc.interactions.util.horizontalDirection
-import com.bluedragonmc.interactions.util.isSecondaryUseActive
-import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockFace
 
 /**
@@ -15,17 +13,6 @@ import net.minestom.server.instance.block.BlockFace
  * signals and toggle as the signal changes.
  */
 abstract class TrapDoorPlacementRule(blocks: BlockSet) : PlacementRule(blocks) {
-
-    init {
-        // Wooden and copper trapdoors open by hand; iron trapdoors only respond to redstone.
-        onInteract {
-            if (isSecondaryUseActive()) return@onInteract
-            if (block.key() == Block.IRON_TRAPDOOR.key()) return@onInteract
-            val open = (block.getProperty(States.OPEN) != "true").toString()
-            instance.setBlock(blockPosition, block.withProperty(States.OPEN, open))
-            isBlockingItemUse = true
-        }
-    }
 
     init {
         onPlace {

@@ -75,22 +75,5 @@ class FenceGateRule : PlacementRule(BlockSet.fromTag("minecraft:fence_gates")) {
                     .withProperty(States.POWERED, powered.toString())
             }
         }
-
-        onInteract {
-            if (isSecondaryUseActive()) return@onInteract
-            val open = block.getProperty(States.OPEN) == "true"
-            val updated = if (open) {
-                block.withProperty(States.OPEN, "false")
-            } else {
-                val facing = player.position.horizontalDirection()
-                var state = block
-                if (state.getProperty(States.FACING) == facing.oppositeFace.name.lowercase()) {
-                    state = state.withProperty(States.FACING, facing.name.lowercase())
-                }
-                state.withProperty(States.OPEN, "true")
-            }
-            instance.setBlock(blockPosition, updated)
-            isBlockingItemUse = true
-        }
     }
 }

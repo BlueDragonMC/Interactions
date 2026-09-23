@@ -1,6 +1,7 @@
 package com.bluedragonmc.interactions.rules.connecting
 
 import com.bluedragonmc.interactions.rules.base.fireInteract
+import com.bluedragonmc.interactions.rules.interaction.connecting.FenceGateInteractionRule
 import com.bluedragonmc.interactions.rules.base.firePlace
 import com.bluedragonmc.interactions.rules.base.holdBlock
 import com.bluedragonmc.interactions.rules.base.setupInstance
@@ -138,7 +139,7 @@ class ConnectingRulesTest {
 
     @Test
     fun `fence gate faces the player`(env: Env) {
-        val instance = setupInstance(env, FenceGateRule())
+        val instance = setupInstance(env, FenceGateRule(), FenceGateInteractionRule())
 
         val event = firePlace(instance, player(env, instance), Block.OAK_FENCE_GATE, BlockFace.TOP, BlockVec(0, 40, 0))
 
@@ -148,7 +149,7 @@ class ConnectingRulesTest {
 
     @Test
     fun `clicking a fence gate opens and closes it`(env: Env) {
-        val instance = setupInstance(env, FenceGateRule())
+        val instance = setupInstance(env, FenceGateRule(), FenceGateInteractionRule())
         instance.setBlock(0, 40, 0, Block.OAK_FENCE_GATE.withProperty("open", "false"))
         val player = player(env, instance)
 
@@ -160,7 +161,7 @@ class ConnectingRulesTest {
 
     @Test
     fun `fence gate opens toward the player`(env: Env) {
-        val instance = setupInstance(env, FenceGateRule())
+        val instance = setupInstance(env, FenceGateRule(), FenceGateInteractionRule())
         // Facing north while the player (yaw 0) faces south, so the gate flips to face south.
         instance.setBlock(0, 40, 0, Block.OAK_FENCE_GATE.withProperty("open", "false").withProperty("facing", "north"))
         val player = player(env, instance)
@@ -173,7 +174,7 @@ class ConnectingRulesTest {
 
     @Test
     fun `shift clicking a fence gate leaves it closed`(env: Env) {
-        val instance = setupInstance(env, FenceGateRule())
+        val instance = setupInstance(env, FenceGateRule(), FenceGateInteractionRule())
         instance.setBlock(0, 40, 0, Block.OAK_FENCE_GATE.withProperty("open", "false"))
         val player = player(env, instance)
         player.setSneaking(true)

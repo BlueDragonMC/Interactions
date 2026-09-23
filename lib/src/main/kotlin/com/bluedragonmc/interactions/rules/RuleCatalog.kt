@@ -30,6 +30,12 @@ import com.bluedragonmc.interactions.rules.interaction.FireStarterRule
 import com.bluedragonmc.interactions.rules.interaction.FlowerPotRule
 import com.bluedragonmc.interactions.rules.interaction.PumpkinCarvingRule
 import com.bluedragonmc.interactions.rules.interaction.SpawnerRule
+import com.bluedragonmc.interactions.rules.interaction.connecting.FenceGateInteractionRule
+import com.bluedragonmc.interactions.rules.interaction.misc.CandleInteractionRule
+import com.bluedragonmc.interactions.rules.interaction.redstone.ButtonInteractionRule
+import com.bluedragonmc.interactions.rules.interaction.structural.DoorInteractionRule
+import com.bluedragonmc.interactions.rules.interaction.structural.TrapdoorInteractionRule
+import com.bluedragonmc.interactions.rules.interaction.wall.LeverInteractionRule
 import com.bluedragonmc.interactions.rules.misc.AnvilRule
 import com.bluedragonmc.interactions.rules.misc.CalibratedSculkSensorRule
 import com.bluedragonmc.interactions.rules.misc.CampfireRule
@@ -209,6 +215,14 @@ object RuleCatalog {
         BucketRule(),
         FireStarterRule(),
         FireRule(),
+
+        // Block interactions (right-click)
+        ButtonInteractionRule(),
+        LeverInteractionRule(),
+        DoorInteractionRule(),
+        TrapdoorInteractionRule(),
+        FenceGateInteractionRule(),
+        CandleInteractionRule(),
     )
 
     /** Creates and registers every rule in this catalog into [registry]. */

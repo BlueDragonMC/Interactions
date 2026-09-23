@@ -1,5 +1,6 @@
 package com.bluedragonmc.interactions.rules
 
+import com.bluedragonmc.interactions.rules.interaction.redstone.ButtonInteractionRule
 import com.bluedragonmc.interactions.RuleRegistry
 import com.bluedragonmc.interactions.rules.base.fireInteract
 import com.bluedragonmc.interactions.rules.base.holdBlock
@@ -81,7 +82,7 @@ class ButtonPlacementRuleTest {
 
     @Test
     fun `clicking a button blocks item use`(env: Env) {
-        val instance = setupInstance(env, ButtonPlacementRule())
+        val instance = setupInstance(env, ButtonPlacementRule(), ButtonInteractionRule())
         instance.setBlock(0, 40, 0, Block.OAK_BUTTON)
         val player = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
         holdBlock(player, Block.STONE)
@@ -93,7 +94,7 @@ class ButtonPlacementRuleTest {
 
     @Test
     fun `shift clicking a button still allows placing a block`(env: Env) {
-        val instance = setupInstance(env, ButtonPlacementRule())
+        val instance = setupInstance(env, ButtonPlacementRule(), ButtonInteractionRule())
         instance.setBlock(0, 40, 0, Block.OAK_BUTTON)
         val player = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
         player.setSneaking(true)

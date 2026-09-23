@@ -1,6 +1,7 @@
 package com.bluedragonmc.interactions.rules.structural
 
 import com.bluedragonmc.interactions.rules.base.fireInteract
+import com.bluedragonmc.interactions.rules.interaction.structural.TrapdoorInteractionRule
 import com.bluedragonmc.interactions.rules.base.firePlace
 import com.bluedragonmc.interactions.rules.base.setupInstance
 import net.minestom.server.coordinate.BlockVec
@@ -52,7 +53,7 @@ class StructuralPlacementRulesTest {
 
     @Test
     fun `trapdoor on a horizontal face takes its facing from the click`(env: Env) {
-        val instance = setupInstance(env, TrapdoorRule())
+        val instance = setupInstance(env, TrapdoorRule(), TrapdoorInteractionRule())
         instance.setBlock(-1, 40, 0, Block.STONE)
 
         val event = firePlace(
@@ -77,7 +78,7 @@ class StructuralPlacementRulesTest {
 
     @Test
     fun `trapdoor on top of a block faces the player`(env: Env) {
-        val instance = setupInstance(env, TrapdoorRule())
+        val instance = setupInstance(env, TrapdoorRule(), TrapdoorInteractionRule())
         instance.setBlock(0, 39, 0, Block.STONE)
 
         val event = firePlace(instance, player(env, instance), Block.OAK_TRAPDOOR, BlockFace.TOP, BlockVec(0, 40, 0))
@@ -88,7 +89,7 @@ class StructuralPlacementRulesTest {
 
     @Test
     fun `trapdoor opens when placed next to a powered block`(env: Env) {
-        val instance = setupInstance(env, TrapdoorRule())
+        val instance = setupInstance(env, TrapdoorRule(), TrapdoorInteractionRule())
         instance.setBlock(0, 39, 0, Block.STONE)
         instance.setBlock(1, 40, 0, Block.REDSTONE_WIRE.withProperty("power", "15"))
 
@@ -100,7 +101,7 @@ class StructuralPlacementRulesTest {
 
     @Test
     fun `clicking a trapdoor toggles it`(env: Env) {
-        val instance = setupInstance(env, TrapdoorRule())
+        val instance = setupInstance(env, TrapdoorRule(), TrapdoorInteractionRule())
         instance.setBlock(0, 40, 0, Block.OAK_TRAPDOOR)
         val player = env.createPlayer(instance, Pos(0.0, 40.0, 0.0, 0f, 0f))
 
@@ -112,7 +113,7 @@ class StructuralPlacementRulesTest {
 
     @Test
     fun `iron trapdoors do not open by hand`(env: Env) {
-        val instance = setupInstance(env, TrapdoorRule())
+        val instance = setupInstance(env, TrapdoorRule(), TrapdoorInteractionRule())
         instance.setBlock(0, 40, 0, Block.IRON_TRAPDOOR)
         val player = env.createPlayer(instance, Pos(0.0, 40.0, 0.0, 0f, 0f))
 

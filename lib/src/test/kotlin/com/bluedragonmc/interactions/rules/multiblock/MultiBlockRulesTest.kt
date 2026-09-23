@@ -1,6 +1,7 @@
 package com.bluedragonmc.interactions.rules.multiblock
 
 import com.bluedragonmc.interactions.rules.base.fireInteract
+import com.bluedragonmc.interactions.rules.interaction.structural.DoorInteractionRule
 import com.bluedragonmc.interactions.rules.base.firePlace
 import com.bluedragonmc.interactions.rules.base.setupInstance
 import net.minestom.server.coordinate.BlockVec
@@ -23,7 +24,7 @@ class MultiBlockRulesTest {
 
     @Test
     fun `door places an upper and lower half`(env: Env) {
-        val instance = setupInstance(env, DoorRule())
+        val instance = setupInstance(env, DoorRule(), DoorInteractionRule())
         instance.setBlock(0, 39, 0, Block.STONE)
 
         firePlace(instance, player(env, instance), Block.OAK_DOOR, BlockFace.TOP, BlockVec(0, 40, 0))
@@ -68,7 +69,7 @@ class MultiBlockRulesTest {
 
     @Test
     fun `door hinge is right when the right side is blocked`(env: Env) {
-        val instance = setupInstance(env, DoorRule())
+        val instance = setupInstance(env, DoorRule(), DoorInteractionRule())
         instance.setBlock(1, 40, 0, Block.STONE)
 
         // yaw 180 -> facing north, whose clockwise (right) side is east.
@@ -79,7 +80,7 @@ class MultiBlockRulesTest {
 
     @Test
     fun `door hinge is left when the left side is blocked`(env: Env) {
-        val instance = setupInstance(env, DoorRule())
+        val instance = setupInstance(env, DoorRule(), DoorInteractionRule())
         instance.setBlock(1, 40, 0, Block.STONE)
 
         // yaw 0 -> facing south, whose counter-clockwise (left) side is east.
@@ -90,7 +91,7 @@ class MultiBlockRulesTest {
 
     @Test
     fun `clicking a door toggles both halves`(env: Env) {
-        val instance = setupInstance(env, DoorRule())
+        val instance = setupInstance(env, DoorRule(), DoorInteractionRule())
         instance.setBlock(0, 40, 0, Block.OAK_DOOR.withProperty("half", "lower"))
         instance.setBlock(0, 41, 0, Block.OAK_DOOR.withProperty("half", "upper"))
         val player = player(env, instance)
@@ -104,7 +105,7 @@ class MultiBlockRulesTest {
 
     @Test
     fun `iron doors do not open by hand`(env: Env) {
-        val instance = setupInstance(env, DoorRule())
+        val instance = setupInstance(env, DoorRule(), DoorInteractionRule())
         instance.setBlock(0, 40, 0, Block.IRON_DOOR.withProperty("half", "lower"))
         instance.setBlock(0, 41, 0, Block.IRON_DOOR.withProperty("half", "upper"))
         val player = player(env, instance)
