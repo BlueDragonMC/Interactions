@@ -55,8 +55,12 @@ abstract class BlockInteractionRule(val blocks: BlockSet) : Rule {
     }
 
     private companion object {
-        /** Later than the default priority, so placement rules handle an interaction first. */
-        const val INTERACTION_PRIORITY = 100
+        /**
+         * After the default priority (so placement rules handle an interaction first) but before the
+         * global [InteractionRule]s, so block-specific interactions claim the click before generic
+         * item interactions do.
+         */
+        const val INTERACTION_PRIORITY = 50
         val COUNTER = AtomicInteger()
     }
 }

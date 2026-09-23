@@ -59,7 +59,6 @@ minecraft:oxidized_copper_bulb
 minecraft:waxed_oxidized_copper_bulb
 minecraft:composter
 minecraft:brewing_stand
-minecraft:note_block
 minecraft:redstone_lamp
 minecraft:creeper_wall_head
 minecraft:dragon_wall_head

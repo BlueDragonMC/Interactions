@@ -36,6 +36,6 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 
 Source: https://github.com/vibenilla/placement
 
-Rule behavior and block coverage were used as a reference while implementing placement rules.
+Rule behavior and block coverage were used as a reference while implementing placement and interaction rules.
 
 Licensed under the Apache License, Version 2.0 (https://www.apache.org/licenses/LICENSE-2.0).

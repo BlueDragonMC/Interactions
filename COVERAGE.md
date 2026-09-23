@@ -8,10 +8,10 @@
 | Metric | Count |
 | --- | ---: |
 | Blocks with state | 884 |
-| Ignored (no custom logic needed) | 92 |
-| Covered by a rule | 792 |
+| Ignored (no custom logic needed) | 91 |
+| Covered by a rule | 793 |
 | Not yet covered | 0 |
-| **Coverage** | **100%** (792 / 792) |
+| **Coverage** | **100%** (793 / 793) |
 
 ## Unsupported blocks
 
@@ -434,6 +434,7 @@ _None._
 - [x] minecraft:nether_brick_stairs
 - [x] minecraft:nether_brick_wall
 - [x] minecraft:nether_wart
+- [x] minecraft:note_block
 - [x] minecraft:oak_button
 - [x] minecraft:oak_door
 - [x] minecraft:oak_fence

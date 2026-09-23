@@ -11,6 +11,7 @@ import net.minestom.server.event.player.PlayerBlockInteractEvent
 import net.minestom.server.event.player.PlayerEditSignEvent
 import net.minestom.server.instance.block.SignTextSlot
 import net.minestom.server.item.Material
+import net.minestom.server.item.component.SwingAnimation
 import net.minestom.server.network.packet.server.play.OpenSignEditorPacket
 import net.minestom.server.network.packet.server.play.WorldEventPacket
 import net.minestom.server.sound.SoundEvent
@@ -40,14 +41,14 @@ class SignInteractionRule : BlockInteractionRule(
 
             if (waxed) {
                 isBlockingItemUse = true
-                playBlockSound(
-                    instance,
+                player.swingHand(hand, SwingAnimation.DEFAULT)
+                instance.playBlockSound(
                     if (Signs.isHangingSign(block)) {
                         SoundEvent.BLOCK_HANGING_SIGN_WAXED_INTERACT_FAIL
                     } else {
                         SoundEvent.BLOCK_SIGN_WAXED_INTERACT_FAIL
                     },
-                    blockCenter(blockPosition),
+                    blockPosition.blockCenter(),
                 )
                 return@onInteract
             }
@@ -55,6 +56,7 @@ class SignInteractionRule : BlockInteractionRule(
             // Anything else (including another sign) opens the editor; only sneaking places a block.
             if (!mayBuild(player)) return@onInteract
             isBlockingItemUse = true
+            player.swingHand(hand, SwingAnimation.DEFAULT)
             player.sendPacket(
                 OpenSignEditorPacket(blockPosition, if (isFrontText) SignTextSlot.FRONT else SignTextSlot.BACK),
             )
@@ -118,7 +120,7 @@ class SignInteractionRule : BlockInteractionRule(
                 WorldEventPacket(WorldEvent.PARTICLES_WAX_ON.id(), event.blockPosition, 0, false),
             )
         } else {
-            playBlockSound(event.instance, sound, blockCenter(event.blockPosition))
+            event.instance.playBlockSound(sound, event.blockPosition.blockCenter())
         }
 
         event.consumeHeldItem(1)

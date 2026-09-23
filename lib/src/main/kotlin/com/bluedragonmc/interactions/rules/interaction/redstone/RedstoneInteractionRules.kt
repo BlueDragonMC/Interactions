@@ -51,3 +51,47 @@ class ButtonInteractionRule : BlockInteractionRule(BlockSet.fromTag("minecraft:b
         const val STONE_DELAY = 20
     }
 }
+
+/** Right-clicking a repeater cycles its delay between 1 and 4. */
+class RepeaterInteractionRule : BlockInteractionRule(BlockSet.from(Block.REPEATER)) {
+    init {
+        onInteract {
+            if (isSecondaryUseActive()) return@onInteract
+            isBlockingItemUse = true
+            val delay = block.getProperty(States.DELAY)?.toIntOrNull() ?: 1
+            val next = if (delay >= 4) 1 else delay + 1
+            instance.setBlock(blockPosition, block.withProperty(States.DELAY, next.toString()))
+        }
+    }
+}
+
+/** Right-clicking a comparator toggles compare/subtract mode. */
+class ComparatorInteractionRule : BlockInteractionRule(BlockSet.from(Block.COMPARATOR)) {
+    init {
+        onInteract {
+            if (isSecondaryUseActive()) return@onInteract
+            isBlockingItemUse = true
+            val newMode = if (block.getProperty(States.MODE) == "compare") "subtract" else "compare"
+            instance.setBlock(blockPosition, block.withProperty(States.MODE, newMode))
+            instance.playBlockSoundExcept(
+                player,
+                SoundEvent.BLOCK_COMPARATOR_CLICK,
+                blockPosition.blockCenter(),
+                0.3f,
+                if (newMode == "subtract") 0.55f else 0.5f,
+            )
+        }
+    }
+}
+
+/** Right-clicking a daylight detector toggles its `inverted` state. */
+class DaylightDetectorInteractionRule : BlockInteractionRule(BlockSet.from(Block.DAYLIGHT_DETECTOR)) {
+    init {
+        onInteract {
+            if (isSecondaryUseActive()) return@onInteract
+            isBlockingItemUse = true
+            val inverted = block.getProperty(States.INVERTED) == "true"
+            instance.setBlock(blockPosition, block.withProperty(States.INVERTED, (!inverted).toString()))
+        }
+    }
+}

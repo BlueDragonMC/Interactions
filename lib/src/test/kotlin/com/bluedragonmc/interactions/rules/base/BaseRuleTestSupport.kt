@@ -1,8 +1,9 @@
 package com.bluedragonmc.interactions.rules.base
 
-import com.bluedragonmc.interactions.RuleRegistry
 import com.bluedragonmc.interactions.Rule
+import com.bluedragonmc.interactions.RuleRegistry
 import net.minestom.server.coordinate.BlockVec
+import net.minestom.server.coordinate.Pos
 import net.minestom.server.coordinate.Vec
 import net.minestom.server.entity.Player
 import net.minestom.server.entity.PlayerHand
@@ -17,6 +18,8 @@ import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
 import net.minestom.server.listener.BlockPlacementListener
 import net.minestom.server.network.packet.client.play.ClientPlayerBlockPlacementPacket
+import net.minestom.server.network.packet.server.play.SoundEffectPacket
+import net.minestom.testing.Collector
 import net.minestom.testing.Env
 
 internal fun setupInstance(env: Env, vararg rules: Rule): Instance {
@@ -26,6 +29,16 @@ internal fun setupInstance(env: Env, vararg rules: Rule): Instance {
     rules.forEach(registry::register)
     instance.eventNode().addChild(registry.eventNode())
     return instance
+}
+
+/**
+ * Creates a player and starts collecting the [SoundEffectPacket]s sent to it, so tests can assert on
+ * the sounds an interaction plays. Use this for the observer when the acting player is excluded.
+ */
+internal fun trackSounds(env: Env, instance: Instance, pos: Pos): Collector<SoundEffectPacket> {
+    val connection = env.createConnection()
+    connection.connect(instance, pos)
+    return connection.trackIncoming(SoundEffectPacket::class.java)
 }
 
 internal fun firePlace(

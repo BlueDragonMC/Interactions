@@ -2,12 +2,19 @@ package com.bluedragonmc.interactions.util
 
 import net.kyori.adventure.key.Key
 import net.minestom.server.instance.block.Block
+import net.minestom.server.item.Material
 
 object Tags {
 
     /** Resolves [key] to the set of block registry keys it contains, or an empty set if unknown. */
     fun blockTag(key: String): Set<Key> =
         Block.staticRegistry().getTag(Key.key(key))
+            ?.mapTo(mutableSetOf()) { it.key() }
+            ?: emptySet()
+
+    /** Resolves [key] to the set of item/material registry keys it contains, or an empty set if unknown. */
+    fun materialTag(key: String): Set<Key> =
+        Material.staticRegistry().getTag(Key.key(key))
             ?.mapTo(mutableSetOf()) { it.key() }
             ?: emptySet()
 
@@ -61,6 +68,9 @@ object Tags {
 
     /** The `minecraft:copper_trapdoors` tag. */
     val COPPER_TRAPDOORS: Set<Key> by lazy { blockTag("minecraft:copper_trapdoors") }
+
+    /** The `minecraft:note_block_top_instruments` material tag (blocks that can be placed on top). */
+    val NOTE_BLOCK_TOP_INSTRUMENTS: Set<Key> by lazy { materialTag("minecraft:note_block_top_instruments") }
 
     /** The `minecraft:snow` tag (snow, snow blocks). */
     val SNOW: Set<Key> by lazy { blockTag("minecraft:snow") }

@@ -6,11 +6,14 @@ import com.bluedragonmc.interactions.rules.connecting.*
 import com.bluedragonmc.interactions.rules.directional.*
 import com.bluedragonmc.interactions.rules.interaction.*
 import com.bluedragonmc.interactions.rules.interaction.connecting.FenceGateInteractionRule
-import com.bluedragonmc.interactions.rules.interaction.misc.CandleInteractionRule
-import com.bluedragonmc.interactions.rules.interaction.redstone.ButtonInteractionRule
+import com.bluedragonmc.interactions.rules.interaction.misc.*
+import com.bluedragonmc.interactions.rules.interaction.multiblock.BedInteractionRule
+import com.bluedragonmc.interactions.rules.interaction.plants.*
+import com.bluedragonmc.interactions.rules.interaction.redstone.*
 import com.bluedragonmc.interactions.rules.interaction.sign.SignInteractionRule
 import com.bluedragonmc.interactions.rules.interaction.structural.DoorInteractionRule
 import com.bluedragonmc.interactions.rules.interaction.structural.TrapdoorInteractionRule
+import com.bluedragonmc.interactions.rules.interaction.wall.BellInteractionRule
 import com.bluedragonmc.interactions.rules.interaction.wall.LeverInteractionRule
 import com.bluedragonmc.interactions.rules.misc.*
 import com.bluedragonmc.interactions.rules.multiblock.*
@@ -147,6 +150,7 @@ object RuleCatalog {
         PaleMossCarpetRule(),
         PaleHangingMossRule(),
         ShelfMushroomRule(),
+        NoteBlockPlacementRule(),
 
         // Interactions
         FlowerPotRule(),
@@ -164,6 +168,23 @@ object RuleCatalog {
         FenceGateInteractionRule(),
         CandleInteractionRule(),
         SignInteractionRule(),
+        RepeaterInteractionRule(),
+        ComparatorInteractionRule(),
+        DaylightDetectorInteractionRule(),
+        NoteBlockInteractionRule(),
+        BedInteractionRule(),
+        RespawnAnchorInteractionRule(),
+        CakeInteractionRule(),
+        CandleCakeInteractionRule(),
+        ComposterInteractionRule(),
+        JukeboxInteractionRule(),
+        BeehiveInteractionRule(),
+        SweetBerryBushInteractionRule(),
+        CaveVinesInteractionRule(),
+        DragonEggInteractionRule(),
+        ConsumeInteractionRule(),
+        BellInteractionRule(),
+        RedstoneWireInteractionRule(),
     )
 
     /** Creates and registers every rule in this catalog into [registry]. */

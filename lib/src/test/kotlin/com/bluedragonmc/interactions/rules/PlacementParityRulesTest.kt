@@ -12,7 +12,6 @@ import net.minestom.server.coordinate.Pos
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockFace
-import net.minestom.server.entity.Player
 import net.minestom.testing.Env
 import net.minestom.testing.EnvTest
 import org.junit.jupiter.api.Test
@@ -30,7 +29,7 @@ class PlacementParityRulesTest {
 
         val event = firePlace(instance, player(env, instance), Block.REDSTONE_WIRE, BlockFace.TOP, BlockVec(0, 40, 0))
 
-        // Vanilla places an isolated wire from its cross state, so every side connects.
+        // Redstone dust starts out in a cross shape where every side connects outwards.
         assertEquals("side", event.block.getProperty("north"))
         assertEquals("side", event.block.getProperty("east"))
         assertEquals("0", event.block.getProperty("power"))
