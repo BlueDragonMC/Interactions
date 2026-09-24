@@ -23,6 +23,7 @@ import net.minestom.server.inventory.Inventory
 import net.minestom.server.inventory.InventoryType
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
+import net.minestom.server.network.packet.server.play.BlockActionPacket
 import net.minestom.server.network.packet.server.play.BlockEntityDataPacket
 import net.minestom.server.network.packet.server.play.SoundEffectPacket
 import net.minestom.testing.Collector
@@ -314,17 +315,92 @@ class ContainerInteractionRuleTest {
     }
 
     @Test
-    fun `dispensers and hoppers play no open or close sound`(env: Env) {
+    fun `a chest signals its lid to the client`(env: Env) {
+        val instance = setupInstance(env, ContainerInteractionRule())
+        val (player, actions) = openTracked(env, instance, Block.CHEST)
+        player.closeInventory()
+
+        val lid = lidActions(actions)
+        assertEquals(1, lid.count { it.actionParam.toInt() == 1 })
+        assertEquals(1, lid.count { it.actionParam.toInt() == 0 })
+    }
+
+    @Test
+    fun `a shulker box signals its lid to the client`(env: Env) {
+        val instance = setupInstance(env, ContainerInteractionRule())
+        val (player, actions) = openTracked(env, instance, Block.SHULKER_BOX)
+        player.closeInventory()
+
+        val lid = lidActions(actions)
+        assertEquals(1, lid.count { it.actionParam.toInt() == 1 })
+        assertEquals(1, lid.count { it.actionParam.toInt() == 0 })
+    }
+
+    @Test
+    fun `the lid is only signalled for the first and last viewer`(env: Env) {
+        val instance = setupInstance(env, ContainerInteractionRule())
+        instance.setBlock(0, 40, 0, Block.CHEST)
+        val connection = env.createConnection()
+        val first = connection.connect(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
+        val second = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
+        val actions = connection.trackIncoming(BlockActionPacket::class.java)
+
+        fireInteract(instance, first, BlockFace.NORTH, BlockVec(0, 40, 0))
+        fireInteract(instance, second, BlockFace.NORTH, BlockVec(0, 40, 0))
+        first.closeInventory()
+        second.closeInventory()
+
+        val lid = lidActions(actions)
+        assertEquals(1, lid.count { it.actionParam.toInt() == 1 })
+        assertEquals(1, lid.count { it.actionParam.toInt() == 0 })
+    }
+
+    @Test
+    fun `opening a barrel toggles its open block state`(env: Env) {
+        val instance = setupInstance(env, ContainerInteractionRule())
+        instance.setBlock(0, 40, 0, Block.BARREL)
+        val player = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
+        assertEquals("false", instance.getBlock(0, 40, 0).getProperty("open"))
+
+        fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
+        assertEquals("true", instance.getBlock(0, 40, 0).getProperty("open"))
+
+        player.closeInventory()
+        assertEquals("false", instance.getBlock(0, 40, 0).getProperty("open"))
+    }
+
+    @Test
+    fun `dispensers and hoppers play no sound and no animation`(env: Env) {
         val instance = setupInstance(env, ContainerInteractionRule())
         instance.setBlock(0, 40, 0, Block.DISPENSER)
-        val player = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
-        val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
+        val connection = env.createConnection()
+        val player = connection.connect(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
+        val sounds = connection.trackIncoming(SoundEffectPacket::class.java)
+        val actions = connection.trackIncoming(BlockActionPacket::class.java)
 
         fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
         player.closeInventory()
 
-        assertTrue(soundKeys(sounds).isEmpty())
+        assertTrue(sounds.collect().isEmpty())
+        assertTrue(actions.collect().isEmpty())
     }
+
+    /** Places [block], connects a tracked player, and opens the container. */
+    private fun openTracked(env: Env, instance: Instance, block: Block): Pair<Player, Collector<BlockActionPacket>> {
+        instance.setBlock(0, 40, 0, block)
+        val connection = env.createConnection()
+        val player = connection.connect(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
+        val actions = connection.trackIncoming(BlockActionPacket::class.java)
+        fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
+        return player to actions
+    }
+
+    /** The lid block actions (id 1) received for the container at the origin. */
+    private fun lidActions(actions: Collector<BlockActionPacket>): List<BlockActionPacket> =
+        actions.collect().filter {
+            it.actionId.toInt() == 1 &&
+                it.blockPosition.blockX() == 0 && it.blockPosition.blockY() == 40 && it.blockPosition.blockZ() == 0
+        }
 
     private fun soundKeys(sounds: Collector<SoundEffectPacket>): List<String> =
         sounds.collect().map { it.soundEvent().key().value() }

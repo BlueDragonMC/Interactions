@@ -1,5 +1,6 @@
 package com.bluedragonmc.interactions.container
 
+import com.bluedragonmc.interactions.util.States
 import com.bluedragonmc.interactions.util.blockCenter
 import com.bluedragonmc.interactions.util.getBlockOrAir
 import com.bluedragonmc.interactions.util.playBlockSound
@@ -23,7 +24,7 @@ import java.util.concurrent.ThreadLocalRandom
  * Contents are kept in sync with the `Items` tag on the block.
  *
  * [openSound] and [closeSound] play when the first viewer opens the container and the last viewer
- * closes it, matching vanilla.
+ * closes it, matching vanilla. [animation] tells clients about the same transition.
  */
 class BlockContainerInventory(
     val instance: Instance,
@@ -33,6 +34,7 @@ class BlockContainerInventory(
     title: Component,
     private val openSound: SoundEvent?,
     private val closeSound: SoundEvent?,
+    private val animation: ContainerAnimation,
 ) : Inventory(type, title) {
 
     /** True while [reload] is copying items in, to avoid writing them straight back out. */
@@ -66,7 +68,10 @@ class BlockContainerInventory(
     override fun addViewer(player: Player): Boolean {
         val wasEmpty = viewers.isEmpty()
         val added = super.addViewer(player)
-        if (added && wasEmpty) playSound(openSound)
+        if (added && wasEmpty) {
+            playSound(openSound)
+            animate(true)
+        }
         return added
     }
 
@@ -74,10 +79,28 @@ class BlockContainerInventory(
         val removed = super.removeViewer(player)
         if (removed && viewers.isEmpty()) {
             persist()
-            BlockContainers.release(this)
             playSound(closeSound)
+            animate(false)
+            BlockContainers.release(this)
         }
         return removed
+    }
+
+    /** Tells clients to play this container's open or close animation. */
+    private fun animate(open: Boolean) {
+        when (animation) {
+            ContainerAnimation.NONE -> {}
+            ContainerAnimation.LID -> {
+                if (instance.isChunkLoaded(blockPosition)) {
+                    instance.sendBlockAction(blockPosition, LID_ACTION, if (open) 1 else 0)
+                }
+            }
+            ContainerAnimation.BLOCK_STATE -> {
+                val block = instance.getBlockOrAir(blockPosition)
+                if (block.key() != blockKey || block.getProperty(States.OPEN) == null) return
+                instance.setBlock(blockPosition, block.withProperty(States.OPEN, open.toString()))
+            }
+        }
     }
 
     private fun playSound(sound: SoundEvent?) {
@@ -88,6 +111,14 @@ class BlockContainerInventory(
             volume = 0.5f,
             pitch = ThreadLocalRandom.current().nextFloat() * 0.1f + 0.9f,
         )
+    }
+
+    private companion object {
+        /**
+         * The block action both chests and shulker boxes use to set their open count; the client
+         * animates the lid towards whichever state this signals.
+         */
+        const val LID_ACTION: Byte = 1
     }
 }
 
@@ -111,11 +142,12 @@ internal object BlockContainers {
         defaultTitle: Component,
         openSound: SoundEvent?,
         closeSound: SoundEvent?,
+        animation: ContainerAnimation,
     ) {
         val block = instance.getBlockOrAir(position)
         val key = ContainerKey(instance, position)
         val inventory = open[key] ?: BlockContainerInventory(
-            instance, position, block.key(), type, title(block, defaultTitle), openSound, closeSound,
+            instance, position, block.key(), type, title(block, defaultTitle), openSound, closeSound, animation,
         ).also {
             it.reload(block)
             open[key] = it

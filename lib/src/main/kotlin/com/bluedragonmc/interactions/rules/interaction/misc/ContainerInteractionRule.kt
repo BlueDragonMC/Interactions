@@ -3,6 +3,7 @@ package com.bluedragonmc.interactions.rules.interaction.misc
 import com.bluedragonmc.interactions.BlockInteractionRule
 import com.bluedragonmc.interactions.BlockSet
 import com.bluedragonmc.interactions.container.BlockContainers
+import com.bluedragonmc.interactions.container.ContainerAnimation
 import com.bluedragonmc.interactions.container.readContainerItems
 import com.bluedragonmc.interactions.plus
 import com.bluedragonmc.interactions.util.Tags
@@ -26,7 +27,7 @@ class ContainerInteractionRule : BlockInteractionRule(SIMPLE_CONTAINERS) {
             val spec = specFor(block) ?: return@onInteract
             isBlockingItemUse = true
             BlockContainers.open(
-                player, instance, blockPosition, spec.type, spec.title, spec.openSound, spec.closeSound,
+                player, instance, blockPosition, spec.type, spec.title, spec.openSound, spec.closeSound, spec.animation,
             )
         }
 
@@ -43,6 +44,7 @@ class ContainerInteractionRule : BlockInteractionRule(SIMPLE_CONTAINERS) {
         val title: Component,
         val openSound: SoundEvent? = null,
         val closeSound: SoundEvent? = null,
+        val animation: ContainerAnimation = ContainerAnimation.NONE,
     )
 
     private companion object {
@@ -61,6 +63,7 @@ class ContainerInteractionRule : BlockInteractionRule(SIMPLE_CONTAINERS) {
                 Component.translatable("container.shulkerBox"),
                 SoundEvent.BLOCK_SHULKER_BOX_OPEN,
                 SoundEvent.BLOCK_SHULKER_BOX_CLOSE,
+                ContainerAnimation.LID,
             )
             block.key() in CHESTS.keys -> chestSpec(block.key().asString())
             block.key() == Block.BARREL.key() -> ContainerSpec(
@@ -68,6 +71,7 @@ class ContainerInteractionRule : BlockInteractionRule(SIMPLE_CONTAINERS) {
                 Component.translatable("container.barrel"),
                 SoundEvent.BLOCK_BARREL_OPEN,
                 SoundEvent.BLOCK_BARREL_CLOSE,
+                ContainerAnimation.BLOCK_STATE,
             )
             block.key() == Block.DISPENSER.key() ->
                 ContainerSpec(InventoryType.WINDOW_3X3, Component.translatable("container.dispenser"))
@@ -88,7 +92,13 @@ class ContainerInteractionRule : BlockInteractionRule(SIMPLE_CONTAINERS) {
                     SoundEvent.BLOCK_COPPER_CHEST_OPEN to SoundEvent.BLOCK_COPPER_CHEST_CLOSE
                 else -> SoundEvent.BLOCK_CHEST_OPEN to SoundEvent.BLOCK_CHEST_CLOSE
             }
-            return ContainerSpec(InventoryType.CHEST_3_ROW, Component.translatable("container.chest"), open, close)
+            return ContainerSpec(
+                InventoryType.CHEST_3_ROW,
+                Component.translatable("container.chest"),
+                open,
+                close,
+                ContainerAnimation.LID,
+            )
         }
     }
 }
