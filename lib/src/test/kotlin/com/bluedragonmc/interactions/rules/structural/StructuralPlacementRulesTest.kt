@@ -105,7 +105,7 @@ class StructuralPlacementRulesTest {
         instance.setBlock(0, 40, 0, Block.OAK_TRAPDOOR)
         val player = env.createPlayer(instance, Pos(0.0, 40.0, 0.0, 0f, 0f))
 
-        val event = fireInteract(instance, player, Block.OAK_TRAPDOOR, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty("open"))
         assertTrue(event.isBlockingItemUse)
@@ -117,7 +117,7 @@ class StructuralPlacementRulesTest {
         instance.setBlock(0, 40, 0, Block.IRON_TRAPDOOR)
         val player = env.createPlayer(instance, Pos(0.0, 40.0, 0.0, 0f, 0f))
 
-        val event = fireInteract(instance, player, Block.IRON_TRAPDOOR, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("false", instance.getBlock(0, 40, 0).getProperty("open"))
         assertFalse(event.isBlockingItemUse)

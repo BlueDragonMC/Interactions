@@ -27,7 +27,7 @@ class CandleCakeInteractionRuleTest {
         val player = env.createPlayer(instance, Pos(0.0, 40.0, 0.0, 0f, 0f))
         holdMaterial(player, Material.FLINT_AND_STEEL)
 
-        val event = fireInteract(instance, player, candleCake, BlockFace.EAST, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.EAST, BlockVec(0, 40, 0))
 
         assertTrue(event.isBlockingItemUse)
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty(States.LIT))

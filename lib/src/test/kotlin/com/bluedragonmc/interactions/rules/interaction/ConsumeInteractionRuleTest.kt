@@ -24,7 +24,7 @@ class ConsumeInteractionRuleTest {
         val player = env.createPlayer(instance, Pos(0.0, 40.0, 0.0, 0f, 0f))
         holdBlock(player, Block.STONE)
 
-        val event = fireInteract(instance, player, Block.CRAFTING_TABLE, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertTrue(event.isBlockingItemUse)
     }
@@ -37,7 +37,7 @@ class ConsumeInteractionRuleTest {
         player.isSneaking = true
         holdBlock(player, Block.STONE)
 
-        val event = fireInteract(instance, player, Block.CRAFTING_TABLE, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertFalse(event.isBlockingItemUse)
     }

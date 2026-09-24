@@ -153,7 +153,7 @@ class ConnectingRulesTest {
         instance.setBlock(0, 40, 0, Block.OAK_FENCE_GATE.withProperty("open", "false"))
         val player = player(env, instance)
 
-        val event = fireInteract(instance, player, Block.OAK_FENCE_GATE, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty("open"))
         assertTrue(event.isBlockingItemUse)
@@ -166,7 +166,7 @@ class ConnectingRulesTest {
         instance.setBlock(0, 40, 0, Block.OAK_FENCE_GATE.withProperty("open", "false").withProperty("facing", "north"))
         val player = player(env, instance)
 
-        fireInteract(instance, player, Block.OAK_FENCE_GATE, BlockFace.NORTH, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("south", instance.getBlock(0, 40, 0).getProperty("facing"))
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty("open"))
@@ -180,7 +180,7 @@ class ConnectingRulesTest {
         player.setSneaking(true)
         holdBlock(player, Block.STONE)
 
-        val event = fireInteract(instance, player, Block.OAK_FENCE_GATE, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("false", instance.getBlock(0, 40, 0).getProperty("open"))
         assertFalse(event.isBlockingItemUse)

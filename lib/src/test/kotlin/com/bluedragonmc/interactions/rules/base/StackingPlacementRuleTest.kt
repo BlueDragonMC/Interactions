@@ -159,7 +159,7 @@ class StackingPlacementRuleTest {
 
         val player = player(env, instance)
         holdBlock(player, Block.SEA_PICKLE)
-        fireInteract(instance, player, Block.SAND, BlockFace.TOP, BlockVec(0, 39, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 39, 0))
 
         assertEquals("2", instance.getBlock(0, 40, 0).getProperty("pickles"))
         assertTrue(player.getItemInHand(PlayerHand.MAIN).isAir)
@@ -173,7 +173,7 @@ class StackingPlacementRuleTest {
 
         val player = player(env, instance)
         holdBlock(player, Block.TURTLE_EGG)
-        fireInteract(instance, player, Block.SAND, BlockFace.TOP, BlockVec(0, 39, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 39, 0))
 
         assertEquals("2", instance.getBlock(0, 40, 0).getProperty("eggs"))
     }
@@ -186,7 +186,7 @@ class StackingPlacementRuleTest {
 
         val player = player(env, instance)
         holdBlock(player, Block.STONE)
-        fireInteract(instance, player, Block.SAND, BlockFace.TOP, BlockVec(0, 39, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 39, 0))
 
         assertEquals("1", instance.getBlock(0, 40, 0).getProperty("pickles"))
         assertFalse(player.getItemInHand(PlayerHand.MAIN).isAir)

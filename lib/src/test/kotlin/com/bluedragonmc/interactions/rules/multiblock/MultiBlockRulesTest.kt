@@ -96,7 +96,7 @@ class MultiBlockRulesTest {
         instance.setBlock(0, 41, 0, Block.OAK_DOOR.withProperty("half", "upper"))
         val player = player(env, instance)
 
-        val event = fireInteract(instance, player, Block.OAK_DOOR, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty("open"))
         assertEquals("true", instance.getBlock(0, 41, 0).getProperty("open"))
@@ -110,7 +110,7 @@ class MultiBlockRulesTest {
         instance.setBlock(0, 41, 0, Block.IRON_DOOR.withProperty("half", "upper"))
         val player = player(env, instance)
 
-        val event = fireInteract(instance, player, Block.IRON_DOOR, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("false", instance.getBlock(0, 40, 0).getProperty("open"))
         assertFalse(event.isBlockingItemUse)

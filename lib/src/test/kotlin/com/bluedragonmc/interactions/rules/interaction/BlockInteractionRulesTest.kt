@@ -44,7 +44,7 @@ class BlockInteractionRulesTest {
         val player = actor(env, instance)
         val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
 
-        val event = fireInteract(instance, player, lever, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty("powered"))
         assertTrue(event.isBlockingItemUse)
@@ -60,7 +60,7 @@ class BlockInteractionRulesTest {
         player.setSneaking(true)
         holdMaterial(player, Material.STONE)
 
-        val event = fireInteract(instance, player, lever, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("false", instance.getBlock(0, 40, 0).getProperty("powered"))
         assertFalse(event.isBlockingItemUse)
@@ -76,7 +76,7 @@ class BlockInteractionRulesTest {
         val player = actor(env, instance)
         val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
 
-        val event = fireInteract(instance, player, button, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty("powered"))
         assertTrue(event.isBlockingItemUse)
@@ -98,7 +98,7 @@ class BlockInteractionRulesTest {
         val player = actor(env, instance)
         val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
 
-        val event = fireInteract(instance, player, lower, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty("open"))
         assertEquals("true", instance.getBlock(0, 41, 0).getProperty("open"))
@@ -113,7 +113,7 @@ class BlockInteractionRulesTest {
         instance.setBlock(0, 40, 0, door)
         val player = actor(env, instance)
 
-        val event = fireInteract(instance, player, door, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("false", instance.getBlock(0, 40, 0).getProperty("open"))
         assertFalse(event.isBlockingItemUse)
@@ -127,7 +127,7 @@ class BlockInteractionRulesTest {
         val player = actor(env, instance)
         val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
 
-        val event = fireInteract(instance, player, trapdoor, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty("open"))
         assertTrue(event.isBlockingItemUse)
@@ -144,7 +144,7 @@ class BlockInteractionRulesTest {
         val player = actor(env, instance) // yaw 0 faces south
         val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
 
-        val event = fireInteract(instance, player, gate, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty("open"))
         assertEquals("south", instance.getBlock(0, 40, 0).getProperty("facing"))
@@ -162,7 +162,7 @@ class BlockInteractionRulesTest {
         val player = actor(env, instance)
         holdMaterial(player, Material.FLINT_AND_STEEL)
 
-        val event = fireInteract(instance, player, candle, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty("lit"))
         assertTrue(event.isBlockingItemUse)
@@ -176,7 +176,7 @@ class BlockInteractionRulesTest {
         val player = actor(env, instance)
         val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
 
-        val event = fireInteract(instance, player, candle, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("false", instance.getBlock(0, 40, 0).getProperty("lit"))
         assertTrue(event.isBlockingItemUse)
@@ -191,7 +191,7 @@ class BlockInteractionRulesTest {
         val player = actor(env, instance)
         holdMaterial(player, Material.FLINT_AND_STEEL)
 
-        val event = fireInteract(instance, player, candle, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("false", instance.getBlock(0, 40, 0).getProperty("lit"))
         assertFalse(event.isBlockingItemUse)
@@ -206,7 +206,7 @@ class BlockInteractionRulesTest {
         instance.setBlock(0, 40, 0, repeater)
         val player = actor(env, instance)
 
-        fireInteract(instance, player, repeater, BlockFace.NORTH, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("1", instance.getBlock(0, 40, 0).getProperty("delay"))
     }
@@ -219,7 +219,7 @@ class BlockInteractionRulesTest {
         val player = actor(env, instance)
         val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
 
-        fireInteract(instance, player, comparator, BlockFace.NORTH, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("subtract", instance.getBlock(0, 40, 0).getProperty("mode"))
         sounds.assertSingle { assertEquals("block.comparator.click", it.soundEvent().key().value()) }
@@ -232,7 +232,7 @@ class BlockInteractionRulesTest {
         instance.setBlock(0, 40, 0, detector)
         val player = actor(env, instance)
 
-        fireInteract(instance, player, detector, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty("inverted"))
     }
@@ -247,7 +247,7 @@ class BlockInteractionRulesTest {
         val player = actor(env, instance)
         val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
 
-        fireInteract(instance, player, noteBlock, BlockFace.NORTH, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("1", instance.getBlock(0, 40, 0).getProperty("note"))
         sounds.assertSingle { assertEquals("block.note_block.harp", it.soundEvent().key().value()) }

@@ -52,7 +52,7 @@ class ItemInteractionRulesTest {
         instance.setBlock(0, 40, 0, bed)
         val player = actor(env, instance)
 
-        fireInteract(instance, player, bed, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertTrue(player.respawnPoint.samePoint(Pos(0.5, 40.1, 0.5)))
     }
@@ -66,7 +66,7 @@ class ItemInteractionRulesTest {
         val player = connection.connect(instance, Pos(0.0, 40.0, 0.0, 0f, 0f))
         val swings = connection.trackIncoming(SwingAnimationPacket::class.java)
 
-        fireInteract(instance, player, bed, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         swings.assertSingle()
     }
@@ -81,7 +81,7 @@ class ItemInteractionRulesTest {
         val player = actor(env, instance)
         holdMaterial(player, Material.GLOWSTONE)
 
-        fireInteract(instance, player, anchor, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("3", instance.getBlock(0, 40, 0).getProperty(States.CHARGES))
         assertEquals(Material.AIR, player.itemInMainHand.material())
@@ -96,7 +96,7 @@ class ItemInteractionRulesTest {
         val player = actor(env, instance)
         holdBlock(player, Block.STONE)
 
-        val event = fireInteract(instance, player, anchor, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertTrue(event.isBlockingItemUse)
         assertEquals(Block.AIR, instance.getBlock(0, 40, 0))
@@ -117,7 +117,7 @@ class ItemInteractionRulesTest {
         val player = actor(env, instance)
         player.food = 10
 
-        fireInteract(instance, player, cake, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("1", instance.getBlock(0, 40, 0).getProperty(States.BITES))
         assertEquals(12, player.food)
@@ -131,7 +131,7 @@ class ItemInteractionRulesTest {
         val player = actor(env, instance)
         player.gameMode = GameMode.CREATIVE
 
-        fireInteract(instance, player, cake, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("1", instance.getBlock(0, 40, 0).getProperty(States.BITES))
     }
@@ -144,7 +144,7 @@ class ItemInteractionRulesTest {
         val player = actor(env, instance)
         holdMaterial(player, Material.WHITE_CANDLE)
 
-        fireInteract(instance, player, cake, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.WHITE_CANDLE_CAKE.key(), instance.getBlock(0, 40, 0).key())
     }
@@ -157,7 +157,7 @@ class ItemInteractionRulesTest {
         val player = actor(env, instance)
         player.food = 10
 
-        fireInteract(instance, player, candleCake, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         val result = instance.getBlock(0, 40, 0)
         assertEquals(Block.CAKE.key(), result.key())
@@ -175,7 +175,7 @@ class ItemInteractionRulesTest {
         val player = actor(env, instance)
         holdMaterial(player, Material.WHEAT_SEEDS)
 
-        fireInteract(instance, player, composter, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("1", instance.getBlock(0, 40, 0).getProperty(States.LEVEL))
     }
@@ -187,7 +187,7 @@ class ItemInteractionRulesTest {
         instance.setBlock(0, 40, 0, composter)
         val player = actor(env, instance)
 
-        fireInteract(instance, player, composter, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("0", instance.getBlock(0, 40, 0).getProperty(States.LEVEL))
         assertTrue(instance.entities.any { it is ItemEntity })
@@ -201,7 +201,7 @@ class ItemInteractionRulesTest {
         val player = actor(env, instance)
         holdBlock(player, Block.STONE)
 
-        val event = fireInteract(instance, player, composter, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("0", instance.getBlock(0, 40, 0).getProperty(States.LEVEL))
         assertTrue(instance.entities.any { it is ItemEntity })
@@ -220,7 +220,7 @@ class ItemInteractionRulesTest {
         instance.setBlock(0, 40, 0, jukebox)
         val player = actor(env, instance)
 
-        fireInteract(instance, player, jukebox, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("false", instance.getBlock(0, 40, 0).getProperty(States.HAS_RECORD))
     }
@@ -235,7 +235,7 @@ class ItemInteractionRulesTest {
         val player = actor(env, instance)
         holdMaterial(player, Material.SHEARS)
 
-        fireInteract(instance, player, hive, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("0", instance.getBlock(0, 40, 0).getProperty(States.HONEY_LEVEL))
         assertTrue(instance.entities.any { it is ItemEntity })
@@ -250,7 +250,7 @@ class ItemInteractionRulesTest {
         instance.setBlock(0, 40, 0, bush)
         val player = actor(env, instance)
 
-        fireInteract(instance, player, bush, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("1", instance.getBlock(0, 40, 0).getProperty(States.AGE))
     }
@@ -262,7 +262,7 @@ class ItemInteractionRulesTest {
         instance.setBlock(0, 40, 0, vines)
         val player = actor(env, instance)
 
-        fireInteract(instance, player, vines, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("false", instance.getBlock(0, 40, 0).getProperty(States.BERRIES))
     }
@@ -275,7 +275,7 @@ class ItemInteractionRulesTest {
         val player = actor(env, instance)
         holdMaterial(player, Material.BONE_MEAL)
 
-        val event = fireInteract(instance, player, vines, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty(States.BERRIES))
         assertTrue(event.isBlockingItemUse)
@@ -288,7 +288,7 @@ class ItemInteractionRulesTest {
         instance.setBlock(0, 40, 0, vines)
         val player = actor(env, instance)
 
-        fireInteract(instance, player, vines, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("false", instance.getBlock(0, 40, 0).getProperty(States.BERRIES))
     }
@@ -301,7 +301,7 @@ class ItemInteractionRulesTest {
         val player = actor(env, instance)
         holdMaterial(player, Material.BONE_MEAL)
 
-        val event = fireInteract(instance, player, bush, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("3", instance.getBlock(0, 40, 0).getProperty(States.AGE))
         assertTrue(event.isBlockingItemUse)
@@ -316,7 +316,7 @@ class ItemInteractionRulesTest {
         instance.setBlock(0, 40, 0, Block.DRAGON_EGG)
         val player = actor(env, instance)
 
-        fireInteract(instance, player, Block.DRAGON_EGG, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.AIR, instance.getBlock(0, 40, 0))
     }
@@ -329,7 +329,7 @@ class ItemInteractionRulesTest {
         val player = connection.connect(instance, Pos(0.0, 40.0, 0.0, 0f, 0f))
         val particles = connection.trackIncoming(ParticlePacket::class.java)
 
-        fireInteract(instance, player, Block.DRAGON_EGG, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         particles.assertAny()
     }

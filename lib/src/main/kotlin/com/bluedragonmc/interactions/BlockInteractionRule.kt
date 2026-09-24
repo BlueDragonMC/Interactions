@@ -3,6 +3,7 @@ package com.bluedragonmc.interactions
 import net.kyori.adventure.key.Key
 import net.minestom.server.event.EventFilter
 import net.minestom.server.event.EventNode
+import net.minestom.server.event.player.PlayerBlockBreakEvent
 import net.minestom.server.event.player.PlayerBlockInteractEvent
 import net.minestom.server.event.player.PlayerUseItemEvent
 import net.minestom.server.event.trait.BlockEvent
@@ -47,6 +48,11 @@ abstract class BlockInteractionRule(val blocks: BlockSet) : Rule {
     /** Called when a player right-clicks one of this rule's blocks. */
     protected fun onInteract(listener: PlayerBlockInteractEvent.() -> Unit) {
         interactionNode.addListener(PlayerBlockInteractEvent::class.java) { event -> listener(event) }
+    }
+
+    /** Called when one of this rule's blocks is broken. */
+    protected fun onDestroy(listener: PlayerBlockBreakEvent.() -> Unit) {
+        interactionNode.addListener(PlayerBlockBreakEvent::class.java) { event -> listener(event) }
     }
 
     /** Called when a player uses an item without targeting a block. */

@@ -182,6 +182,7 @@ object RuleCatalog {
         SweetBerryBushInteractionRule(),
         CaveVinesInteractionRule(),
         DragonEggInteractionRule(),
+        ContainerInteractionRule(),
         ConsumeInteractionRule(),
         BellInteractionRule(),
         RedstoneWireInteractionRule(),

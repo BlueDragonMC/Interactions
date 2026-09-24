@@ -45,7 +45,7 @@ class PlacementHandlerTest {
 
         val player = player(env, instance)
         holdBlock(player, Block.OAK_LOG)
-        fireInteract(instance, player, Block.SHORT_GRASS, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.OAK_LOG, instance.getBlock(0, 40, 0))
         assertEquals(Block.STONE, instance.getBlock(0, 41, 0))

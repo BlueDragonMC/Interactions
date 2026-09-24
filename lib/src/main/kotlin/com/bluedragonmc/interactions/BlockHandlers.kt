@@ -40,7 +40,7 @@ object BlockHandlers {
             Tag.NBT("lock"),
             Tag.String("LootTable"),
             Tag.Long("LootTableSeed"),
-            Tag.Component("Items").list(),
+            Tag.NBT("Items").list(),
         ),
         BlockSet.from(Block.CHISELED_BOOKSHELF) to listOf(
             Tag.NBT("Items").list(),
@@ -61,17 +61,17 @@ object BlockHandlers {
             Tag.NBT("RecipesUsed")
         ),
         BlockSet.from(Block.CAMPFIRE, Block.SOUL_CAMPFIRE) to listOf(
-            Tag.Component("Items").list(),
+            Tag.NBT("Items").list(),
             Tag.Integer("CookingTimes").list(),
             Tag.Integer("CookingTotalTimes").list()
         ),
         BlockSet.from(Block.BREWING_STAND) to listOf(
-            Tag.Component("Items").list(),
+            Tag.NBT("Items").list(),
             Tag.Short("BrewTime"),
             Tag.Byte("Fuel")
         ),
         BlockSet.from(Block.HOPPER) to listOf(
-            Tag.Component("Items").list(),
+            Tag.NBT("Items").list(),
             Tag.Integer("TransferCooldown")
         ),
         BlockSet.from(Block.LECTERN) to listOf(
@@ -79,7 +79,7 @@ object BlockHandlers {
             Tag.Integer("Page")
         ),
         BlockSet.from(Block.CRAFTER) to listOf(
-            Tag.Component("Items").list(),
+            Tag.NBT("Items").list(),
             Tag.Integer("disabled_slots").list(),
             Tag.Boolean("triggered"),
             Tag.Integer("crafting_ticks_remaining")
@@ -222,5 +222,5 @@ object BlockHandlers {
         }
     }
 
-    fun getAll() = minestomHandlers
+    fun getAll(): List<BlockHandler> = minestomHandlers
 }

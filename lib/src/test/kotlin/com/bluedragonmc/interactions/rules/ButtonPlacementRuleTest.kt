@@ -87,7 +87,7 @@ class ButtonPlacementRuleTest {
         val player = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
         holdBlock(player, Block.STONE)
 
-        val event = fireInteract(instance, player, Block.OAK_BUTTON, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertTrue(event.isBlockingItemUse)
     }
@@ -100,7 +100,7 @@ class ButtonPlacementRuleTest {
         player.setSneaking(true)
         holdBlock(player, Block.STONE)
 
-        val event = fireInteract(instance, player, Block.OAK_BUTTON, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertFalse(event.isBlockingItemUse)
     }

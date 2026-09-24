@@ -127,7 +127,7 @@ class MiscRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.FLINT_AND_STEEL)
 
-        val event = fireInteract(instance, player, Block.CANDLE, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty("lit"))
         assertTrue(event.isBlockingItemUse)
@@ -141,7 +141,7 @@ class MiscRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.FLINT_AND_STEEL)
 
-        val event = fireInteract(instance, player, waterlogged, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("false", instance.getBlock(0, 40, 0).getProperty("lit"))
         assertFalse(event.isBlockingItemUse)

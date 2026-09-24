@@ -49,7 +49,7 @@ class SignInteractionRulesTest {
         val player = actor(env, instance)
         holdMaterial(player, Material.RED_DYE)
 
-        val event = fireInteract(instance, player, sign, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertEquals("red", instance.getBlock(0, 40, 0).nbt()!!.getCompound("front_text").getString("color"))
         assertTrue(event.isBlockingItemUse)
@@ -64,7 +64,7 @@ class SignInteractionRulesTest {
         val player = actor(env, instance)
         holdMaterial(player, Material.GLOW_INK_SAC)
 
-        fireInteract(instance, player, sign, BlockFace.NORTH, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertTrue(instance.getBlock(0, 40, 0).nbt()!!.getCompound("front_text").getBoolean("has_glowing_text"))
     }
@@ -77,7 +77,7 @@ class SignInteractionRulesTest {
         val player = actor(env, instance)
         holdMaterial(player, Material.HONEYCOMB)
 
-        val event = fireInteract(instance, player, sign, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertTrue(instance.getBlock(0, 40, 0).nbt()!!.getBoolean("is_waxed"))
         assertTrue(event.isBlockingItemUse)
@@ -92,7 +92,7 @@ class SignInteractionRulesTest {
         val player = connection.connect(instance, Pos(0.0, 40.0, 3.0, 0f, 0f))
         val editors = connection.trackIncoming(OpenSignEditorPacket::class.java)
 
-        fireInteract(instance, player, sign, BlockFace.NORTH, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         editors.assertSingle()
     }
@@ -120,7 +120,7 @@ class SignInteractionRulesTest {
         holdBlock(player, Block.OAK_SIGN)
         val editors = connection.trackIncoming(OpenSignEditorPacket::class.java)
 
-        val event = fireInteract(instance, player, sign, BlockFace.NORTH, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         assertTrue(event.isBlockingItemUse)
         editors.assertSingle()
@@ -140,7 +140,7 @@ class SignInteractionRulesTest {
         val player = actor(env, instance)
         holdMaterial(player, Material.GLOW_INK_SAC)
 
-        fireInteract(instance, player, sign, BlockFace.NORTH, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
 
         val frontText = instance.getBlock(0, 40, 0).nbt()!!.getCompound("front_text")
         assertTrue(frontText.getBoolean("has_glowing_text"))

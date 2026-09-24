@@ -2,7 +2,6 @@ package com.bluedragonmc.interactions.rules.interaction.misc
 
 import com.bluedragonmc.interactions.BlockInteractionRule
 import com.bluedragonmc.interactions.BlockSet
-import com.bluedragonmc.interactions.plus
 import com.bluedragonmc.interactions.util.isSecondaryUseActive
 import net.minestom.server.instance.block.Block
 
@@ -12,16 +11,10 @@ import net.minestom.server.instance.block.Block
  */
 class ConsumeInteractionRule : BlockInteractionRule(
     BlockSet.from(
-        Block.CHEST,
-        Block.TRAPPED_CHEST,
         Block.ENDER_CHEST,
-        Block.BARREL,
-        Block.HOPPER,
         Block.FURNACE,
         Block.BLAST_FURNACE,
         Block.SMOKER,
-        Block.DISPENSER,
-        Block.DROPPER,
         Block.CRAFTER,
         Block.BREWING_STAND,
         Block.BEACON,
@@ -36,7 +29,7 @@ class ConsumeInteractionRule : BlockInteractionRule(
         Block.LOOM,
         Block.STONECUTTER,
         Block.LECTERN,
-    ) + BlockSet.fromTag("minecraft:shulker_boxes"),
+    ),
 ) {
     init {
         onInteract {

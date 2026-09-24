@@ -34,7 +34,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.DANDELION)
 
-        val event = fireInteract(instance, player, Block.FLOWER_POT, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.POTTED_DANDELION, instance.getBlock(0, 40, 0))
         assertTrue(event.isBlockingItemUse)
@@ -47,7 +47,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.AZALEA)
 
-        fireInteract(instance, player, Block.FLOWER_POT, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.POTTED_AZALEA_BUSH, instance.getBlock(0, 40, 0))
     }
@@ -59,7 +59,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.STICK)
 
-        val event = fireInteract(instance, player, Block.FLOWER_POT, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.FLOWER_POT, instance.getBlock(0, 40, 0))
         assertTrue(event.isBlockingItemUse)
@@ -71,7 +71,7 @@ class InteractionRulesTest {
         instance.setBlock(0, 40, 0, Block.POTTED_DANDELION)
         val player = player(env, instance)
 
-        val event = fireInteract(instance, player, Block.POTTED_DANDELION, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.FLOWER_POT, instance.getBlock(0, 40, 0))
         assertTrue(player.inventory.getItemStacks().any { it.material() == Material.DANDELION })
@@ -84,7 +84,7 @@ class InteractionRulesTest {
         instance.setBlock(0, 40, 0, Block.POTTED_AZALEA_BUSH)
         val player = player(env, instance)
 
-        fireInteract(instance, player, Block.POTTED_AZALEA_BUSH, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.FLOWER_POT, instance.getBlock(0, 40, 0))
         assertTrue(player.inventory.getItemStacks().any { it.material() == Material.AZALEA })
@@ -97,7 +97,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.DANDELION)
 
-        val event = fireInteract(instance, player, Block.POTTED_POPPY, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.POTTED_POPPY, instance.getBlock(0, 40, 0))
         assertTrue(event.isBlockingItemUse)
@@ -112,7 +112,7 @@ class InteractionRulesTest {
         val player = player(env, instance) // yaw 0 looks south
         holdMaterial(player, Material.SHEARS)
 
-        val event = fireInteract(instance, player, Block.PUMPKIN, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("north", instance.getBlock(0, 40, 0).getProperty("facing"))
         assertTrue(event.isBlockingItemUse)
@@ -125,7 +125,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.SHEARS)
 
-        fireInteract(instance, player, Block.PUMPKIN, BlockFace.EAST, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.EAST, BlockVec(0, 40, 0))
 
         assertEquals("east", instance.getBlock(0, 40, 0).getProperty("facing"))
     }
@@ -139,7 +139,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.WATER_BUCKET)
 
-        val event = fireInteract(instance, player, Block.OAK_SLAB, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("true", instance.getBlock(0, 40, 0).getProperty("waterlogged"))
         assertTrue(event.isBlockingItemUse)
@@ -152,7 +152,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.WATER_BUCKET)
 
-        fireInteract(instance, player, Block.STONE, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.WATER, instance.getBlock(0, 41, 0))
     }
@@ -164,7 +164,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.LAVA_BUCKET)
 
-        fireInteract(instance, player, Block.STONE, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.LAVA, instance.getBlock(0, 41, 0))
     }
@@ -176,7 +176,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.WATER_BUCKET)
 
-        fireInteract(instance, player, Block.FIRE, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.FIRE, instance.getBlock(0, 40, 0))
         assertEquals(Block.WATER, instance.getBlock(0, 41, 0))
@@ -189,7 +189,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.LAVA_BUCKET)
 
-        fireInteract(instance, player, Block.FIRE, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.FIRE, instance.getBlock(0, 40, 0))
         assertEquals(Block.LAVA, instance.getBlock(0, 41, 0))
@@ -203,7 +203,7 @@ class InteractionRulesTest {
         player.setSneaking(true)
         holdMaterial(player, Material.WATER_BUCKET)
 
-        fireInteract(instance, player, Block.OAK_SLAB, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("false", instance.getBlock(0, 40, 0).getProperty("waterlogged"))
         assertEquals(Block.WATER, instance.getBlock(0, 41, 0))
@@ -217,7 +217,7 @@ class InteractionRulesTest {
         player.setGameMode(GameMode.SURVIVAL)
         holdMaterial(player, Material.WATER_BUCKET)
 
-        fireInteract(instance, player, Block.STONE, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Material.BUCKET, player.getItemInHand(PlayerHand.MAIN).material())
     }
@@ -230,7 +230,7 @@ class InteractionRulesTest {
         player.setGameMode(GameMode.CREATIVE)
         holdMaterial(player, Material.WATER_BUCKET)
 
-        fireInteract(instance, player, Block.STONE, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Material.WATER_BUCKET, player.getItemInHand(PlayerHand.MAIN).material())
     }
@@ -242,7 +242,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.BUCKET)
 
-        val event = fireInteract(instance, player, Block.WATER, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.AIR, instance.getBlock(0, 40, 0))
         assertEquals(Material.WATER_BUCKET, player.getItemInHand(PlayerHand.MAIN).material())
@@ -284,7 +284,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.BUCKET)
 
-        fireInteract(instance, player, Block.LAVA, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.AIR, instance.getBlock(0, 40, 0))
         assertEquals(Material.LAVA_BUCKET, player.getItemInHand(PlayerHand.MAIN).material())
@@ -298,7 +298,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.BUCKET)
 
-        val event = fireInteract(instance, player, flowing, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(flowing, instance.getBlock(0, 40, 0))
         assertEquals(Material.BUCKET, player.getItemInHand(PlayerHand.MAIN).material())
@@ -313,7 +313,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.BUCKET)
 
-        fireInteract(instance, player, waterlogged, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals("false", instance.getBlock(0, 40, 0).getProperty("waterlogged"))
         assertEquals(Material.WATER_BUCKET, player.getItemInHand(PlayerHand.MAIN).material())
@@ -327,7 +327,7 @@ class InteractionRulesTest {
         player.setGameMode(GameMode.CREATIVE)
         holdMaterial(player, Material.BUCKET)
 
-        fireInteract(instance, player, Block.WATER, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Material.BUCKET, player.getItemInHand(PlayerHand.MAIN).material())
         assertTrue(player.inventory.getItemStacks().any { it.material() == Material.WATER_BUCKET })
@@ -342,7 +342,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.FLINT_AND_STEEL)
 
-        val event = fireInteract(instance, player, Block.STONE, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.FIRE, instance.getBlock(0, 41, 0))
         assertTrue(event.isBlockingItemUse)
@@ -356,7 +356,7 @@ class InteractionRulesTest {
         player.setGameMode(GameMode.SURVIVAL)
         holdMaterial(player, Material.FIRE_CHARGE)
 
-        fireInteract(instance, player, Block.STONE, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.FIRE, instance.getBlock(0, 41, 0))
         assertEquals(Material.AIR, player.getItemInHand(PlayerHand.MAIN).material())
@@ -370,7 +370,7 @@ class InteractionRulesTest {
         player.setGameMode(GameMode.CREATIVE)
         holdMaterial(player, Material.FIRE_CHARGE)
 
-        fireInteract(instance, player, Block.STONE, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.FIRE, instance.getBlock(0, 41, 0))
         assertEquals(Material.FIRE_CHARGE, player.getItemInHand(PlayerHand.MAIN).material())
@@ -384,7 +384,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.FLINT_AND_STEEL)
 
-        fireInteract(instance, player, Block.STONE, BlockFace.EAST, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.EAST, BlockVec(0, 40, 0))
 
         assertEquals(Block.AIR, instance.getBlock(1, 40, 0))
     }
@@ -398,7 +398,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.FLINT_AND_STEEL)
 
-        fireInteract(instance, player, Block.OAK_LEAVES, BlockFace.EAST, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.EAST, BlockVec(0, 40, 0))
 
         val fire = instance.getBlock(1, 40, 0)
         // The leaves are west of the target, so the fire attaches to its west side.
@@ -418,7 +418,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.FLINT_AND_STEEL)
 
-        fireInteract(instance, player, Block.STONE, BlockFace.EAST, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.EAST, BlockVec(0, 40, 0))
 
         val fire = instance.getBlock(1, 40, 0)
         assertEquals("true", fire.getProperty("up"))
@@ -433,7 +433,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.FLINT_AND_STEEL)
 
-        fireInteract(instance, player, Block.SOUL_SOIL, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         assertEquals(Block.SOUL_FIRE, instance.getBlock(0, 41, 0))
     }
@@ -446,7 +446,7 @@ class InteractionRulesTest {
         instance.setBlock(0, 42, 0, Block.OAK_PLANKS)
         val player = player(env, instance)
         holdMaterial(player, Material.FLINT_AND_STEEL)
-        fireInteract(instance, player, Block.STONE, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
         assertEquals(Block.FIRE, instance.getBlock(0, 41, 0))
 
         // Removing the support makes the fire attach upward to the planks.
@@ -462,7 +462,7 @@ class InteractionRulesTest {
         instance.setBlock(0, 40, 0, Block.STONE)
         val player = player(env, instance)
         holdMaterial(player, Material.FLINT_AND_STEEL)
-        fireInteract(instance, player, Block.STONE, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
         assertEquals(Block.FIRE, instance.getBlock(0, 41, 0))
 
         instance.setBlock(0, 40, 0, Block.AIR)
@@ -492,7 +492,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.ZOMBIE_SPAWN_EGG)
 
-        val event = fireInteract(instance, player, Block.SPAWNER, BlockFace.TOP, BlockVec(0, 40, 0))
+        val event = fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         val nbt = instance.getBlock(0, 40, 0).nbt()!!
         assertEquals("minecraft:zombie", nbt.getCompound("SpawnData").getCompound("entity").getString("id"))
@@ -506,7 +506,7 @@ class InteractionRulesTest {
         val player = player(env, instance)
         holdMaterial(player, Material.ZOMBIE_SPAWN_EGG)
 
-        fireInteract(instance, player, Block.TRIAL_SPAWNER, BlockFace.TOP, BlockVec(0, 40, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 40, 0))
 
         val block = instance.getBlock(0, 40, 0)
         val normal = block.nbt()!!.getCompound("normal_config").getList("spawn_potentials").getCompound(0)

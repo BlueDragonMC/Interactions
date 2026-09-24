@@ -164,7 +164,7 @@ class PlantRulesTest {
 
         val player = player(env, instance)
         holdBlock(player, Block.WILDFLOWERS)
-        fireInteract(instance, player, Block.GRASS_BLOCK, BlockFace.TOP, BlockVec(0, 39, 0))
+        fireInteract(instance, player, BlockFace.TOP, BlockVec(0, 39, 0))
 
         assertEquals("2", instance.getBlock(0, 40, 0).getProperty("flower_amount"))
     }

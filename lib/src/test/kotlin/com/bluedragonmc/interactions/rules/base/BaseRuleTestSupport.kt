@@ -57,11 +57,11 @@ internal fun firePlace(
 internal fun fireInteract(
     instance: Instance,
     player: Player,
-    clickedBlock: Block,
     face: BlockFace,
     position: BlockVec,
     cursor: Vec = Vec(0.5, 0.5, 0.5),
 ): PlayerBlockInteractEvent {
+    val clickedBlock = instance.getBlock(position)
     val event = PlayerBlockInteractEvent(player, PlayerHand.MAIN, instance, clickedBlock, position, cursor, face)
     EventDispatcher.call(event)
     return event
