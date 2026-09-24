@@ -12,6 +12,7 @@ import net.kyori.adventure.text.Component
 import net.minestom.server.instance.block.Block
 import net.minestom.server.inventory.InventoryType
 import net.minestom.server.item.ItemStack
+import net.minestom.server.sound.SoundEvent
 
 /**
  * Opens a storage menu when one of the simple containers below is right-clicked, backed by the
@@ -24,7 +25,9 @@ class ContainerInteractionRule : BlockInteractionRule(SIMPLE_CONTAINERS) {
             if (isSecondaryUseActive()) return@onInteract
             val spec = specFor(block) ?: return@onInteract
             isBlockingItemUse = true
-            BlockContainers.open(player, instance, blockPosition, spec.type, spec.title)
+            BlockContainers.open(
+                player, instance, blockPosition, spec.type, spec.title, spec.openSound, spec.closeSound,
+            )
         }
 
         onDestroy {
@@ -35,7 +38,12 @@ class ContainerInteractionRule : BlockInteractionRule(SIMPLE_CONTAINERS) {
         }
     }
 
-    private data class ContainerSpec(val type: InventoryType, val title: Component)
+    private data class ContainerSpec(
+        val type: InventoryType,
+        val title: Component,
+        val openSound: SoundEvent? = null,
+        val closeSound: SoundEvent? = null,
+    )
 
     private companion object {
         /** Chests (including trapped and copper variants), but not the ender chest. */
@@ -48,12 +56,19 @@ class ContainerInteractionRule : BlockInteractionRule(SIMPLE_CONTAINERS) {
             BlockSet.from(Block.BARREL, Block.DISPENSER, Block.DROPPER, Block.HOPPER)
 
         fun specFor(block: Block): ContainerSpec? = when {
-            block.key() in Tags.SHULKER_BOXES ->
-                ContainerSpec(InventoryType.SHULKER_BOX, Component.translatable("container.shulkerBox"))
-            block.key() in CHESTS.keys ->
-                ContainerSpec(InventoryType.CHEST_3_ROW, Component.translatable("container.chest"))
-            block.key() == Block.BARREL.key() ->
-                ContainerSpec(InventoryType.CHEST_3_ROW, Component.translatable("container.barrel"))
+            block.key() in Tags.SHULKER_BOXES -> ContainerSpec(
+                InventoryType.SHULKER_BOX,
+                Component.translatable("container.shulkerBox"),
+                SoundEvent.BLOCK_SHULKER_BOX_OPEN,
+                SoundEvent.BLOCK_SHULKER_BOX_CLOSE,
+            )
+            block.key() in CHESTS.keys -> chestSpec(block.key().asString())
+            block.key() == Block.BARREL.key() -> ContainerSpec(
+                InventoryType.CHEST_3_ROW,
+                Component.translatable("container.barrel"),
+                SoundEvent.BLOCK_BARREL_OPEN,
+                SoundEvent.BLOCK_BARREL_CLOSE,
+            )
             block.key() == Block.DISPENSER.key() ->
                 ContainerSpec(InventoryType.WINDOW_3X3, Component.translatable("container.dispenser"))
             block.key() == Block.DROPPER.key() ->
@@ -61,6 +76,19 @@ class ContainerInteractionRule : BlockInteractionRule(SIMPLE_CONTAINERS) {
             block.key() == Block.HOPPER.key() ->
                 ContainerSpec(InventoryType.HOPPER, Component.translatable("container.hopper"))
             else -> null
+        }
+
+        private fun chestSpec(key: String): ContainerSpec {
+            val (open, close) = when {
+                "oxidized" in key ->
+                    SoundEvent.BLOCK_COPPER_CHEST_OXIDIZED_OPEN to SoundEvent.BLOCK_COPPER_CHEST_OXIDIZED_CLOSE
+                "weathered" in key ->
+                    SoundEvent.BLOCK_COPPER_CHEST_WEATHERED_OPEN to SoundEvent.BLOCK_COPPER_CHEST_WEATHERED_CLOSE
+                "copper" in key ->
+                    SoundEvent.BLOCK_COPPER_CHEST_OPEN to SoundEvent.BLOCK_COPPER_CHEST_CLOSE
+                else -> SoundEvent.BLOCK_CHEST_OPEN to SoundEvent.BLOCK_CHEST_CLOSE
+            }
+            return ContainerSpec(InventoryType.CHEST_3_ROW, Component.translatable("container.chest"), open, close)
         }
     }
 }

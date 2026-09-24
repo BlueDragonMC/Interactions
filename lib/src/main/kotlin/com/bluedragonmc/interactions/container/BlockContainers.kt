@@ -1,6 +1,8 @@
 package com.bluedragonmc.interactions.container
 
+import com.bluedragonmc.interactions.util.blockCenter
 import com.bluedragonmc.interactions.util.getBlockOrAir
+import com.bluedragonmc.interactions.util.playBlockSound
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import net.minestom.server.coordinate.BlockVec
@@ -10,13 +12,18 @@ import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
 import net.minestom.server.inventory.Inventory
 import net.minestom.server.inventory.InventoryType
+import net.minestom.server.sound.SoundEvent
 import net.minestom.server.tag.Tag
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ThreadLocalRandom
 
 /**
  * A Minestom [Inventory] whose contents are stored on the block entity at [blockPosition].
  *
  * Contents are kept in sync with the `Items` tag on the block.
+ *
+ * [openSound] and [closeSound] play when the first viewer opens the container and the last viewer
+ * closes it, matching vanilla.
  */
 class BlockContainerInventory(
     val instance: Instance,
@@ -24,6 +31,8 @@ class BlockContainerInventory(
     private val blockKey: Key,
     type: InventoryType,
     title: Component,
+    private val openSound: SoundEvent?,
+    private val closeSound: SoundEvent?,
 ) : Inventory(type, title) {
 
     /** True while [reload] is copying items in, to avoid writing them straight back out. */
@@ -54,13 +63,31 @@ class BlockContainerInventory(
         instance.setBlock(blockPosition, block.withContainerItems(getItemStacks().toList()))
     }
 
+    override fun addViewer(player: Player): Boolean {
+        val wasEmpty = viewers.isEmpty()
+        val added = super.addViewer(player)
+        if (added && wasEmpty) playSound(openSound)
+        return added
+    }
+
     override fun removeViewer(player: Player): Boolean {
         val removed = super.removeViewer(player)
         if (removed && viewers.isEmpty()) {
             persist()
             BlockContainers.release(this)
+            playSound(closeSound)
         }
         return removed
+    }
+
+    private fun playSound(sound: SoundEvent?) {
+        if (sound == null) return
+        instance.playBlockSound(
+            sound,
+            blockPosition.blockCenter(),
+            volume = 0.5f,
+            pitch = ThreadLocalRandom.current().nextFloat() * 0.1f + 0.9f,
+        )
     }
 }
 
@@ -73,7 +100,8 @@ internal object BlockContainers {
 
     /**
      * Opens the container at [position] for [player], creating and loading its inventory the first
-     * time it is opened. [defaultTitle] is used when the block has no custom name.
+     * time it is opened. [defaultTitle] is used when the block has no custom name, and [openSound] /
+     * [closeSound] are played when the container opens and closes.
      */
     fun open(
         player: Player,
@@ -81,11 +109,13 @@ internal object BlockContainers {
         position: BlockVec,
         type: InventoryType,
         defaultTitle: Component,
+        openSound: SoundEvent?,
+        closeSound: SoundEvent?,
     ) {
         val block = instance.getBlockOrAir(position)
         val key = ContainerKey(instance, position)
         val inventory = open[key] ?: BlockContainerInventory(
-            instance, position, block.key(), type, title(block, defaultTitle),
+            instance, position, block.key(), type, title(block, defaultTitle), openSound, closeSound,
         ).also {
             it.reload(block)
             open[key] = it

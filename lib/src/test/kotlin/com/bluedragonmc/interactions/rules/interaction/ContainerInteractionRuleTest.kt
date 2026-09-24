@@ -6,6 +6,7 @@ import com.bluedragonmc.interactions.container.withContainerItems
 import com.bluedragonmc.interactions.rules.base.fireInteract
 import com.bluedragonmc.interactions.rules.base.holdBlock
 import com.bluedragonmc.interactions.rules.base.setupInstance
+import com.bluedragonmc.interactions.rules.base.trackSounds
 import com.bluedragonmc.interactions.rules.interaction.misc.ContainerInteractionRule
 import net.kyori.adventure.nbt.BinaryTagTypes
 import net.minestom.server.MinecraftServer
@@ -23,6 +24,8 @@ import net.minestom.server.inventory.InventoryType
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
 import net.minestom.server.network.packet.server.play.BlockEntityDataPacket
+import net.minestom.server.network.packet.server.play.SoundEffectPacket
+import net.minestom.testing.Collector
 import net.minestom.testing.Env
 import net.minestom.testing.EnvTest
 import org.junit.jupiter.api.Test
@@ -229,4 +232,100 @@ class ContainerInteractionRuleTest {
                 packet.data?.getList(ITEMS_TAG, BinaryTagTypes.COMPOUND)?.size() == 1
         }
     }
+
+    @Test
+    fun `a chest plays its open and close sounds`(env: Env) {
+        val instance = setupInstance(env, ContainerInteractionRule())
+        instance.setBlock(0, 40, 0, Block.CHEST)
+        val player = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
+        val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
+
+        fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
+        player.closeInventory()
+
+        val keys = soundKeys(sounds)
+        assertEquals(1, keys.count { it == "block.chest.open" })
+        assertEquals(1, keys.count { it == "block.chest.close" })
+    }
+
+    @Test
+    fun `a barrel plays its own open and close sounds`(env: Env) {
+        val instance = setupInstance(env, ContainerInteractionRule())
+        instance.setBlock(0, 40, 0, Block.BARREL)
+        val player = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
+        val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
+
+        fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
+        player.closeInventory()
+
+        val keys = soundKeys(sounds)
+        assertEquals(1, keys.count { it == "block.barrel.open" })
+        assertEquals(1, keys.count { it == "block.barrel.close" })
+    }
+
+    @Test
+    fun `a shulker box plays its own open and close sounds`(env: Env) {
+        val instance = setupInstance(env, ContainerInteractionRule())
+        instance.setBlock(0, 40, 0, Block.SHULKER_BOX)
+        val player = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
+        val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
+
+        fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
+        player.closeInventory()
+
+        val keys = soundKeys(sounds)
+        assertEquals(1, keys.count { it == "block.shulker_box.open" })
+        assertEquals(1, keys.count { it == "block.shulker_box.close" })
+    }
+
+    @Test
+    fun `a weathered copper chest uses the weathered copper sounds`(env: Env) {
+        val instance = setupInstance(env, ContainerInteractionRule())
+        instance.setBlock(0, 40, 0, Block.WEATHERED_COPPER_CHEST)
+        val player = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
+        val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
+
+        fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
+        player.closeInventory()
+
+        val keys = soundKeys(sounds)
+        assertEquals(1, keys.count { it == "block.copper_chest_weathered.open" })
+        assertEquals(1, keys.count { it == "block.copper_chest_weathered.close" })
+    }
+
+    @Test
+    fun `open and close sounds only play for the first and last viewer`(env: Env) {
+        val instance = setupInstance(env, ContainerInteractionRule())
+        instance.setBlock(0, 40, 0, Block.CHEST)
+        val first = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
+        val second = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
+        val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
+
+        fireInteract(instance, first, BlockFace.NORTH, BlockVec(0, 40, 0))
+        fireInteract(instance, second, BlockFace.NORTH, BlockVec(0, 40, 0))
+        first.closeInventory()
+        second.closeInventory()
+
+        // A second opener does not replay the open sound, and the first closer does not play the
+        // close sound, so exactly one of each is heard.
+        val keys = soundKeys(sounds)
+        assertEquals(1, keys.count { it == "block.chest.open" })
+        assertEquals(1, keys.count { it == "block.chest.close" })
+    }
+
+    @Test
+    fun `dispensers and hoppers play no open or close sound`(env: Env) {
+        val instance = setupInstance(env, ContainerInteractionRule())
+        instance.setBlock(0, 40, 0, Block.DISPENSER)
+        val player = env.createPlayer(instance, Pos(0.5, 40.0, 0.5, 0f, 0f))
+        val sounds = trackSounds(env, instance, Pos(0.0, 40.0, 10.0))
+
+        fireInteract(instance, player, BlockFace.NORTH, BlockVec(0, 40, 0))
+        player.closeInventory()
+
+        assertTrue(soundKeys(sounds).isEmpty())
+    }
+
+    private fun soundKeys(sounds: Collector<SoundEffectPacket>): List<String> =
+        sounds.collect().map { it.soundEvent().key().value() }
 }
