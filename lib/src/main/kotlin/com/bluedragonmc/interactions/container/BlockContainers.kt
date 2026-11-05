@@ -22,9 +22,6 @@ import java.util.concurrent.ThreadLocalRandom
  * A Minestom [Inventory] whose contents are stored on the block entity at [blockPosition].
  *
  * Contents are kept in sync with the `Items` tag on the block.
- *
- * [openSound] and [closeSound] play when the first viewer opens the container and the last viewer
- * closes it, matching vanilla. [animation] tells clients about the same transition.
  */
 class BlockContainerInventory(
     val instance: Instance,

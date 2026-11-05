@@ -94,7 +94,7 @@ class PotentSulfurRule : PlacementRule(BlockSet.from(Block.POTENT_SULFUR)) {
         return block.withProperty(States.POTENT_SULFUR_STATE, "wet")
     }
 
-    private fun isSourceFluid(block: Block): Boolean = !block.isFluid() || block.getProperty(States.LEVEL) == "0"
+    private fun isSourceFluid(block: Block): Boolean = !block.fluid() || block.getProperty(States.LEVEL) == "0"
 
     private fun isSourceWater(block: Block): Boolean =
         block.key() == Block.WATER.key() && block.getProperty(States.LEVEL) == "0"
