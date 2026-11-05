@@ -1,6 +1,6 @@
 [versions]
 adventure = "5.1.1"
-kotlin = "2.3.0"
+kotlin = "2.4.21"
 minestom = "26_3-SNAPSHOT"
 dokka = "2.2.0"
 
