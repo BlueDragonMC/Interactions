@@ -1,4 +1,6 @@
 [versions]
+# @keep Used by the module build scripts for the Java toolchain
+jvm = "25"
 adventure = "5.1.1"
 kotlin = "2.4.21"
 minestom = "26_3-SNAPSHOT"
